@@ -1,0 +1,1029 @@
+diff --git a/docs/HALO_KINEMATICS.md b/docs/HALO_KINEMATICS.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..16cd04b26a439364fd9aa8c2146f161b7e82cd49
+--- /dev/null
++++ b/docs/HALO_KINEMATICS.md
+@@ -0,0 +1,198 @@
++# Halo and elastic kinematics layer
++
++Implemented against `refactor` at `0e6195befa55f7340612b48514b84c20189e2589`.
++Scope: halo speed distributions, speed moments, elastic two-body kinematics,
++and their tests. Nuclear responses, interactions, detector response,
++backgrounds and statistics are unchanged. The empty `rates/kinematics.py`
++placeholder is unchanged; new code should import package-level `kinematics`.
++
++## API and dependency direction
++
++- `halo.StandardHaloModel(v0, vesc, v_lab)` retains the existing constructor.
++  All three arguments are scalar speeds divided by c. The model is frozen and
++  copies scalar array inputs, preventing mutation through an external array.
++- `StandardHaloModel.from_km_s(v0_km_s=220, vesc_km_s=544, v_lab_km_s=266)`
++  is the explicit dimensional boundary and benchmark constructor.
++- Model properties: `normalization_3d`, `z`, `max_lab_speed`, and
++  `integration_breakpoints`. Methods: `galactic_speed_pdf(v)` and
++  `lab_speed_pdf(v)`.
++- `halo.velocity_moment(speed_pdf, v_max, v_min_c, *, n, breakpoints=(),
++  epsrel=1e-9)` computes reference adaptive quadrature. The power is mandatory.
++- `halo.build_velocity_integral(speed_pdf, v_max, *, power=-1,
++  n_points=10000, breakpoints=())` retains the fast approximate callable API.
++- `halo.mean_inverse_speed(speed_pdf, v_max, *, n_points=10000,
++  breakpoints=())` returns the same table as `power=-1`.
++- `kinematics.reduced_mass_GeV(m_chi_GeV, m_target_GeV)`.
++- `kinematics.momentum_transfer_GeV(E_nr_keV, m_target_GeV)`.
++- `kinematics.minimum_speed_c(E_nr_keV, m_chi_GeV, m_target_GeV)`.
++- `kinematics.maximum_recoil_energy_keV(m_chi_GeV, m_target_GeV, v_max_c)`.
++
++`shm` depends only on exact unit constants and generic numerics. `integrals`
++accepts a PDF callable and support information; it imports no SHM or interaction
++model. `kinematics` depends only on exact energy conversion and NumPy. Future
++rate assembly can consume all three without halo/interaction coupling.
++
++```python
++from wimp_legend.halo import StandardHaloModel, velocity_moment, mean_inverse_speed
++from wimp_legend.kinematics import minimum_speed_c
++
++halo = StandardHaloModel.from_km_s()
++vmin = minimum_speed_c([1., 5., 10.], m_chi_GeV=10., m_target_GeV=76*.9315)
++eta_reference = velocity_moment(
++    halo.lab_speed_pdf, halo.max_lab_speed, vmin, n=-1,
++    breakpoints=halo.integration_breakpoints,
++)
++third_moment = velocity_moment(
++    halo.lab_speed_pdf, halo.max_lab_speed, vmin, n=3,
++    breakpoints=halo.integration_breakpoints,
++)
++eta_fast = mean_inverse_speed(
++    halo.lab_speed_pdf, halo.max_lab_speed,
++    breakpoints=halo.integration_breakpoints,
++)(vmin)
++```
++
++## Physical conventions
++
++The Galactic velocity density is proportional to `exp(-u²/v0²)` inside
++`u < vesc` and zero outside. This is a hard-truncated Maxwellian, not a
++lowered Maxwellian with a constant subtracted from its interior density.
++`v0` is the Maxwellian scale; each Cartesian component has untruncated
++standard deviation `v0/sqrt(2)`.
++
++The truncation precedes the Galilean boost. Angular integration gives support
++`max(0, v_lab-vesc) <= v < v_lab+vesc`, including boosts above the escape speed.
++At zero boost the Galactic PDF is used exactly. The speed density is in
++`d(beta)` with `beta=v/c`, and integrates to one. It contains no local DM
++mass density. Negative speeds and infinities return zero; NaN is rejected.
++PDF scalars return 0-d arrays; array shapes are preserved.
++
++The integral convention is `I_n(a) = integral_a^vmax beta^n f1(beta) d(beta)`.
++There is no hidden flux weight: eta is precisely `I_-1`. If a downstream API
++uses speeds in km/s, its moments are `I_n(km/s) = C_KM_S**n * I_n(beta)`;
++in particular divide eta by `299792.458` to express inverse speed in s/km.
++Scalar/array threshold shape is preserved. Negative thresholds clamp to zero,
++positive infinity gives zero, and NaN raises ValueError.
++
++The model uses a fixed boost magnitude: 266 km/s is a benchmark snapshot,
++not an annual-average prescription. No annual modulation, gravitational
++focusing, anisotropic angular observables, or DM density is assumed here.
++Speed moments are sufficient only after the relevant angular dependence has
++been eliminated; directional observables need additional halo information.
++
++Kinematics assumes a stationary free target and nonrelativistic, elastic,
++two-body scattering. Mass inputs are rest energies `m*c²` in GeV; momentum
++output means `q*c` in GeV (equivalently momentum in GeV/c); recoil input/output
++is true nuclear-recoil keV, not electron-equivalent keV. `c=1` in the kernels,
++and `1 keV = 1e-6 GeV` exactly. Kernels broadcast NumPy inputs without imposing
++a target composition or halo cutoff. Finite positive masses and finite
++nonnegative energies/speeds are required; endpoint speeds >=c are rejected.
++`minimum_speed_c` returns the formula without clipping to halo support, even
++for inaccessible recoil energies. The caller must remain in the NR regime.
++
++## Numerical choices and limits
++
++- The SHM normalization uses the regularized incomplete gamma function to
++  avoid cancellation of the usual two-term erf expression at small vesc/v0.
++- Full angular support uses `exprel`, and partial support uses `expm1`, to
++  avoid cancellation at tiny boosts and near the endpoint. There is no
++  arbitrary small-boost approximation to the PDF. Numerically unresolved
++  quadrature breakpoints within 64 machine epsilons of an endpoint are omitted.
++- Reference moments rescale the integration variable to `[0,1]`, factor out
++  `vmax**n`, and use a global relative error budget across supplied breakpoints.
++  QUADPACK warnings propagate as errors rather than producing apparently valid
++  divergent integrals. Supply known kinks or narrow-feature boundaries: generic
++  quadrature cannot discover every feature of an unknown callable.
++- For SHM, `f1(v)=O(v²)` at zero, so real powers `n>-3` are integrable.
++  `n<=-3` requires a strictly positive threshold in this API, conservatively
++  even for a distribution with a gap near zero. More general PDFs must satisfy
++  their own integrability condition. No infrared cutoff is inserted.
++- The retained table is a composite-trapezoid/linear-interpolation approximation
++  for powers >=-1 and PDFs with `f1(v)=O(v²)` at zero. Lower powers use the
++  reference API. This explicit restriction replaces previously unrestricted
++  but unreliable tabulation. The first grid cell is integrated, not discarded;
++  the escape endpoint uses its interior PDF limit. Interior discontinuities
++  should use reference quadrature. Tail-relative errors can be large arbitrarily
++  close to vmax; use the reference calculation there and for validation.
++- No new model hierarchy or interaction-specific halo objects are introduced.
++  NumPy/SciPy runtime dependencies and a pytest extra are declared in pyproject.
++
++## Independent validation
++
++Run `python -m pytest -q -W error` from the repository root.
++
++Tests cover all requested invariants, plus:
++
++- independent angular integration of the 3D truncated Maxwellian;
++- zero, tiny, equal-to-escape, and above-escape boosts;
++- independent analytic piecewise eta and unboosted incomplete-gamma moments;
++- `I_2(lab) = I_2(Galactic) + v_lab²`;
++- a non-SHM polynomial PDF, fractional moments, and `dI_n/da = -a^n f1(a)`;
++- tabulation convergence, invalid inputs, divergent moments, immutability,
++  scalar/empty/multidimensional arrays and mass/energy broadcasting;
++- random reduced-mass invariants and 527 random endpoint inversions;
++- equal-mass energy transfer, heavy-WIMP limits and q=2*mu*v at the endpoint.
++
++With target mass `76*0.9315 = 70.794 GeV` and maximum speed `810 km/s`:
++
++| WIMP mass (GeV) | Maximum nuclear recoil (keV) |
++|---:|---:|
++| 5 | 4.49806195 |
++| 10 | 15.83422672 |
++| 20 | 50.15344515 |
++| 40 | 134.72325829 |
++| 100 | 354.33157886 |
++
++Benchmark reference eta(0) is `1032.122085366866` in inverse beta units.
++These are regression results for the specified inputs, not physical constants.
++
++## Findings in the prior implementation
++
++The existing refactor SHM is correct at the stated benchmark to ordinary
++floating-point precision, but its above-escape-boost branch has the wrong
++lower support bound. At 700 km/s it produces a minimum density of about
++`-0.179609` on a 10001-point support grid. Direct subtraction of nearly equal
++exponentials produces up to 17.35% relative error in a tested interior grid
++at a boost of 1e-12 km/s. Nonfinite parameters were also accepted.
++
++The previous generic integrator inserts a lower cutoff and accepts arbitrary
++powers without checking integrability. For divergent powers that returns a
++cutoff-dependent finite number; for near-singular integrable powers, a uniform
++grid can be inaccurate. Its default inverse-speed benchmark is otherwise a
++reasonable finite-grid approximation.
++
++Notebook references below use zero-based JSON cell indices:
++
++- Cell 4 `make_eta` returns zero below its first speed sample, including eta(0).
++  Executing the selected notebook functions confirms eta(0)=0 versus the
++  reference value above. The current notebook correctly includes the minus
++  sign in reverse cumulative integration. The separate historical
++  `WIMP_O1_spectrum_150626.py` export lacks that sign and plots absolute rates,
++  masking the negative eta; do not conflate that export with the current notebook.
++- Cell 9 boosted PDF divides by the boost with no zero-boost branch, suffers
++  subtraction cancellation, has no nonnegative-speed guard, and assumes
++  boost < escape. `zeros_like(v)` also truncates the density for integer inputs.
++- Cell 33 uses `vesc+v0` for recoil endpoints despite its boosted PDF using
++  `vesc+v_E`. With the stated benchmark this reduces Emax by a factor
++  `(764/810)² = 0.889645`, about 11%. Later cell 40 uses the correct endpoint.
++- Cells 33 and 40 read mutable global masses/speeds inside computations;
++  redefining global parameters can mismatch an already-built eta table.
++- Naming mixes `E` in GeV and `E_keV`, and `m_n` versus `m_N`. Cell 35's
++  `GeV_to_keV=1e-6` is misleading as a bare unit-conversion name (the rate
++  Jacobian has different semantics). This work does not audit or change rate
++  normalization, nuclear responses, or detector physics.
++
++The notebook and historical export are deliberately retained unchanged.
++
++## Decisions before targets/nuclear responses
++
++1. Specify isotope composition and whether fractions are by atom number or mass.
++2. Select isotope masses and provenance; distinguish atomic and nuclear masses.
++   `A*0.9315 GeV` is only a regression approximation, not an isotope database.
++3. Agree on response momentum units, normalizations, and the definition of
++   nuclear versus nucleon reduced masses at the interfaces.
++4. Set the interaction-to-moment contract, including powers of c and any
++   reference-speed normalization; keep density/flux factors in rate assembly.
++5. Decide whether the first scientific result uses a fixed boost, annual
++   averaging, or modulation, and set a moment accuracy budget before optimizing
++   or caching tables for parameter scans.
+diff --git a/pyproject.toml b/pyproject.toml
+index c97ba2855272f52a8692268b4855791134e26b8d..93f00d1b9ba2262a2d5baaecd8adcf32981a6562 100644
+--- a/pyproject.toml
++++ b/pyproject.toml
+@@ -7,6 +7,13 @@ name = "wimp-legend"
+ version = "0.1.0"
+ description = "Modular WIMP and dark-matter sensitivity calculations for germanium detectors"
+ requires-python = ">=3.10"
++dependencies = ["numpy>=1.23", "scipy>=1.9"]
++
++[project.optional-dependencies]
++test = ["pytest>=7"]
++
++[tool.pytest.ini_options]
++pythonpath = ["src"]
+ 
+ [tool.setuptools.packages.find]
+ where = ["src"]
+diff --git a/src/wimp_legend/constants.py b/src/wimp_legend/constants.py
+index e69de29bb2d1d6434b8b29ae775ad8c2e48c5391..fdcc83a45fce51dabfd90bee2f7732b222f7a237 100644
+--- a/src/wimp_legend/constants.py
++++ b/src/wimp_legend/constants.py
+@@ -0,0 +1,6 @@
++"""Exact unit conversions; no halo, target, or interaction parameters."""
++
++from typing import Final
++
++C_KM_S: Final[float] = 299_792.458
++KEV_TO_GEV: Final[float] = 1e-6
+diff --git a/src/wimp_legend/halo/__init__.py b/src/wimp_legend/halo/__init__.py
+index 79d5a5392fd230d257ab9dec7baa5e2a277aa8d7..ed8b0a76cf5b20c6811525279ef8c0ea1b301b5d 100644
+--- a/src/wimp_legend/halo/__init__.py
++++ b/src/wimp_legend/halo/__init__.py
+@@ -1,10 +1,11 @@
+ """Halo models and velocity integrals."""
+ 
+-from .integrals import build_velocity_integral, mean_inverse_speed
++from .integrals import build_velocity_integral, mean_inverse_speed, velocity_moment
+ from .shm import StandardHaloModel
+ 
+ __all__ = [
+     "StandardHaloModel",
+     "build_velocity_integral",
+     "mean_inverse_speed",
++    "velocity_moment",
+ ]
+diff --git a/src/wimp_legend/halo/integrals.py b/src/wimp_legend/halo/integrals.py
+index 2aa8c894b5d15a86502333263ce5737bd30a0a14..db7a8832f2437ff60307e4a71f077e67f456d932 100644
+--- a/src/wimp_legend/halo/integrals.py
++++ b/src/wimp_legend/halo/integrals.py
+@@ -1,79 +1,143 @@
+-"""Velocity integrals used by direct-detection rate calculations."""
++r"""Distribution-independent speed moments I_n(a) = integral_a^vmax v^n f1(v) dv.
++
++Every speed is beta=v/c and f1 is a density in d(beta). Thus moments are in
++powers of beta, including eta=I_-1. To recover moments computed with km/s as
++speed variable, multiply by C_KM_S**n (eta_km_s = eta_beta/C_KM_S).
++
++The supplied PDF must be pure, nonnegative, normalized and supported inside
++[0,v_max]. No SHM or interaction implementation is imported here. Scalar or
++array thresholds are supported, with shape preserved and 0-d array results for
++scalars. Negative thresholds are clamped to zero; +infinity returns zero, and
++NaN is rejected. Integrability at zero is the caller's responsibility: for
++SHM, f1(v)=O(v²), so n>-3 suffices. No small-speed cutoff regularizes a divergent
++moment. For n<=-3 this API requires strictly positive thresholds, even for a
++PDF that vanishes near zero. Directional rates require more than speed moments.
++"""
+ 
+ from __future__ import annotations
+ 
+-from collections.abc import Callable
++from collections.abc import Callable, Iterable
++import warnings
+ 
+ import numpy as np
+-from scipy.integrate import cumulative_trapezoid
+-from scipy.interpolate import interp1d
++from scipy.integrate import IntegrationWarning, cumulative_trapezoid, quad
+ 
++SpeedPDF = Callable[[np.ndarray | float], np.ndarray | float]
+ 
+-SpeedPDF = Callable[[np.ndarray], np.ndarray]
+ 
++def _parameters(v_max, power, breakpoints):
++    if not np.isscalar(v_max) or not np.isfinite(v_max) or not 0 < v_max < 1:
++        raise ValueError("v_max must be a finite scalar in (0,1), in units of c")
++    if not np.isscalar(power) or not np.isfinite(power):
++        raise ValueError("moment power must be a finite real scalar")
++    points = np.asarray(tuple(breakpoints), dtype=float)
++    if points.ndim != 1 or np.any(~np.isfinite(points)) or np.any((points <= 0) | (points >= v_max)):
++        raise ValueError("breakpoints must be finite speeds strictly inside (0,v_max)")
++    return np.unique(points)
+ 
+-def build_velocity_integral(
+-    speed_pdf: SpeedPDF,
+-    v_max: float,
+-    *,
+-    power: float = -1.0,
+-    n_points: int = 10_000,
+-) -> Callable[[np.ndarray | float], np.ndarray]:
+-    r"""Return the generalized halo integral
+ 
+-    .. math::
++def _thresholds(v_min_c):
++    thresholds = np.asarray(v_min_c, dtype=float)
++    if np.any(np.isnan(thresholds)):
++        raise ValueError("v_min_c must not contain NaN")
++    return np.maximum(thresholds, 0)
++
+ 
+-        I_n(v_{\min}) = \int_{v_{\min}}^{v_{\max}} v^n f_1(v)\,dv.
++def velocity_moment(
++    speed_pdf: SpeedPDF, v_max: float, v_min_c: np.ndarray | float, *,
++    n: float, breakpoints: Iterable[float] = (), epsrel: float = 1e-9,
++) -> np.ndarray:
++    r"""Reference adaptive quadrature for I_n(v_min_c), with explicit power n.
+ 
+-    The standard mean inverse speed is obtained with ``power=-1``.
++    Supply all known interior kinks/support boundaries through ``breakpoints``
++    (e.g. halo.integration_breakpoints). Quadrature cannot reliably discover
++    arbitrarily narrow features in an otherwise unknown callable.
++
++    Integrate in x=v/v_max and factor v_max**n outside to avoid absolute-error
++    tolerances swallowing small higher moments. epsrel controls relative error;
++    integration warnings are raised as errors, never hidden by clipping.
+     """
++    points = _parameters(v_max, n, breakpoints)
++    if not np.isscalar(epsrel) or not np.isfinite(epsrel) or not 50*np.finfo(float).eps < epsrel < 1:
++        raise ValueError("epsrel must be finite, between 50*machine_epsilon and 1")
++    thresholds = _thresholds(v_min_c)
++    if n <= -3 and np.any(thresholds == 0):
++        raise ValueError("n <= -3 requires a strictly positive threshold; no infrared cutoff is imposed")
++    result = np.zeros_like(thresholds)
++
++    def integrand(x):
++        value = float(speed_pdf(v_max * x))
++        if not np.isfinite(value) or value < 0:
++            raise ValueError("speed_pdf must return finite nonnegative scalar densities")
++        return x**n * value * v_max
++
++    for index in np.ndindex(thresholds.shape):
++        lower = float(thresholds[index])
++        if lower >= v_max:
++            continue
++        with warnings.catch_warnings():
++            warnings.simplefilter("error", IntegrationWarning)
++            # One global error budget: a tiny boundary segment need not achieve
++            # the same relative precision as the entire moment.
++            value = quad(integrand, lower / v_max, 1.0,
++                         points=points[points > lower] / v_max,
++                         epsabs=0, epsrel=epsrel, limit=300)[0]
++        result[index] = value * v_max**n
++    return result
++
+ 
+-    if v_max <= 0:
+-        raise ValueError("v_max must be positive")
+-    if n_points < 2:
+-        raise ValueError("n_points must be at least 2")
+-
+-    # Avoid evaluating negative powers exactly at v=0.  For physical speed
+-    # distributions f_1(v) ~ v^2 near the origin, so this does not alter the
+-    # integral within numerical precision for the cases used here.
+-    v_min_grid = max(np.finfo(float).eps * v_max, 1e-15)
+-    v_grid = np.linspace(v_min_grid, v_max, n_points)
+-    integrand = np.asarray(speed_pdf(v_grid), dtype=float) * v_grid**power
+-
+-    integral_grid = -cumulative_trapezoid(
+-        integrand[::-1],
+-        v_grid[::-1],
+-        initial=0.0,
+-    )[::-1]
+-
+-    interpolator = interp1d(
+-        v_grid,
+-        integral_grid,
+-        bounds_error=False,
+-        fill_value=(float(integral_grid[0]), 0.0),
+-        assume_sorted=True,
+-    )
+-
+-    def velocity_integral(v_threshold: np.ndarray | float) -> np.ndarray:
+-        values = np.asarray(v_threshold, dtype=float)
+-        result = np.asarray(interpolator(values), dtype=float)
+-        # Negative thresholds are physically equivalent to a zero threshold.
+-        return np.where(values <= 0.0, integral_grid[0], result)
++def build_velocity_integral(
++    speed_pdf: SpeedPDF, v_max: float, *, power: float = -1.0,
++    n_points: int = 10_000, breakpoints: Iterable[float] = (),
++) -> Callable[[np.ndarray | float], np.ndarray]:
++    r"""Build an approximate, nonnegative, monotone table of I_power(v_min).
++
++    Retains the existing fast callable API. Composite trapezoids and linear
++    interpolation have grid-dependent error, particularly near the endpoint;
++    use ``velocity_moment`` for accuracy-controlled results. This table requires
++    power >= -1 and a regular physical PDF with f1(v)=O(v²) at zero. More
++    singular moments must use the reference API. No hidden state is read after
++    construction: the table is a snapshot of the supplied PDF.
++
++    The first cell is integrated adaptively, avoiding a fictitious small-speed
++    cutoff. Known breakpoints are inserted into the grid. At the upper endpoint
++    the interior PDF limit is used, so a hard truncation does not drop half the
++    last cell. An interior PDF jump needs reference quadrature instead.
++    """
++    points = _parameters(v_max, power, breakpoints)
++    if power < -1:
++        raise ValueError("tabulation requires power >= -1; use velocity_moment for lower powers")
++    if isinstance(n_points, (bool, np.bool_)) or not isinstance(n_points, (int, np.integer)) or n_points < 3:
++        raise ValueError("n_points must be an integer >= 3")
++    grid = np.unique(np.concatenate((np.linspace(0, v_max, n_points), points)))
++    positive_grid = grid[1:].copy()
++    positive_grid[-1] = np.nextafter(v_max, 0.0)
++    pdf = np.asarray(speed_pdf(positive_grid), dtype=float)
++    if pdf.shape != positive_grid.shape or np.any(~np.isfinite(pdf)) or np.any(pdf < 0):
++        raise ValueError("speed_pdf must return finite nonnegative densities matching the input shape")
++    integrand = pdf * positive_grid**power
++    tails = -cumulative_trapezoid(integrand[::-1], grid[1:][::-1], initial=0)[::-1]
++    # Use the reference kernel on exactly the first interval, not total minus
++    # tail: subtraction of near-equal integrals would lose low-speed accuracy.
++    first = float(velocity_moment(speed_pdf, grid[1], 0.0, n=power))
++    table = np.concatenate(([first + tails[0]], tails))
++    grid.setflags(write=False)
++    table.setflags(write=False)
++
++    def velocity_integral(v_threshold):
++        values = _thresholds(v_threshold)
++        return np.asarray(np.interp(values, grid, table, left=table[0], right=0.0))
+ 
+     return velocity_integral
+ 
+ 
+ def mean_inverse_speed(
+-    speed_pdf: SpeedPDF,
+-    v_max: float,
+-    *,
+-    n_points: int = 10_000,
++    speed_pdf: SpeedPDF, v_max: float, *, n_points: int = 10_000,
++    breakpoints: Iterable[float] = (),
+ ) -> Callable[[np.ndarray | float], np.ndarray]:
+-    """Convenience wrapper for the standard eta(v_min) halo integral."""
+-
+-    return build_velocity_integral(
+-        speed_pdf,
+-        v_max,
+-        power=-1.0,
+-        n_points=n_points,
+-    )
++    """Existing fast eta(v_min) factory; identical to power=-1 tabulation.
++
++    For reference quadrature use velocity_moment(..., n=-1).
++    """
++    return build_velocity_integral(speed_pdf, v_max, power=-1, n_points=n_points,
++                                   breakpoints=breakpoints)
+diff --git a/src/wimp_legend/halo/shm.py b/src/wimp_legend/halo/shm.py
+index 020134e517ce3794592fb6ff92853d5af82c170c..13528203c8c3cd61046a34ccd36bf6fc533990ff 100644
+--- a/src/wimp_legend/halo/shm.py
++++ b/src/wimp_legend/halo/shm.py
+@@ -1,7 +1,7 @@
+-"""Standard Halo Model speed distributions.
++"""Isotropic Maxwellian truncated in the Galactic frame, then Galilean boosted.
+ 
+-Velocities are expressed as fractions of the speed of light.  This keeps the
+-halo layer independent of detector and recoil-energy unit conventions.
++All speeds and PDF arguments are dimensionless beta = speed/c. The PDFs are
++probability densities with respect to d(beta), not d(speed in km/s).
+ """
+ 
+ from __future__ import annotations
+@@ -9,21 +9,24 @@ from __future__ import annotations
+ from dataclasses import dataclass
+ 
+ import numpy as np
+-from scipy.special import erf
++from scipy.special import exprel, gammainc
++
++from ..constants import C_KM_S
+ 
+ 
+ @dataclass(frozen=True)
+ class StandardHaloModel:
+-    """Truncated Maxwell-Boltzmann halo with an optional lab-frame boost.
+-
+-    Parameters
+-    ----------
+-    v0:
+-        Maxwellian scale speed in units of c.
+-    vesc:
+-        Galactic escape speed in units of c.
+-    v_lab:
+-        Detector/lab speed relative to the Galactic frame in units of c.
++    r"""Physical configuration for f_G(u) proportional to exp(-u²/v0²).
++
++    ``v0``, ``vesc``, and ``v_lab`` are scalar speeds in units of c. These
++    existing constructor names are retained for compatibility; use
++    ``from_km_s`` at a dimensional input boundary. v0 is the Maxwellian scale,
++    not the one-component dispersion (which is v0/sqrt(2)). Truncation is a
++    hard cut at Galactic speed vesc, not a cut imposed after boosting.
++
++    No density, annual modulation, focusing, or interaction parameters are
++    included. A fixed v_lab represents a snapshot, not an annual average.
++    The Galilean model is physically applicable only at nonrelativistic speeds.
+     """
+ 
+     v0: float
+@@ -31,12 +34,26 @@ class StandardHaloModel:
+     v_lab: float
+ 
+     def __post_init__(self) -> None:
+-        if self.v0 <= 0:
+-            raise ValueError("v0 must be positive")
+-        if self.vesc <= 0:
+-            raise ValueError("vesc must be positive")
+-        if self.v_lab < 0:
+-            raise ValueError("v_lab must be non-negative")
++        for name in ("v0", "vesc", "v_lab"):
++            value = np.asarray(getattr(self, name), dtype=float)
++            if value.ndim != 0 or not np.isfinite(value):
++                raise ValueError(f"{name} must be a finite scalar speed in units of c")
++            # Copy scalar inputs so even a caller-owned 0-d array cannot mutate us.
++            object.__setattr__(self, name, float(value))
++        if not 0 < self.v0 < 1 or self.vesc <= 0 or self.v_lab < 0:
++            raise ValueError("require 0 < v0 < 1, vesc > 0, and v_lab >= 0 (units of c)")
++        if self.max_lab_speed >= 1:
++            raise ValueError("vesc + v_lab must be below c; use from_km_s for km/s inputs")
++        if not np.isfinite(self.normalization_3d) or self.normalization_3d <= 0:
++            raise ValueError("halo normalization is not representable in float64")
++
++    @classmethod
++    def from_km_s(
++        cls, *, v0_km_s: float = 220.0, vesc_km_s: float = 544.0,
++        v_lab_km_s: float = 266.0,
++    ) -> StandardHaloModel:
++        """Construct from explicitly dimensional speeds; defaults are benchmarks."""
++        return cls(v0_km_s / C_KM_S, vesc_km_s / C_KM_S, v_lab_km_s / C_KM_S)
+ 
+     @property
+     def z(self) -> float:
+@@ -44,63 +61,68 @@ class StandardHaloModel:
+ 
+     @property
+     def normalization_3d(self) -> float:
+-        """Normalization of exp(-v^2/v0^2) inside the escape sphere."""
+-
+-        z = self.z
+-        return (
+-            np.pi**1.5
+-            * self.v0**3
+-            * (erf(z) - 2.0 * z * np.exp(-z**2) / np.sqrt(np.pi))
+-        )
++        """Integral of exp(-u²/v0²) over the escape sphere in d³(beta)."""
++        # P(3/2,z²) = erf(z) - 2*z*exp(-z²)/sqrt(pi), without cancellation
++        # between two nearly equal terms for a small escape-to-scale ratio.
++        return float(np.pi**1.5 * self.v0**3 * gammainc(1.5, self.z**2))
+ 
+     @property
+     def max_lab_speed(self) -> float:
+-        """Maximum speed with non-zero support in the lab frame."""
+-
++        """Upper support endpoint in units of c."""
+         return self.vesc + self.v_lab
+ 
++    @property
++    def integration_breakpoints(self) -> tuple[float, ...]:
++        """Interior support boundary/kink in units of c, for quadrature."""
++        point = abs(self.vesc - self.v_lab)
++        # A kink effectively coincident with an endpoint makes QUADPACK split
++        # into an unresolvable interval. Leave such a kink to global adaptive
++        # quadrature, instead of requesting a machine-precision-width segment.
++        margin = 64 * np.finfo(float).eps * self.max_lab_speed
++        return (point,) if margin < point < self.max_lab_speed - margin else ()
++
+     def galactic_speed_pdf(self, v: np.ndarray | float) -> np.ndarray:
+-        """Normalized one-dimensional speed PDF in the Galactic frame."""
+-
+-        v_arr = np.asarray(v, dtype=float)
+-        result = np.zeros_like(v_arr)
+-        mask = (v_arr >= 0.0) & (v_arr < self.vesc)
+-        result[mask] = (
+-            4.0
+-            * np.pi
+-            * v_arr[mask] ** 2
+-            * np.exp(-(v_arr[mask] / self.v0) ** 2)
+-            / self.normalization_3d
+-        )
++        """Density with respect to d(beta); scalar input gives a 0-d array.
++
++        Negative speeds and speeds outside support give zero. NaN is rejected;
++        either infinity is outside support. The value at the escape cut is zero.
++        """
++        values = np.asarray(v, dtype=float)
++        if np.any(np.isnan(values)):
++            raise ValueError("speed must not contain NaN")
++        result = np.zeros_like(values)
++        mask = (values >= 0) & (values < self.vesc)
++        speed = values[mask]
++        result[mask] = (4 * np.pi * speed**2 / self.normalization_3d
++                        * np.exp(-(speed / self.v0)**2))
+         return result
+ 
+     def lab_speed_pdf(self, v: np.ndarray | float) -> np.ndarray:
+-        """Normalized speed PDF after boosting into the detector frame.
++        """Boosted speed density in d(beta), with the same input policy as above.
+ 
+-        This is the standard piecewise form for a truncated Maxwellian halo.
+-        For v_lab = 0, it reduces to the Galactic-frame distribution.
++        Angular integration runs over |v-v_lab| < u < min(v+v_lab, vesc).
++        This support condition also covers v_lab >= vesc. exprel/expm1 remove
++        subtraction cancellation at tiny boosts and near the upper endpoint.
+         """
+-
+-        if self.v_lab == 0.0:
++        if self.v_lab == 0:
+             return self.galactic_speed_pdf(v)
+-
+-        v_arr = np.asarray(v, dtype=float)
+-        result = np.zeros_like(v_arr)
+-
+-        prefactor = np.pi * self.v0**2 / (self.v_lab * self.normalization_3d)
+-        lower_break = max(self.vesc - self.v_lab, 0.0)
+-        upper_break = self.vesc + self.v_lab
+-
+-        mask1 = (v_arr >= 0.0) & (v_arr < lower_break)
+-        result[mask1] = v_arr[mask1] * prefactor * (
+-            np.exp(-((v_arr[mask1] - self.v_lab) / self.v0) ** 2)
+-            - np.exp(-((v_arr[mask1] + self.v_lab) / self.v0) ** 2)
+-        )
+-
+-        mask2 = (v_arr >= lower_break) & (v_arr < upper_break)
+-        result[mask2] = v_arr[mask2] * prefactor * (
+-            np.exp(-((v_arr[mask2] - self.v_lab) / self.v0) ** 2)
+-            - np.exp(-(self.vesc / self.v0) ** 2)
+-        )
+-
++        values = np.asarray(v, dtype=float)
++        if np.any(np.isnan(values)):
++            raise ValueError("speed must not contain NaN")
++        result = np.zeros_like(values)
++        full = (values >= 0) & (values < self.vesc - self.v_lab)
++        speed = values[full]
++        delta = 4 * (speed / self.v0) * (self.v_lab / self.v0)
++        result[full] = (4 * np.pi * speed**2 / self.normalization_3d
++                        * np.exp(-((speed - self.v_lab) / self.v0)**2)
++                        * exprel(-delta))
++
++        partial = ((values >= abs(self.vesc - self.v_lab))
++                   & (values < self.max_lab_speed) & (values > 0))
++        speed = values[partial]
++        lower = np.abs(speed - self.v_lab)
++        delta = ((self.vesc - lower) / self.v0) * ((self.vesc + lower) / self.v0)
++        result[partial] = (np.pi * self.v0**2 * speed
++                           / (self.v_lab * self.normalization_3d)
++                           * np.exp(-(lower / self.v0)**2) * (-np.expm1(-delta)))
+         return result
+diff --git a/src/wimp_legend/kinematics.py b/src/wimp_legend/kinematics.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..a7ffad4244ba4800500440a967dd5b4ba70d2242
+--- /dev/null
++++ b/src/wimp_legend/kinematics.py
+@@ -0,0 +1,54 @@
++"""Nonrelativistic two-body elastic scattering on a stationary target.
++
++Natural units c=1: mass arguments are rest energies in GeV (m*c²), momentum
++outputs are GeV (q*c), recoil energies are true nuclear-recoil keV, and speeds
++are beta=v/c. All kernels broadcast NumPy inputs; scalar input returns a NumPy
++scalar. No target isotope or halo parameters are read implicitly.
++"""
++
++import numpy as np
++
++from .constants import KEV_TO_GEV
++
++
++def _finite(value, name, *, positive=False):
++    result = np.asarray(value, dtype=float)
++    if np.any(~np.isfinite(result)) or np.any(result <= 0 if positive else result < 0):
++        qualifier = "positive" if positive else "nonnegative"
++        raise ValueError(f"{name} must contain finite {qualifier} values")
++    return result
++
++
++def reduced_mass_GeV(m_chi_GeV, m_target_GeV):
++    """Reduced rest mass in GeV for finite, strictly positive masses."""
++    chi = _finite(m_chi_GeV, "m_chi_GeV", positive=True)
++    target = _finite(m_target_GeV, "m_target_GeV", positive=True)
++    small, large = np.minimum(chi, target), np.maximum(chi, target)
++    return small / (1 + small / large)
++
++
++def momentum_transfer_GeV(E_nr_keV, m_target_GeV):
++    """Return q*c = sqrt(2*m_target*c²*E_nr) in GeV; E_nr is in keV."""
++    recoil = _finite(E_nr_keV, "E_nr_keV")
++    target = _finite(m_target_GeV, "m_target_GeV", positive=True)
++    return np.sqrt(2 * target * recoil * KEV_TO_GEV)
++
++
++def minimum_speed_c(E_nr_keV, m_chi_GeV, m_target_GeV):
++    """Return elastic v_min/c. Values beyond halo support are not clipped."""
++    mu = reduced_mass_GeV(m_chi_GeV, m_target_GeV)
++    return momentum_transfer_GeV(E_nr_keV, m_target_GeV) / (2 * mu)
++
++
++def maximum_recoil_energy_keV(m_chi_GeV, m_target_GeV, v_max_c):
++    """Return E_nr,max in keV for a supplied maximum speed in units of c.
++
++    The caller supplies the halo endpoint. The formula assumes v_max << 1;
++    v_max >= 1 is rejected to catch invalid dimensional inputs.
++    """
++    speed = _finite(v_max_c, "v_max_c")
++    if np.any(speed >= 1):
++        raise ValueError("v_max_c must be below 1 and is expressed in units of c")
++    target = _finite(m_target_GeV, "m_target_GeV", positive=True)
++    mu = reduced_mass_GeV(m_chi_GeV, target)
++    return 2 * (mu / target) * mu * speed**2 / KEV_TO_GEV
+diff --git a/tests/test_halo.py b/tests/test_halo.py
+index 29095b70032e659115936f6555244c542b97c09d..306fea1d0bd258caf7ac946e9afde26d8091bce8 100644
+--- a/tests/test_halo.py
++++ b/tests/test_halo.py
+@@ -58,3 +58,210 @@ def test_mean_inverse_speed_vanishes_above_maximum_speed() -> None:
+     halo = benchmark_halo()
+     eta = mean_inverse_speed(halo.lab_speed_pdf, halo.max_lab_speed)
+     assert np.all(eta(np.array([halo.max_lab_speed, 1.1 * halo.max_lab_speed])) == 0.0)
++
++
++# Independent checks below go beyond the original benchmark-only tests.
++from dataclasses import FrozenInstanceError
++from math import erf, exp, pi, sqrt
++
++import pytest
++from scipy.integrate import quad
++from scipy.special import gamma, gammainc
++
++from wimp_legend.halo import build_velocity_integral, velocity_moment
++
++
++def reference_eta(halo, threshold):
++    """Independent analytic eta for 0 < v_lab < vesc, in beta units."""
++    a, b, z = halo.v0, halo.v_lab, halo.vesc / halo.v0
++    x, y = max(threshold, 0) / a, b / a
++    norm = erf(z) - 2*z*exp(-z*z)/sqrt(pi)
++    if x >= z+y:
++        return 0.0
++    if x < z-y:
++        return (erf(x+y)-erf(x-y)-4*y*exp(-z*z)/sqrt(pi))/(2*norm*b)
++    return (erf(z)-erf(x-y)-2*(z+y-x)*exp(-z*z)/sqrt(pi))/(2*norm*b)
++
++
++@pytest.mark.parametrize("boost", [0, 1e-12, 1, 266, 544, 700, 1500])
++def test_boost_regimes(boost):
++    halo = StandardHaloModel.from_km_s(v_lab_km_s=boost)
++    grid = np.linspace(-halo.max_lab_speed, 1.2*halo.max_lab_speed, 10001)
++    assert np.all(halo.lab_speed_pdf(grid) >= 0)
++    assert np.all(halo.lab_speed_pdf(grid[grid < 0]) == 0)
++    assert np.all(halo.lab_speed_pdf(grid[grid >= halo.max_lab_speed]) == 0)
++    norm = quad(lambda x: float(halo.lab_speed_pdf(x * halo.max_lab_speed)) * halo.max_lab_speed,
++                0, 1, points=np.asarray(halo.integration_breakpoints)/halo.max_lab_speed,
++                epsabs=1e-12, epsrel=1e-12)[0]
++    assert norm == pytest.approx(1, rel=2e-11)
++    if boost > 544:
++        assert halo.lab_speed_pdf((boost-544)/C_KM_S/2) == 0
++
++
++@pytest.mark.parametrize("boost", [0, 266, 544, 700])
++def test_pdf_against_independent_angular_integral(boost):
++    halo = StandardHaloModel.from_km_s(v_lab_km_s=boost)
++    a, b, escape = halo.v0, halo.v_lab, halo.vesc
++    norm = pi**1.5 * a**3 * (erf(escape/a)-2*(escape/a)*exp(-(escape/a)**2)/sqrt(pi))
++    for speed in np.linspace(0.03, 0.99, 17)*halo.max_lab_speed:
++        if b == 0:
++            upper = 1 if speed < escape else -1
++        else:
++            upper = min(1, (escape**2-speed**2-b**2)/(2*speed*b))
++        expected = 0.0
++        if upper > -1:
++            expected = 2*pi*speed**2/norm * quad(
++                lambda cosine: exp(-(speed**2+b**2+2*speed*b*cosine)/a**2), -1, upper,
++                epsabs=1e-13, epsrel=1e-12)[0]
++        assert float(halo.lab_speed_pdf(speed)) == pytest.approx(expected, rel=2e-12, abs=1e-12)
++
++
++def test_tiny_boost_converges_without_cancellation():
++    unboosted = StandardHaloModel.from_km_s(v_lab_km_s=0)
++    grid = np.linspace(0, .999*unboosted.vesc, 1000)
++    expected = unboosted.galactic_speed_pdf(grid)
++    for boost in [1e-4, 1e-8, 1e-12]:
++        halo = StandardHaloModel.from_km_s(v_lab_km_s=boost)
++        np.testing.assert_allclose(halo.lab_speed_pdf(grid), expected, rtol=1e-11, atol=1e-12)
++
++
++def test_small_escape_normalization():
++    halo = StandardHaloModel(v0=1e-3, vesc=1e-9, v_lab=0)
++    assert halo.normalization_3d == pytest.approx(4*pi*halo.vesc**3/3, rel=1e-12)
++    assert velocity_moment(halo.lab_speed_pdf, halo.max_lab_speed, 0, n=0) == pytest.approx(1, rel=1e-12)
++
++
++@pytest.mark.parametrize("n", [-2.9, -2, -1, 0, 1, 2, 4])
++def test_zero_boost_moments_against_incomplete_gamma(n):
++    halo = StandardHaloModel.from_km_s(v_lab_km_s=0)
++    order = (n+3)/2
++    expected = (2*pi*halo.v0**(n+3) * gamma(order) * gammainc(order, halo.z**2)
++                / halo.normalization_3d)
++    actual = velocity_moment(halo.lab_speed_pdf, halo.max_lab_speed, 0, n=n)
++    assert actual == pytest.approx(expected, rel=2e-8)
++
++
++def test_eta_against_analytic_formula_and_wrapper():
++    halo = benchmark_halo()
++    vmax = halo.max_lab_speed
++    threshold = np.array([-1, 0, .1*vmax, halo.vesc-halo.v_lab, .7*vmax, .95*vmax, vmax, np.inf])
++    exact = np.array([reference_eta(halo, v) for v in threshold])
++    numerical = velocity_moment(halo.lab_speed_pdf, vmax, threshold, n=-1,
++                                breakpoints=halo.integration_breakpoints)
++    np.testing.assert_allclose(numerical, exact, rtol=2e-10, atol=1e-11)
++    eta = mean_inverse_speed(halo.lab_speed_pdf, vmax, breakpoints=halo.integration_breakpoints)
++    generic = build_velocity_integral(halo.lab_speed_pdf, vmax, power=-1,
++                                      breakpoints=halo.integration_breakpoints)
++    np.testing.assert_array_equal(eta(threshold), generic(threshold))
++    np.testing.assert_allclose(eta(threshold), exact, rtol=3e-6, atol=1e-5)
++
++
++@pytest.mark.parametrize("n", [-2.5, -1, 0, 1, 3])
++def test_generic_pdf_and_moment_derivative(n):
++    # Deliberately non-SHM polynomial PDF. Checks the convention and v_max**n.
++    vmax = .004
++    pdf = lambda v: 3*np.asarray(v)**2/vmax**3
++    thresholds = np.array([[0, .2*vmax], [.6*vmax, vmax]])
++    expected = 3*vmax**n/(n+3)*(1-(thresholds/vmax)**(n+3))
++    actual = velocity_moment(pdf, vmax, thresholds, n=n)
++    np.testing.assert_allclose(actual, expected, rtol=2e-9, atol=0)
++    point, step = .4*vmax, 1e-5*vmax
++    pair = velocity_moment(pdf, vmax, [point-step, point+step], n=n)
++    assert (pair[1]-pair[0])/(2*step) == pytest.approx(-point**n*pdf(point), rel=1e-8)
++
++
++def test_tabulation_converges_and_handles_hard_escape_endpoint():
++    halo = StandardHaloModel.from_km_s(v_lab_km_s=0)
++    points = np.array([0, .15, .51, .9]) * halo.max_lab_speed
++    exact = velocity_moment(halo.lab_speed_pdf, halo.max_lab_speed, points, n=-1)
++    errors = []
++    for size in (100, 1000, 10000):
++        table = mean_inverse_speed(halo.lab_speed_pdf, halo.max_lab_speed, n_points=size)
++        errors.append(np.max(np.abs(table(points)-exact)))
++    assert errors[1] < errors[0]/20
++    assert errors[2] < errors[1]/20
++
++
++def test_singular_moments_have_no_silent_cutoff():
++    halo = benchmark_halo()
++    with pytest.raises(ValueError, match="positive threshold"):
++        velocity_moment(halo.lab_speed_pdf, halo.max_lab_speed, 0, n=-3)
++    assert velocity_moment(halo.lab_speed_pdf, halo.max_lab_speed, .5*halo.max_lab_speed, n=-4) > 0
++    with pytest.raises(ValueError, match="velocity_moment"):
++        build_velocity_integral(halo.lab_speed_pdf, halo.max_lab_speed, power=-2)
++
++
++@pytest.mark.parametrize("field,value", [("v0", 0), ("v0", np.nan), ("vesc", np.inf),
++                                        ("v_lab", -1), ("v_lab", np.nan), ("v_lab", 266),
++                                        ("v0", [1e-3, 2e-3])])
++def test_invalid_model(field, value):
++    parameters = dict(v0=220/C_KM_S, vesc=544/C_KM_S, v_lab=266/C_KM_S)
++    parameters[field] = value
++    with pytest.raises(ValueError):
++        StandardHaloModel(**parameters)
++
++
++def test_frozen_model_and_array_shapes():
++    value = np.array(220/C_KM_S)
++    halo = StandardHaloModel(value, 544/C_KM_S, 266/C_KM_S)
++    value[...] = 1
++    assert halo.v0 == 220/C_KM_S
++    with pytest.raises(FrozenInstanceError):
++        halo.v_lab = 0
++    assert halo.lab_speed_pdf(np.zeros((2, 3))).shape == (2, 3)
++    assert halo.lab_speed_pdf(0).shape == ()
++    assert halo.lab_speed_pdf(np.empty((0, 2))).shape == (0, 2)
++    for function in [halo.lab_speed_pdf, halo.galactic_speed_pdf]:
++        with pytest.raises(ValueError):
++            function(np.nan)
++
++
++@pytest.mark.parametrize("kwargs", [{"n": np.nan}, {"n": 0, "epsrel": 0},
++                                     {"n": 0, "breakpoints": [np.nan]}])
++def test_invalid_quadrature_parameters(kwargs):
++    halo = benchmark_halo()
++    with pytest.raises(ValueError):
++        velocity_moment(halo.lab_speed_pdf, halo.max_lab_speed, 0, **kwargs)
++
++
++@pytest.mark.parametrize("size", [0, 1, 2, 2.5, True])
++def test_invalid_table_size(size):
++    halo = benchmark_halo()
++    with pytest.raises(ValueError):
++        mean_inverse_speed(halo.lab_speed_pdf, halo.max_lab_speed, n_points=size)
++
++
++def test_invalid_pdf_or_threshold():
++    halo = benchmark_halo()
++    with pytest.raises(ValueError):
++        velocity_moment(halo.lab_speed_pdf, halo.max_lab_speed, np.nan, n=0)
++    with pytest.raises(ValueError):
++        mean_inverse_speed(halo.lab_speed_pdf, halo.max_lab_speed)(np.nan)
++    for pdf in [lambda v: -np.ones_like(v), lambda v: np.full_like(v, np.nan)]:
++        with pytest.raises(ValueError):
++            build_velocity_integral(pdf, .003)
++        with pytest.raises(ValueError):
++            velocity_moment(pdf, .003, 0, n=0)
++
++
++@pytest.mark.parametrize("boost", [1e-12, 1e-8, 1e-4])
++def test_reference_quadrature_tiny_boost(boost):
++    halo = StandardHaloModel.from_km_s(v_lab_km_s=boost)
++    assert velocity_moment(halo.lab_speed_pdf, halo.max_lab_speed, 0, n=0,
++                           breakpoints=halo.integration_breakpoints) == pytest.approx(1, rel=1e-10)
++
++
++@pytest.mark.parametrize("boost", [0, 266, 544, 700])
++def test_second_moment_obeys_galilean_shift(boost):
++    halo = StandardHaloModel.from_km_s(v_lab_km_s=boost)
++    rest = StandardHaloModel.from_km_s(v_lab_km_s=0)
++    rest_second = velocity_moment(rest.lab_speed_pdf, rest.max_lab_speed, 0, n=2)
++    lab_second = velocity_moment(halo.lab_speed_pdf, halo.max_lab_speed, 0, n=2,
++                                 breakpoints=halo.integration_breakpoints)
++    assert lab_second == pytest.approx(rest_second + halo.v_lab**2, rel=2e-10)
++
++
++def test_divergent_pdf_integral_is_not_silently_returned():
++    from scipy.integrate import IntegrationWarning
++    with pytest.raises(IntegrationWarning):
++        velocity_moment(lambda v: 1/.003, .003, 0, n=-1)
+diff --git a/tests/test_kinematics.py b/tests/test_kinematics.py
+index e69de29bb2d1d6434b8b29ae775ad8c2e48c5391..59125ce578e0287c26f9a7a0eb5ebe4f2ffc5d03 100644
+--- a/tests/test_kinematics.py
++++ b/tests/test_kinematics.py
+@@ -0,0 +1,92 @@
++"""Elastic kinematics invariants, units, and Ge-like endpoint landmarks."""
++
++import numpy as np
++import pytest
++
++from wimp_legend.constants import C_KM_S, KEV_TO_GEV
++from wimp_legend.kinematics import (
++    reduced_mass_GeV, momentum_transfer_GeV, minimum_speed_c,
++    maximum_recoil_energy_keV,
++)
++
++
++def test_reduced_mass_symmetry_bounds_and_limits():
++    rng = np.random.default_rng(237)
++    first, second = 10**rng.uniform(-6, 8, (2, 500))
++    mu = reduced_mass_GeV(first, second)
++    np.testing.assert_array_equal(mu, reduced_mass_GeV(second, first))
++    assert np.all(mu > 0)
++    assert np.all(mu <= np.minimum(first, second))
++    np.testing.assert_allclose(reduced_mass_GeV(first, first), first/2, rtol=1e-15)
++    assert reduced_mass_GeV(1, 1e12) == pytest.approx(1, rel=2e-12)
++    assert reduced_mass_GeV(1e300, 1e300) == 5e299
++
++
++def test_momentum_units_and_zero_energy():
++    # 50 GeV target, 10 keV recoil -> q*c = sqrt(0.001) GeV.
++    assert momentum_transfer_GeV(10, 50) == pytest.approx(np.sqrt(.001), rel=1e-14)
++    assert momentum_transfer_GeV(0, 50) == 0
++    assert minimum_speed_c(0, 10, 50) == 0
++    assert maximum_recoil_energy_keV(10, 50, 0) == 0
++    assert C_KM_S == 299792.458
++    assert KEV_TO_GEV == 1e-6
++
++
++def test_minimum_speed_monotonic_and_sqrt_scaling():
++    energy = np.geomspace(1e-6, 1e4, 300)
++    for mass in [0.1, 5, 10, 40, 100, 1e6]:
++        speed = minimum_speed_c(energy, mass, 76*.9315)
++        assert np.all(np.diff(speed) > 0)
++        np.testing.assert_allclose(minimum_speed_c(4*energy, mass, 76*.9315), 2*speed)
++
++
++def test_endpoint_inversion_broadcasting():
++    rng = np.random.default_rng(891)
++    chi = 10**rng.uniform(-1, 4, (31, 1))
++    target = 10**rng.uniform(0, 3, (1, 17))
++    speed = rng.uniform(0, .005, (31, 17))
++    endpoint = maximum_recoil_energy_keV(chi, target, speed)
++    assert endpoint.shape == (31, 17)
++    np.testing.assert_allclose(minimum_speed_c(endpoint, chi, target), speed, rtol=5e-15)
++    # Maximal transfer is reversal of relative momentum in the CM frame.
++    np.testing.assert_allclose(momentum_transfer_GeV(endpoint, target),
++                               2*reduced_mass_GeV(chi, target)*speed, rtol=5e-15)
++
++
++@pytest.mark.parametrize("mass,landmark", [(5, 4.50), (10, 15.83), (20, 50.15),
++                                           (40, 134.72), (100, 354.33)])
++def test_germanium_endpoint_landmarks(mass, landmark):
++    actual = maximum_recoil_energy_keV(mass, 76*.9315, 810/299792.458)
++    assert actual == pytest.approx(landmark, abs=.015)
++
++
++def test_equal_mass_energy_transfer_and_heavy_wimp_limit():
++    mass, speed = 70, .003
++    assert maximum_recoil_energy_keV(mass, mass, speed) == pytest.approx(.5*mass*speed**2*1e6)
++    assert maximum_recoil_energy_keV(1e15, mass, speed) == pytest.approx(2*mass*speed**2*1e6, rel=1e-12)
++
++
++@pytest.mark.parametrize("invalid", [0, -1, np.nan, np.inf])
++def test_invalid_masses(invalid):
++    for chi, target in [(invalid, 70), (10, invalid)]:
++        for call in [lambda: reduced_mass_GeV(chi, target),
++                     lambda: minimum_speed_c(1, chi, target),
++                     lambda: maximum_recoil_energy_keV(chi, target, .003)]:
++            with pytest.raises(ValueError):
++                call()
++    with pytest.raises(ValueError):
++        momentum_transfer_GeV(1, invalid)
++
++
++@pytest.mark.parametrize("invalid", [-1, np.nan, np.inf])
++def test_invalid_recoils(invalid):
++    with pytest.raises(ValueError):
++        momentum_transfer_GeV(invalid, 70)
++    with pytest.raises(ValueError):
++        minimum_speed_c(invalid, 10, 70)
++
++
++@pytest.mark.parametrize("invalid", [-1, np.nan, np.inf, 1, 810])
++def test_invalid_speeds(invalid):
++    with pytest.raises(ValueError):
++        maximum_recoil_energy_keV(10, 70, invalid)
