@@ -92,9 +92,11 @@ class StandardHaloModel:
             raise ValueError("speed must not contain NaN")
         result = np.zeros_like(values)
         mask = (values >= 0) & (values < self.vesc)
-        speed = values[mask]
-        result[mask] = (4 * np.pi * speed**2 / self.normalization_3d
-                        * np.exp(-(speed / self.v0)**2))
+        x = values[mask] / self.v0
+        norm = np.pi**1.5 * gammainc(1.5, self.z**2)
+        result[mask] = (4 * np.pi * x**2 * np.exp(-x**2) / norm) / self.v0
+        if np.any(~np.isfinite(result)):
+            raise ValueError("speed density is not representable in float64")
         return result
 
     def lab_speed_pdf(self, v: np.ndarray | float) -> np.ndarray:
@@ -112,17 +114,21 @@ class StandardHaloModel:
         result = np.zeros_like(values)
         full = (values >= 0) & (values < self.vesc - self.v_lab)
         speed = values[full]
-        delta = 4 * (speed / self.v0) * (self.v_lab / self.v0)
-        result[full] = (4 * np.pi * speed**2 / self.normalization_3d
+        x = speed / self.v0
+        norm = np.pi**1.5 * gammainc(1.5, self.z**2)
+        delta = 4 * x * (self.v_lab / self.v0)
+        result[full] = (4 * np.pi * x**2
                         * np.exp(-((speed - self.v_lab) / self.v0)**2)
-                        * exprel(-delta))
+                        * exprel(-delta) / norm) / self.v0
 
         partial = ((values >= abs(self.vesc - self.v_lab))
                    & (values < self.max_lab_speed) & (values > 0))
         speed = values[partial]
         lower = np.abs(speed - self.v_lab)
         delta = ((self.vesc - lower) / self.v0) * ((self.vesc + lower) / self.v0)
-        result[partial] = (np.pi * self.v0**2 * speed
-                           / (self.v_lab * self.normalization_3d)
-                           * np.exp(-(lower / self.v0)**2) * (-np.expm1(-delta)))
+        result[partial] = (np.pi * (speed / self.v_lab)
+                           * np.exp(-(lower / self.v0)**2)
+                           * (-np.expm1(-delta)) / norm) / self.v0
+        if np.any(~np.isfinite(result)):
+            raise ValueError("speed density is not representable in float64")
         return result

@@ -11,7 +11,7 @@ import re
 from types import MappingProxyType
 from typing import Literal, Mapping
 
-from .provenance import SourceReference, _integer, _real
+from .provenance import SourceReference, _integer, _real, _text
 
 
 @dataclass(frozen=True)
@@ -33,6 +33,7 @@ class Isotope:
     def __post_init__(self):
         if not isinstance(self.symbol, str) or re.fullmatch(r"[A-Z][a-z]?", self.symbol) is None:
             raise ValueError("symbol must have element-symbol syntax")
+        object.__setattr__(self, "symbol", str(self.symbol))
         A, Z = _integer(self.A, "A"), _integer(self.Z, "Z")
         mass, spin = _real(self.mass_GeV, "mass_GeV"), _real(self.spin, "spin")
         if not 1 <= Z <= A:
@@ -74,9 +75,11 @@ class TargetComposition:
         if not isclose(fsum(f for _, f in pairs), 1.0, rel_tol=0, abs_tol=1e-12):
             raise ValueError("fractions must sum to one (absolute tolerance 1e-12)")
         object.__setattr__(self, "components", pairs)
+        object.__setattr__(self, "fraction_kind", str(self.fraction_kind))
 
     @staticmethod
     def _checked_components(components, fraction_kind, source):
+        _text(fraction_kind, "fraction_kind")
         if fraction_kind not in ("number", "mass"):
             raise ValueError("fraction_kind must explicitly be 'number' or 'mass'")
         if not isinstance(source, SourceReference):

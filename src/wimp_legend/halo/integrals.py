@@ -109,24 +109,46 @@ def build_velocity_integral(
         raise ValueError("tabulation requires power >= -1; use velocity_moment for lower powers")
     if isinstance(n_points, (bool, np.bool_)) or not isinstance(n_points, (int, np.integer)) or n_points < 3:
         raise ValueError("n_points must be an integer >= 3")
-    grid = np.unique(np.concatenate((np.linspace(0, v_max, n_points), points)))
-    positive_grid = grid[1:].copy()
+    # Integrate the dimensionless density g(x)=v_max*f(v_max*x) in x.
+    grid = np.unique(np.concatenate((np.linspace(0, 1, n_points), points / v_max)))
+    positive_grid = v_max * grid[1:]
     positive_grid[-1] = np.nextafter(v_max, 0.0)
     pdf = np.asarray(speed_pdf(positive_grid), dtype=float)
     if pdf.shape != positive_grid.shape or np.any(~np.isfinite(pdf)) or np.any(pdf < 0):
         raise ValueError("speed_pdf must return finite nonnegative densities matching the input shape")
-    integrand = pdf * positive_grid**power
-    tails = -cumulative_trapezoid(integrand[::-1], grid[1:][::-1], initial=0)[::-1]
-    # Use the reference kernel on exactly the first interval, not total minus
-    # tail: subtraction of near-equal integrals would lose low-speed accuracy.
-    first = float(velocity_moment(speed_pdf, grid[1], 0.0, n=power))
-    table = np.concatenate(([first + tails[0]], tails))
+    with np.errstate(over="raise", invalid="raise", divide="raise"):
+        integrand = (pdf * v_max) * (positive_grid / v_max)**power
+        if np.any(~np.isfinite(integrand)):
+            raise ValueError("weighted samples are not representable")
+        tails = -cumulative_trapezoid(integrand[::-1], grid[1:][::-1], initial=0)[::-1]
+    if np.any(~np.isfinite(tails)):
+        raise ValueError("cumulative moment is not representable")
+    # Adaptive first cell in the same dimensionless coordinate. Do not form
+    # a large first-cell inverse-speed factor before its small probability.
+    def first_integrand(x):
+        value = float(speed_pdf(v_max * x))
+        if not np.isfinite(value) or value < 0:
+            raise ValueError("speed_pdf must return finite nonnegative scalar densities")
+        weighted = (value * v_max) * x**power
+        if not np.isfinite(weighted):
+            raise ValueError("weighted sample is not representable")
+        return weighted
+
+    with warnings.catch_warnings(), np.errstate(over="raise", invalid="raise", divide="raise"):
+        warnings.simplefilter("error", IntegrationWarning)
+        first = quad(first_integrand, 0, grid[1], epsabs=0, epsrel=1e-9, limit=300)[0]
+        unscaled = np.concatenate(([first + tails[0]], tails))
+        table = unscaled * float(v_max)**float(power)
+    if np.any((unscaled > 0) & (table == 0)):
+        raise ValueError("moment table underflowed")
+    if np.any(~np.isfinite(table)):
+        raise ValueError("moment table is not representable")
     grid.setflags(write=False)
     table.setflags(write=False)
 
     def velocity_integral(v_threshold):
         values = _thresholds(v_threshold)
-        return np.asarray(np.interp(values, grid, table, left=table[0], right=0.0))
+        return np.asarray(np.interp(np.minimum(values, v_max) / v_max, grid, table, left=table[0], right=0.0))
 
     return velocity_integral
 

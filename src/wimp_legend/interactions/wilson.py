@@ -37,6 +37,14 @@ def _finite_real(value, name):
     return result
 
 
+def _average(a, b):
+    """Finite half-sum without overflowing large or erasing equal subnormals."""
+    limit = np.finfo(float).max / 2
+    if abs(a) <= limit and abs(b) <= limit:
+        return (a + b) / 2
+    return a / 2 + b / 2
+
+
 def _copy_pairs(values):
     if not isinstance(values, Mapping):
         raise TypeError("coefficients must be a mapping from operator to a pair")
@@ -87,7 +95,7 @@ class WilsonCoefficients:
         c0 = (cp + cn)/2 and c1 = (cp - cn)/2, with no other scaling.
         """
         pairs = _copy_pairs(values)
-        return cls({op: (cp / 2 + cn / 2, cp / 2 - cn / 2)
+        return cls({op: (_average(cp, cn), _average(cp, -cn))
                     for op, (cp, cn) in pairs.items()})
 
     def get(self, operator: int, tau: int) -> float:

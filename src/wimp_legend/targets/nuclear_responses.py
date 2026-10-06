@@ -94,6 +94,7 @@ class MomentumVariable:
     b_source: SourceReference | None = None
 
     def __post_init__(self):
+        object.__setattr__(self, "variable", _text(self.variable, "variable"))
         if self.variable not in ("q2_GeV2", "q_GeV", "y", "u"):
             raise ValueError("unsupported source momentum variable")
         if self.variable in ("y", "u"):
@@ -133,7 +134,7 @@ class ResponseKey:
     tau_prime: int
 
     def __post_init__(self):
-        _text(self.channel, "channel")
+        object.__setattr__(self, "channel", _text(self.channel, "channel"))
         for name in ("tau", "tau_prime"):
             value = _integer(getattr(self, name), name)
             if value not in (0, 1):
@@ -166,7 +167,7 @@ class ResponseMetadata:
 
     def __post_init__(self):
         for name in ("basis", "isospin_definition", "normalization", "response_units", "convention_id"):
-            _text(getattr(self, name), name)
+            object.__setattr__(self, name, _text(getattr(self, name), name))
         if isinstance(self.isospin_labels, str):
             raise ValueError("isospin_labels must be two distinct strings")
         labels = tuple(_text(v, "isospin label") for v in self.isospin_labels)
@@ -276,7 +277,7 @@ class NuclearResponseDataset:
     responses: Mapping[ResponseKey, PolynomialResponse | TabulatedResponse]
 
     def __post_init__(self):
-        _text(self.dataset_id, "dataset_id")
+        object.__setattr__(self, "dataset_id", _text(self.dataset_id, "dataset_id"))
         if not isinstance(self.isotope, Isotope) or not isinstance(self.metadata, ResponseMetadata):
             raise TypeError("isotope and metadata must be immutable records")
         responses = dict(self.responses)

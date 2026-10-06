@@ -71,7 +71,7 @@ def particle_response(channel, coefficients, *, tau, tau_prime, Q, V, j_chi):
             result = S/12 * (a[12]*b[12] + Q*a[13]*b[13])
         elif channel == "Sigma_double_prime":
             result = Q/4*a[10]*b[10] + S/12 * (
-                a[4]*b[4] + Q*(a[4]*b[6]+a[6]*b[4]) + Q**2*a[6]*b[6]
+                (a[4] + Q*a[6]) * (b[4] + Q*b[6])
                 + V*a[12]*b[12] + Q*V*a[13]*b[13])
         elif channel == "Sigma_prime":
             result = (Q*V*a[3]*b[3] + V*a[7]*b[7])/8 + S/12 * (

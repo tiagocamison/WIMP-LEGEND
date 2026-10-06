@@ -31,13 +31,28 @@ def momentum_transfer_GeV(E_nr_keV, m_target_GeV):
     """Return q*c = sqrt(2*m_target*c²*E_nr) in GeV; E_nr is in keV."""
     recoil = _finite(E_nr_keV, "E_nr_keV")
     target = _finite(m_target_GeV, "m_target_GeV", positive=True)
-    return np.sqrt(2 * target * recoil * KEV_TO_GEV)
+    # Take roots before products; converting a tiny recoil first can erase it.
+    with np.errstate(over="raise", invalid="raise"):
+        result = np.sqrt(target) * (np.sqrt(recoil) * np.sqrt(2 * KEV_TO_GEV))
+    if np.any(~np.isfinite(result)) or np.any((recoil > 0) & (result == 0)):
+        raise ValueError("momentum transfer is not representable in float64")
+    return result
 
 
 def minimum_speed_c(E_nr_keV, m_chi_GeV, m_target_GeV):
     """Return elastic v_min/c. Values beyond halo support are not clipped."""
     mu = reduced_mass_GeV(m_chi_GeV, m_target_GeV)
-    return momentum_transfer_GeV(E_nr_keV, m_target_GeV) / (2 * mu)
+    q = momentum_transfer_GeV(E_nr_keV, m_target_GeV)
+    if np.any(mu == 0):
+        raise ValueError("reduced mass is not representable in float64")
+    # Exponent arithmetic avoids both overflowing 2*mu and q/mu.
+    mq, eq = np.frexp(q)
+    mm, em = np.frexp(mu)
+    with np.errstate(over="raise", invalid="raise"):
+        result = np.ldexp(mq / mm, eq - em - 1)
+    if np.any(~np.isfinite(result)) or np.any((q > 0) & (result == 0)):
+        raise ValueError("minimum speed is not representable in float64")
+    return result
 
 
 def maximum_recoil_energy_keV(m_chi_GeV, m_target_GeV, v_max_c):

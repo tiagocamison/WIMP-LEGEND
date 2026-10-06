@@ -9,7 +9,7 @@ from typing import Literal
 def _text(value, name):
     if not isinstance(value, str) or not value.strip():
         raise ValueError(f"{name} must be nonempty text")
-    return value
+    return str(value)
 
 
 def _real(value, name):
@@ -53,8 +53,8 @@ class SourceReference:
     input_fractions: tuple[float, ...] = ()
 
     def __post_init__(self):
-        _text(self.reference, "reference")
-        _text(self.locator, "locator")
+        for name in ("reference", "locator", "kind"):
+            object.__setattr__(self, name, _text(getattr(self, name), name))
         if self.kind not in ("primary_literature", "implementation", "synthetic", "unresolved"):
             raise ValueError("unknown source kind")
         if isinstance(self.upstream, str):
@@ -62,11 +62,13 @@ class SourceReference:
         object.__setattr__(self, "upstream", tuple(_text(s, "upstream citation") for s in self.upstream))
         if not isinstance(self.notes, str):
             raise ValueError("notes must be text")
+        object.__setattr__(self, "notes", str(self.notes))
         fractions = tuple(_real(v, "input fraction") for v in self.input_fractions)
         if self.transformation is None:
             if self.derived_from is not None or fractions:
                 raise ValueError("derived provenance requires a transformation")
         else:
+            object.__setattr__(self, "transformation", _text(self.transformation, "transformation"))
             if self.transformation not in ("normalize_number", "normalize_mass", "number_to_mass", "mass_to_number"):
                 raise ValueError("unknown composition transformation")
             if self.kind != "implementation" or not isinstance(self.derived_from, SourceReference):
