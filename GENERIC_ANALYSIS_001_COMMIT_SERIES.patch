@@ -1,0 +1,3133 @@
+From be9825f7350865bcb586934c50bd2c2e11b27532 Mon Sep 17 00:00:00 2001
+From: Codex <codex@openai.com>
+Date: Fri, 9 Oct 2026 07:48:37 -0400
+Subject: [PATCH 1/4] Fix final rate product range and close RATE-AUDIT-001
+
+---
+ docs/RATE_AUDIT_002_RESOLUTION.md | 49 ++++++++++++++++
+ src/wimp_legend/rates/recoil.py   | 38 +++++++++++--
+ tests/test_rate_product.py        | 93 +++++++++++++++++++++++++++++++
+ 3 files changed, 175 insertions(+), 5 deletions(-)
+ create mode 100644 docs/RATE_AUDIT_002_RESOLUTION.md
+ create mode 100644 tests/test_rate_product.py
+
+diff --git a/docs/RATE_AUDIT_002_RESOLUTION.md b/docs/RATE_AUDIT_002_RESOLUTION.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..f0e9f9a8bdf23aa87228e20a447edcea7f8bc243
+--- /dev/null
++++ b/docs/RATE_AUDIT_002_RESOLUTION.md
+@@ -0,0 +1,49 @@
++# RATE-AUDIT-001 resolution: Phase A of GENERIC-ANALYSIS-001
++
++Starting source: `44c4f2523b83b926a8b11d153ebfd5d8d04531a5`, exact
++`origin/refactor` tip on 2026-10-09; parent
++`efd56745fa5e35461122ae36afcfe105115061b1`. Work is isolated on
++`generic-analysis-001`. No main/refactor update or push is performed.
++
++Before edits: 492 repository tests pass with `-W error`. Recovered independent
++scripts give 154 old-audit passes and 236 rate-audit passes / 1 failure. The
++failure is exactly RATE-AUDIT-001: expected
++`2.669722691466525e-291 events/(kg day keV)`, actual zero.
++
++The final product now decomposes each finite factor with `math.frexp`,
++accumulates a bounded mantissa and integer binary exponent, includes division
++by the WIMP mass in the same representation, and restores scale once with
++`math.ldexp`. No physical factor is changed: speed-flux integral, (hbar c)^2,
++1e-6, c in cm/s, density/mass, nuclei/kg, and seconds/day. Exact zeros stay zero;
++signed contributions stay signed. Overflow raises ValueError. Nonzero results
++rounding below the smallest subnormal to zero also raise ValueError;
++representable subnormals retain the usual reduced relative precision. This is
++floating-point arithmetic, not arbitrary precision, and cannot recover prior
++underflow in R/W evaluation, callback products, quadrature, or cancellations.
++
++After edits: **504 repository tests pass**; **154 old independent audit tests
++pass unchanged**; **237 new rate-audit tests pass unchanged**. The original
++reproducer agrees with its independent 90-digit Decimal expectation (relative
++tolerance 1e-12; zero absolute tolerance). All three recovered script SHA-256
++hashes match the audit reports:
++
++- test_independent.py: 1f1827d261b49a0928db7eec5c33c0bc5d518d976d107f245fd4de6639ac23e6
++- test_falsifications.py: 99438a0db818631638f99d80b7282c8f6ed8d56505443abf4057b4e0005de6cb
++- test_rate_audit.py: a90623aca9133d9293181cad00c4db5dbbb5fbc0f72cc72793612c172ba24aae
++
++The new permanent `tests/test_rate_product.py` contains the verbatim original
++reproducer and its synthetic fixture, ordinary/tiny-rate scaling and sign
++checks, Decimal product references spanning intermediate overflow/underflow,
++zero/subnormal cases, and genuine range-error checks: 12 added cases. Existing
++tests and tolerances are unchanged. Runtime Python 3.12.14, NumPy 2.3.5,
++SciPy 1.17.0, pytest 9.1.1. pytest was installed in a temporary dependency path.
++
++Commands (from checkout, then workspace):
++
++```bash
++PYTHONPATH=/tmp/wimp-legend-test-deps python -m pytest -q -W error
++PYTHONPATH=/tmp/wimp-legend-test-deps:WIMP-LEGEND/src python -m pytest -q -W error audit-work/test_independent.py audit-work/test_falsifications.py audit-work/test_rate_audit.py
++```
++
++This record is coder verification, not a new independent audit. The green
++Phase-A tree is committed separately before any Phase-B implementation.
+diff --git a/src/wimp_legend/rates/recoil.py b/src/wimp_legend/rates/recoil.py
+index 30c97be6e1663bf26fd1cf04365ccec5c11997a6..ee3e142157ac08883bd3a4ea5cdede4803c627d4 100644
+--- a/src/wimp_legend/rates/recoil.py
++++ b/src/wimp_legend/rates/recoil.py
+@@ -6,7 +6,7 @@ All 32 canonical nuclear entries are required, including explicit known zeros.
+ """
+ 
+ from dataclasses import dataclass
+-from math import isfinite, pi
++from math import frexp, isfinite, ldexp, pi
+ from numbers import Real
+ import warnings
+ 
+@@ -54,6 +54,35 @@ def _output(value):
+     return float(value) if np.ndim(value) == 0 else np.array(value, copy=True)
+ 
+ 
++def _scaled_product(*factors, divisor=1.0):
++    """Multiply finite factors with a positive divisor, rounding scale once.
++
++    Exact zero stays zero; signed factors retain their sign. Overflow and a
++    nonzero product rounding to zero are explicit range errors. Representable
++    subnormals are returned with their inherently reduced relative precision.
++    This cannot recover information already lost in the supplied factors.
++    """
++    if any(factor == 0 for factor in factors):
++        return 0.0
++    mantissa, exponent = 1.0, 0
++    for factor in factors:
++        part, power = frexp(float(factor))
++        mantissa *= part
++        mantissa, shift = frexp(mantissa)
++        exponent += power + shift
++    part, power = frexp(divisor)
++    mantissa /= part
++    mantissa, shift = frexp(mantissa)
++    exponent += shift - power
++    try:
++        result = ldexp(mantissa, exponent)
++    except OverflowError as exc:
++        raise ValueError('final rate product overflows floating-point range') from exc
++    if not isfinite(result) or result == 0:
++        raise ValueError('nonzero final rate product is outside floating-point range')
++    return result
++
++
+ @dataclass(frozen=True)
+ class NREFTRateConfig:
+     """Physics configuration: required nucleon reference mass in GeV.
+@@ -256,8 +285,7 @@ def differential_rate_per_kg_day_keV(
+         integral = integrate_speed_flux(speed_pdf, cross_section, beta_min=float(minimum[index]),
+                                         beta_max=upper, breakpoints=points,
+                                         epsrel=relative, epsabs=absolute)
+-        with np.errstate(over='raise', invalid='raise'):
+-            # Apply the area/Jacobian conversion before the large target count.
+-            physical_flux = integral * GEV_MINUS2_TO_CM2 * KEV_TO_GEV * C_CM_S
+-            result[index] = physical_flux * (density / mass) * count * SECONDS_PER_DAY
++        result[index] = _scaled_product(
++            integral, GEV_MINUS2_TO_CM2, KEV_TO_GEV, C_CM_S,
++            density, count, SECONDS_PER_DAY, divisor=mass)
+     return _output(result)
+diff --git a/tests/test_rate_product.py b/tests/test_rate_product.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..e52106e84f3562578128acc0aefe053ec8de990c
+--- /dev/null
++++ b/tests/test_rate_product.py
+@@ -0,0 +1,93 @@
++"""Independent second audit. Synthetic nuclei only; no repository test imports."""
++from dataclasses import replace
++from decimal import Decimal as D, localcontext
++from math import pi, sqrt, exp, erf
++from pathlib import Path
++import ast
++import numpy as np
++import pytest
++from scipy.integrate import quad, IntegrationWarning
++from wimp_legend.targets import (SourceReference, Isotope, TargetComposition, ResponseMetadata,
++    MomentumVariable, ResponseKey, PolynomialResponse, NuclearResponseDataset)
++from wimp_legend.interactions import WilsonCoefficients, particle_response
++from wimp_legend.kinematics import momentum_transfer_GeV, minimum_speed_c
++from wimp_legend.halo import StandardHaloModel, build_velocity_integral
++from wimp_legend.rates import (NREFTRateConfig, transition_probability as prob,
++    differential_cross_section_GeV_minus3 as cross, integrate_speed_flux as flux,
++    differential_rate_per_kg_day_keV as rate)
++from wimp_legend import constants
++
++ID='anand2014_prc89_065501_half_isospin_v1'
++CH=('M','Sigma_double_prime','Sigma_prime','Phi_double_prime','Phi_double_prime_M',
++    'Phi_tilde_prime','Delta','Delta_Sigma_prime')
++KEYS=[(k,t,u) for k in CH for t in (0,1) for u in (0,1)]
++SOURCE=SourceReference('Independent synthetic audit', 'audit-only', 'synthetic')
++
++def fixture(entries=None, J=1.5, momentum=None):
++    iso=Isotope('X', 31, 12, 23., J, dict.fromkeys(('identity','mass_GeV','spin'),SOURCE))
++    meta=ResponseMetadata('synthetic basis',('0','1'),'half isospin','raw W',
++        'dimensionless',momentum or MomentumVariable('q2_GeV2'),SOURCE,ID)
++    responses={ResponseKey(*k):PolynomialResponse((0.,),0,None,SOURCE) for k in KEYS}
++    for k,v in (entries or {}).items():
++        responses[ResponseKey(*k)]=PolynomialResponse(tuple(v),0,None,SOURCE)
++    return NuclearResponseDataset('independent synthetic fixture',iso,meta,responses)
++
++def pdf(L):
++    return lambda b: 3*(np.asarray(b)/L)**2/L
++
++def si():
++    with localcontext() as ctx:
++        ctx.prec=75
++        p=D('3.141592653589793238462643383279502884197169399375105820974944592307816406286')
++        hc=D('6.62607015e-34')*D('299792458')*100/(2*p*D('1.602176634e-19')*D('1e9'))
++        return float(hc),float(hc*hc),float(hc*hc*D('1e-6')*D('29979245800')*86400)
++
++def kwargs(ds=None,raw=None,mref=1.7,L=.006):
++    return dict(dataset=fixture({('M',0,0):(1.3,)}) if ds is None else ds,
++        coefficients=WilsonCoefficients({1:(3e-6,0)} if raw is None else raw),
++        config=NREFTRateConfig(mref),j_chi=1.,m_chi_GeV=17.,
++        rho_chi_GeV_cm3=.43,targets_per_kg=2.8e25,speed_pdf=pdf(L),beta_max=L)
++
++def test_RATE_AUDIT_001_representable_final_rate_erased():
++    # Intentionally red falsifier: an intermediate area conversion underflows
++    # before a large, ordinary nuclei/kg factor restores the final result.
++    k=kwargs(raw={1:(1e-150,0)})
++    with localcontext() as ctx:
++        ctx.prec=90
++        p=D('3.141592653589793238462643383279502884197169399375105820974944592307816406286')
++        hc=D('6.62607015e-34')*D('29979245800')/(2*p*D('1.602176634e-10'))
++        # At E=0, J=3/2, P=pi*w*g² and integral=mT*w*g²*3/(4L).
++        expected=float(hc**2*D('1e-6')*D('29979245800')*86400*D('.43')/17*
++            D('2.8e25')*23*D('1.3')*D('1e-150')**2*3/(4*D('.006')))
++    assert expected>0 and np.isfinite(expected)
++    assert rate(0.,**k)==pytest.approx(expected,rel=1e-12,abs=0)
++
++
++@pytest.mark.parametrize('g', [1e-150, 3e-6, .02])
++def test_rate_product_scaling_and_sign(g):
++    k=kwargs(raw={1:(g,0)})
++    baseline=rate(0.,**k)
++    for factor in [.25, 4.]:
++        scaled=dict(k, targets_per_kg=k['targets_per_kg']*factor)
++        assert rate(0.,**scaled)==pytest.approx(baseline*factor,rel=2e-15,abs=0)
++    k['dataset']=fixture({('M',0,0):(-1.3,)})
++    assert rate(0.,**k)==-baseline
++
++@pytest.mark.parametrize('factors,divisor', [
++    ((1e-300,1e-100,1e300),1.), ((1e300,1e300,1e-300),1.),
++    ((1e300,1e300),1e300), ((1e-300,1e-300),1e-300),
++    ((-2.,3.,1e-320),1.), ((0.,1e308,1e308),1.),
++])
++def test_scaled_product_decimal(factors,divisor):
++    from wimp_legend.rates.recoil import _scaled_product
++    with localcontext() as ctx:
++        ctx.prec=100
++        expected=D(1)
++        for f in factors:expected*=D(f)
++        expected=float(expected/D(divisor))
++    assert _scaled_product(*factors,divisor=divisor)==pytest.approx(expected,rel=5e-16,abs=0)
++
++@pytest.mark.parametrize('factors', [(1e308,1e308),(1e-300,1e-300)])
++def test_scaled_product_true_range_failure(factors):
++    from wimp_legend.rates.recoil import _scaled_product
++    with pytest.raises(ValueError,match='range'):_scaled_product(*factors)
+-- 
+2.51.1
+
+
+From 10fcb541575ba43c3a8ce01a7eef8087c9a37c56 Mon Sep 17 00:00:00 2001
+From: Codex <codex@openai.com>
+Date: Fri, 9 Oct 2026 07:55:37 -0400
+Subject: [PATCH 2/4] Add generic quenching resolution efficiency and detector
+ count ports
+
+---
+ src/wimp_legend/_analysis.py           | 108 +++++++++++++
+ src/wimp_legend/detector/__init__.py   |  11 ++
+ src/wimp_legend/detector/efficiency.py |  40 +++++
+ src/wimp_legend/detector/quenching.py  |  60 +++++++
+ src/wimp_legend/detector/resolution.py |  95 ++++++++++++
+ src/wimp_legend/detector/response.py   | 207 +++++++++++++++++++++++++
+ tests/test_detector.py                 | 171 ++++++++++++++++++++
+ 7 files changed, 692 insertions(+)
+ create mode 100644 src/wimp_legend/_analysis.py
+
+diff --git a/src/wimp_legend/_analysis.py b/src/wimp_legend/_analysis.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..5d73032e9e152a8d8aaf37f66fd51d739e63c824
+--- /dev/null
++++ b/src/wimp_legend/_analysis.py
+@@ -0,0 +1,108 @@
++"""Shared expected-bin-count validation and explicit integration policy.
++
++No physics models live here. Arrays crossing these interfaces are copied;
++configuration containers use tuples. User callbacks must remain pure.
++"""
++from dataclasses import dataclass
++from numbers import Integral, Real
++import warnings
++
++import numpy as np
++from scipy.integrate import IntegrationWarning, quad
++
++
++def scalar(value, name, *, positive=False):
++    if isinstance(value, (bool, np.bool_)) or not isinstance(value, Real):
++        raise ValueError(f'{name} must be a real scalar')
++    result = float(value)
++    if not np.isfinite(result) or (result <= 0 if positive else result < 0):
++        raise ValueError(f'{name} must be finite and {"positive" if positive else "nonnegative"}')
++    return result
++
++
++def array(value, name, *, nonnegative=True):
++    result = np.asarray(value)
++    if result.dtype.kind not in 'iuf':
++        raise ValueError(f'{name} must contain real numbers, excluding booleans')
++    result = np.array(result, dtype=float, copy=True)
++    if np.any(~np.isfinite(result)) or (nonnegative and np.any(result < 0)):
++        raise ValueError(f'{name} has invalid values')
++    return result
++
++
++def edges(value, name='observed_bin_edges_keV', *, nonnegative=False):
++    result = array(value, name, nonnegative=nonnegative)
++    if result.ndim != 1 or len(result) < 2 or np.any(np.diff(result) <= 0):
++        raise ValueError(f'{name} must be a strictly increasing finite vector with at least two edges')
++    return result
++
++
++def counts(value, name='expected counts', *, observed=False):
++    result = array(value, name)
++    if result.ndim != 1 or result.size == 0:
++        raise ValueError(f'{name} must be a nonempty bin-count vector')
++    if observed and np.any(result != np.floor(result)):
++        raise ValueError('actual observed counts must be nonnegative integers')
++    return result
++
++
++def output(value):
++    result = array(value, 'computed output')
++    return float(result) if result.ndim == 0 else result
++
++
++def sample(callback, x, name, *, probability=False):
++    value = array(callback(float(x)), name)
++    if value.ndim != 0 or (probability and value > 1):
++        raise ValueError(f'{name} must return a finite nonnegative scalar'+(' <= 1' if probability else ''))
++    return float(value)
++
++
++def elementwise(callback, x, name, *, probability=False, nonnegative_input=True):
++    value = array(x, name+' input', nonnegative=nonnegative_input)
++    result = np.empty_like(value)
++    for index in np.ndindex(value.shape):
++        result[index] = sample(callback, value[index], name, probability=probability)
++    return output(result)
++
++
++def text(value, name):
++    if not isinstance(value, str) or not value.strip():
++        raise ValueError(f'{name} must be a nonempty scalar string')
++    return str(value)
++
++
++@dataclass(frozen=True)
++class IntegrationPolicy:
++    """Adaptive scalar quadrature policy; epsabs is in the integrated units.
++
++    Known discontinuities/narrow features must be supplied as breakpoints.
++    IntegrationWarning is an error; no warning suppression or renormalization.
++    """
++    epsrel: float = 1e-8
++    epsabs: float = 0.0
++    limit: int = 300
++
++    def __post_init__(self):
++        rel = scalar(self.epsrel, 'epsrel', positive=True)
++        if not 50*np.finfo(float).eps < rel < 1:
++            raise ValueError('epsrel must lie between 50 machine epsilons and 1')
++        if isinstance(self.limit, (bool, np.bool_)) or not isinstance(self.limit, Integral) or self.limit < 1:
++            raise ValueError('limit must be a positive integer')
++        object.__setattr__(self, 'epsrel', rel)
++        object.__setattr__(self, 'epsabs', scalar(self.epsabs, 'epsabs'))
++        object.__setattr__(self, 'limit', int(self.limit))
++
++    def integrate(self, callback, lower, upper, *, breakpoints=()):
++        bounds = array([lower, upper], 'integration bounds', nonnegative=False)
++        if bounds[0] >= bounds[1]:
++            raise ValueError('integration bounds must be increasing')
++        points = array(tuple(breakpoints), 'breakpoints', nonnegative=False)
++        if points.ndim != 1:
++            raise ValueError('breakpoints must be a vector')
++        points = np.unique(points[(points > lower) & (points < upper)])
++        with warnings.catch_warnings(), np.errstate(over='raise', invalid='raise', divide='raise'):
++            warnings.simplefilter('error', IntegrationWarning)
++            result = quad(callback, float(lower), float(upper), points=points,
++                          epsrel=self.epsrel, epsabs=self.epsabs, limit=self.limit)[0]
++        return output(result)
+diff --git a/src/wimp_legend/detector/__init__.py b/src/wimp_legend/detector/__init__.py
+index e69de29bb2d1d6434b8b29ae775ad8c2e48c5391..06b7fe4528ed53d32b7e4799b48b3f3f165b0285 100644
+--- a/src/wimp_legend/detector/__init__.py
++++ b/src/wimp_legend/detector/__init__.py
+@@ -0,0 +1,11 @@
++"""Generic fallback detector models; all physical calibration is external."""
++from .._analysis import IntegrationPolicy
++from .quenching import QuenchingModel, ConstantQuenching, LindhardQuenching
++from .resolution import ResolutionModel, NoSmearing, GaussianResolution
++from .efficiency import Efficiency, ConstantEfficiency, CallableEfficiency
++from .response import CountResponse, DetectorResponse, KernelResponse, MatrixResponse
++
++__all__ = ['IntegrationPolicy', 'QuenchingModel', 'ConstantQuenching', 'LindhardQuenching',
++           'ResolutionModel', 'NoSmearing', 'GaussianResolution', 'Efficiency',
++           'ConstantEfficiency', 'CallableEfficiency', 'CountResponse', 'DetectorResponse',
++           'KernelResponse', 'MatrixResponse']
+diff --git a/src/wimp_legend/detector/efficiency.py b/src/wimp_legend/detector/efficiency.py
+index e69de29bb2d1d6434b8b29ae775ad8c2e48c5391..10fcc28f22a3ec74eb4182bc742bbb3a5e0ada76 100644
+--- a/src/wimp_legend/detector/efficiency.py
++++ b/src/wimp_legend/detector/efficiency.py
+@@ -0,0 +1,40 @@
++"""Pure efficiency functions; application stage is owned by DetectorResponse."""
++from dataclasses import dataclass
++from typing import Callable, Protocol
++import numpy as np
++from .._analysis import array, elementwise, output, scalar
++
++
++class Efficiency(Protocol):
++    def __call__(self, energy_keV):
++        """Return a probability in [0,1], scalar/array matching the input."""
++        ...
++
++
++@dataclass(frozen=True)
++class ConstantEfficiency:
++    epsilon: float
++
++    def __post_init__(self):
++        value = scalar(self.epsilon, 'epsilon')
++        if value > 1:
++            raise ValueError('epsilon must be <= 1')
++        object.__setattr__(self, 'epsilon', value)
++
++    def __call__(self, energy_keV):
++        # Negative reconstructed energies are legitimate Gaussian outcomes.
++        energy = array(energy_keV, 'energy_keV', nonnegative=False)
++        return output(np.full_like(energy, self.epsilon))
++
++
++@dataclass(frozen=True)
++class CallableEfficiency:
++    callback: Callable
++
++    def __post_init__(self):
++        if not callable(self.callback):
++            raise TypeError('efficiency callback must be callable')
++
++    def __call__(self, energy_keV):
++        return elementwise(self.callback, energy_keV, 'efficiency', probability=True,
++                           nonnegative_input=False)
+diff --git a/src/wimp_legend/detector/quenching.py b/src/wimp_legend/detector/quenching.py
+index e69de29bb2d1d6434b8b29ae775ad8c2e48c5391..f6e332df60f817d71448cb66b2aab63a8868a896 100644
+--- a/src/wimp_legend/detector/quenching.py
++++ b/src/wimp_legend/detector/quenching.py
+@@ -0,0 +1,60 @@
++"""Explicit phenomenological quenching models, not detector calibrations."""
++from dataclasses import dataclass
++from numbers import Integral
++from typing import Protocol
++
++import numpy as np
++from .._analysis import array, output, scalar
++
++
++class QuenchingModel(Protocol):
++    def mean_energy_keV(self, E_nr_keV):
++        """Return E_ee_keV for finite nonnegative E_nr_keV (scalar or array)."""
++        ...
++
++
++@dataclass(frozen=True)
++class ConstantQuenching:
++    q: float
++
++    def __post_init__(self):
++        q = scalar(self.q, 'q', positive=True)
++        if q > 1:
++            raise ValueError('q must satisfy 0 < q <= 1; zero quenching is unsupported')
++        object.__setattr__(self, 'q', q)
++
++    def mean_energy_keV(self, E_nr_keV):
++        return output(self.q * array(E_nr_keV, 'E_nr_keV'))
++
++
++@dataclass(frozen=True)
++class LindhardQuenching:
++    """Lindhard fallback with explicit Z and k; neither is a Ge default.
++
++    epsilon=11.5 E_nr_keV Z^(-7/3), g=3 epsilon^.15+.7 epsilon^.6+epsilon,
++    Q=kg/(1+kg). These numerical coefficients define the requested model,
++    not empirical calibration data. See docs/DETECTOR_RESPONSE.md.
++    """
++    Z: int
++    k: float
++
++    def __post_init__(self):
++        if isinstance(self.Z, (bool, np.bool_)) or not isinstance(self.Z, Integral) or self.Z <= 0:
++            raise ValueError('Z must be a positive integer')
++        object.__setattr__(self, 'Z', int(self.Z))
++        object.__setattr__(self, 'k', scalar(self.k, 'k', positive=True))
++
++    def quenching_factor(self, E_nr_keV):
++        energy = array(E_nr_keV, 'E_nr_keV')
++        with np.errstate(over='raise', invalid='raise', divide='raise'):
++            epsilon = energy * (11.5 * self.Z**(-7/3))
++            g = 3*epsilon**.15 + .7*epsilon**.6 + epsilon
++            # Algebraically kg/(1+kg), avoiding overflow in kg.
++            result = np.zeros_like(g)
++            positive = g > 0
++            result[positive] = 1 / (1 + (1 / g[positive]) / self.k)
++        return output(result)
++
++    def mean_energy_keV(self, E_nr_keV):
++        energy = array(E_nr_keV, 'E_nr_keV')
++        return output(energy * self.quenching_factor(energy))
+diff --git a/src/wimp_legend/detector/resolution.py b/src/wimp_legend/detector/resolution.py
+index e69de29bb2d1d6434b8b29ae775ad8c2e48c5391..9c7c6ff235e9c5b3b4cd0ca0875869f9315bd304 100644
+--- a/src/wimp_legend/detector/resolution.py
++++ b/src/wimp_legend/detector/resolution.py
+@@ -0,0 +1,95 @@
++"""Conditional reconstructed-energy bin probabilities; no window renormalization."""
++from dataclasses import dataclass
++from typing import Callable, Protocol
++import numpy as np
++from scipy.special import ndtr, ndtri
++from .._analysis import IntegrationPolicy, array, edges, elementwise, output, sample, scalar
++from .efficiency import ConstantEfficiency, Efficiency
++
++
++class ResolutionModel(Protocol):
++    def bin_probabilities(self, E_ee_mean_keV, observed_bin_edges_keV, *,
++                          observed_efficiency=None, policy=IntegrationPolicy(),
++                          observed_breakpoints=()):
++        """Return shape mean.shape+(number_of_bins,), including observed efficiency."""
++        ...
++
++
++def _deterministic(mean, bins, efficiency):
++    result = np.zeros(len(bins)-1)
++    # Half-open bins [a,b); the last bin includes its right edge.
++    if bins[0] <= mean <= bins[-1]:
++        j = min(int(np.searchsorted(bins, mean, side='right')-1), len(result)-1)
++        result[j] = 1 if efficiency is None else sample(efficiency, mean, 'observed efficiency', probability=True)
++    return result
++
++
++@dataclass(frozen=True)
++class NoSmearing:
++    def bin_probabilities(self, E_ee_mean_keV, observed_bin_edges_keV, *,
++                          observed_efficiency=None, policy=IntegrationPolicy(),
++                          observed_breakpoints=()):
++        means = array(E_ee_mean_keV, 'E_ee_mean_keV')
++        bins = edges(observed_bin_edges_keV)
++        result = np.empty(means.shape+(len(bins)-1,))
++        for index in np.ndindex(means.shape):
++            result[index] = _deterministic(float(means[index]), bins, observed_efficiency)
++        return output(result)
++
++
++@dataclass(frozen=True)
++class GaussianResolution:
++    """sigma_keV is a constant or scalar callback of quenched E_ee_mean_keV.
++
++    Arbitrary observed efficiency is integrated in probability coordinates
++    inside each bin. Positive-tail bins use survival probabilities, avoiding
++    cancellation of CDF values close to one. sigma=0 uses NoSmearing semantics.
++    """
++    sigma_keV: float | Callable
++
++    def __post_init__(self):
++        if not callable(self.sigma_keV):
++            object.__setattr__(self, 'sigma_keV', scalar(self.sigma_keV, 'sigma_keV'))
++
++    def sigma_at(self, E_ee_mean_keV):
++        if callable(self.sigma_keV):
++            return elementwise(self.sigma_keV, E_ee_mean_keV, 'sigma_keV')
++        energy = array(E_ee_mean_keV, 'E_ee_mean_keV')
++        return output(np.full_like(energy, self.sigma_keV))
++
++    def bin_probabilities(self, E_ee_mean_keV, observed_bin_edges_keV, *,
++                          observed_efficiency=None, policy=IntegrationPolicy(),
++                          observed_breakpoints=()):
++        means = array(E_ee_mean_keV, 'E_ee_mean_keV')
++        bins = edges(observed_bin_edges_keV)
++        points = array(tuple(observed_breakpoints), 'observed_breakpoints', nonnegative=False)
++        if points.ndim != 1 or not isinstance(policy, IntegrationPolicy):
++            raise ValueError('invalid observed breakpoints or integration policy')
++        sigmas = np.asarray(self.sigma_at(means))
++        result = np.zeros(means.shape+(len(bins)-1,))
++        for index in np.ndindex(means.shape):
++            mean, sigma = float(means[index]), float(sigmas[index])
++            if sigma == 0:
++                result[index] = _deterministic(mean, bins, observed_efficiency)
++                continue
++            with np.errstate(over='raise', invalid='raise', divide='raise'):
++                z = (bins-mean)/sigma
++            for j, (a, b) in enumerate(zip(z[:-1], z[1:])):
++                positive_tail = a >= 0
++                lo, hi = (ndtr(-b), ndtr(-a)) if positive_tail else (ndtr(a), ndtr(b))
++                probability = float(hi-lo)
++                if observed_efficiency is None or probability == 0:
++                    result[index+(j,)] = probability
++                elif isinstance(observed_efficiency, ConstantEfficiency):
++                    result[index+(j,)] = probability * observed_efficiency.epsilon
++                else:
++                    def weighted(u):
++                        quantile = lo + u*probability
++                        coordinate = -ndtri(quantile) if positive_tail else ndtri(quantile)
++                        return sample(observed_efficiency, mean+sigma*coordinate,
++                                      'observed efficiency', probability=True)
++                    p = points[(points > bins[j]) & (points < bins[j+1])]
++                    p = ndtr(-(p-mean)/sigma) if positive_tail else ndtr((p-mean)/sigma)
++                    p = (p-lo)/probability
++                    result[index+(j,)] = probability * policy.integrate(weighted, 0, 1, breakpoints=p)
++        return output(result)
+diff --git a/src/wimp_legend/detector/response.py b/src/wimp_legend/detector/response.py
+index e69de29bb2d1d6434b8b29ae775ad8c2e48c5391..59af72f9d20282aa1929f3fa509589bd1f5081f2 100644
+--- a/src/wimp_legend/detector/response.py
++++ b/src/wimp_legend/detector/response.py
+@@ -0,0 +1,207 @@
++"""Truth differential rates -> expected observed-bin counts, independent of DM."""
++from dataclasses import dataclass
++from typing import Callable, Protocol
++import numpy as np
++from scipy.optimize import brentq
++
++from .._analysis import IntegrationPolicy, array, counts, edges, output, sample, scalar, text
++from .quenching import ConstantQuenching, LindhardQuenching, QuenchingModel
++from .resolution import GaussianResolution, NoSmearing, ResolutionModel
++from .efficiency import Efficiency
++
++
++class CountResponse(Protocol):
++    def expected_counts(self, truth_spectrum, observed_bin_edges_keV, exposure_kg_day,
++                        truth_energy_range_keV, *, truth_breakpoints=()):
++        """Fold events/(kg day keV_nr) to expected observed-energy bin events."""
++        ...
++
++
++def _inputs(truth_spectrum, observed_bin_edges_keV, exposure_kg_day,
++            truth_energy_range_keV, truth_breakpoints):
++    if not callable(truth_spectrum):
++        raise TypeError('truth_spectrum must be callable')
++    bins = edges(observed_bin_edges_keV)
++    exposure = scalar(exposure_kg_day, 'exposure_kg_day')
++    interval = edges(truth_energy_range_keV, 'truth_energy_range_keV', nonnegative=True)
++    if len(interval) != 2:
++        raise ValueError('truth_energy_range_keV must contain exactly two endpoints')
++    points = array(tuple(truth_breakpoints), 'truth_breakpoints')
++    if points.ndim != 1:
++        raise ValueError('truth_breakpoints must be a vector')
++    return bins, exposure, interval, points
++
++
++def _probabilities(value, n_bins):
++    result = array(value, 'migration probabilities')
++    if result.shape != (n_bins,) or np.any(result > 1) or np.sum(result) > 1+8*np.finfo(float).eps:
++        raise ValueError('migration probabilities must match bins and sum to at most one')
++    return result
++
++
++def _fold(truth_spectrum, bins, exposure, interval, points, kernel, truth_efficiency, policy):
++    if not isinstance(policy, IntegrationPolicy):
++        raise TypeError('policy must be IntegrationPolicy')
++    result = np.zeros(len(bins)-1)
++    if exposure == 0:
++        return result
++    for j in range(len(result)):
++        def integrand(energy):
++            rate = sample(truth_spectrum, energy, 'truth spectrum')
++            efficiency = 1 if truth_efficiency is None else sample(
++                truth_efficiency, energy, 'truth efficiency', probability=True)
++            probability = _probabilities(kernel(energy), len(result))[j]
++            return rate * efficiency * probability
++        result[j] = exposure * policy.integrate(integrand, *interval, breakpoints=points)
++    return output(result)
++
++
++@dataclass(frozen=True)
++class DetectorResponse:
++    quenching: QuenchingModel
++    resolution: ResolutionModel
++    truth_efficiency: Efficiency | None = None
++    observed_efficiency: Efficiency | None = None
++    policy: IntegrationPolicy = IntegrationPolicy()
++    observed_breakpoints: tuple[float, ...] = ()
++
++    def __post_init__(self):
++        if not callable(getattr(self.quenching, 'mean_energy_keV', None)):
++            raise TypeError('quenching must implement mean_energy_keV')
++        if not callable(getattr(self.resolution, 'bin_probabilities', None)):
++            raise TypeError('resolution must implement bin_probabilities')
++        for efficiency in (self.truth_efficiency, self.observed_efficiency):
++            if efficiency is not None and not callable(efficiency):
++                raise TypeError('efficiency must be callable')
++        if not isinstance(self.policy, IntegrationPolicy):
++            raise TypeError('policy must be IntegrationPolicy')
++        points = array(tuple(self.observed_breakpoints), 'observed_breakpoints', nonnegative=False)
++        if points.ndim != 1:
++            raise ValueError('observed_breakpoints must be a vector')
++        object.__setattr__(self, 'observed_breakpoints', tuple(points))
++
++    def bin_probabilities(self, E_nr_keV, observed_bin_edges_keV):
++        energy = array(E_nr_keV, 'E_nr_keV')
++        mean = array(self.quenching.mean_energy_keV(energy), 'E_ee_keV')
++        if mean.shape != energy.shape:
++            raise ValueError('quenching must preserve energy shape')
++        return self.resolution.bin_probabilities(
++            mean, observed_bin_edges_keV, observed_efficiency=self.observed_efficiency,
++            policy=self.policy, observed_breakpoints=self.observed_breakpoints)
++
++    def expected_counts(self, truth_spectrum, observed_bin_edges_keV, exposure_kg_day,
++                        truth_energy_range_keV, *, truth_breakpoints=()):
++        bins, exposure, interval, points = _inputs(truth_spectrum, observed_bin_edges_keV,
++            exposure_kg_day, truth_energy_range_keV, truth_breakpoints)
++        # Split deterministic migration jumps for the two known monotone models.
++        # Other quenching/resolution models must supply their own truth breakpoints.
++        deterministic = isinstance(self.resolution, NoSmearing) or (
++            isinstance(self.resolution, GaussianResolution) and
++            not callable(self.resolution.sigma_keV) and self.resolution.sigma_keV == 0)
++        if deterministic and isinstance(
++                self.quenching, (ConstantQuenching, LindhardQuenching)):
++            mean_lo = float(self.quenching.mean_energy_keV(interval[0]))
++            mean_hi = float(self.quenching.mean_energy_keV(interval[1]))
++            crossings = []
++            for edge in bins[(bins > mean_lo) & (bins < mean_hi)]:
++                if isinstance(self.quenching, ConstantQuenching):
++                    crossings.append(edge/self.quenching.q)
++                else:
++                    crossings.append(brentq(lambda energy: self.quenching.mean_energy_keV(energy)-edge,
++                                            *interval, xtol=np.nextafter(0.,1.), rtol=1e-14))
++            points = np.concatenate((points, crossings))
++        return _fold(truth_spectrum, bins, exposure, interval, points,
++                     lambda energy: self.bin_probabilities(energy, bins),
++                     self.truth_efficiency, self.policy)
++
++
++@dataclass(frozen=True)
++class KernelResponse:
++    """User-supplied bin-integrated kernel callback(E_nr_keV, observed_edges).
++
++    includes_efficiency is mandatory. Extra truth efficiency is allowed only
++    when false. Observed efficiency must already be integrated by the callback;
++    bin-integrated probabilities cannot support a separate sub-bin efficiency.
++    """
++    kernel: Callable
++    includes_efficiency: bool
++    truth_efficiency: Efficiency | None = None
++    policy: IntegrationPolicy = IntegrationPolicy()
++
++    def __post_init__(self):
++        if not callable(self.kernel) or type(self.includes_efficiency) is not bool:
++            raise ValueError('kernel must be callable and includes_efficiency an explicit bool')
++        if self.includes_efficiency and self.truth_efficiency is not None:
++            raise ValueError('kernel already owns efficiencies')
++        if self.truth_efficiency is not None and not callable(self.truth_efficiency):
++            raise TypeError('truth_efficiency must be callable')
++        if not isinstance(self.policy, IntegrationPolicy):
++            raise TypeError('policy must be IntegrationPolicy')
++
++    def expected_counts(self, truth_spectrum, observed_bin_edges_keV, exposure_kg_day,
++                        truth_energy_range_keV, *, truth_breakpoints=()):
++        bins, exposure, interval, points = _inputs(truth_spectrum, observed_bin_edges_keV,
++            exposure_kg_day, truth_energy_range_keV, truth_breakpoints)
++        return _fold(truth_spectrum, bins, exposure, interval, points,
++                     lambda energy: self.kernel(energy, bins.copy()), self.truth_efficiency, self.policy)
++
++
++@dataclass(frozen=True)
++class MatrixResponse:
++    """M[j,i] probabilities, observed=M@truth_counts; columns sum <=1.
++
++    Immutable tuple storage. Exact edges and complete truth-bin range required.
++    within_bin_averaging is a required description of how M was obtained. This
++    piecewise-constant migration model is approximate for varying sub-bin rates.
++    """
++    truth_bin_edges_keV: tuple[float, ...]
++    observed_bin_edges_keV: tuple[float, ...]
++    matrix: tuple[tuple[float, ...], ...]
++    includes_efficiency: bool
++    within_bin_averaging: str
++    truth_efficiency: Efficiency | None = None
++    policy: IntegrationPolicy = IntegrationPolicy()
++
++    def __post_init__(self):
++        truth = edges(self.truth_bin_edges_keV, 'truth_bin_edges_keV', nonnegative=True)
++        observed = edges(self.observed_bin_edges_keV)
++        matrix = array(self.matrix, 'matrix')
++        if matrix.shape != (len(observed)-1, len(truth)-1) or np.any(matrix > 1) or np.any(
++                matrix.sum(axis=0) > 1+8*np.finfo(float).eps):
++            raise ValueError('matrix shape/probabilities violate M[j,i] contract')
++        if type(self.includes_efficiency) is not bool:
++            raise ValueError('includes_efficiency must be an explicit bool')
++        if self.includes_efficiency and self.truth_efficiency is not None:
++            raise ValueError('matrix already owns efficiencies')
++        if self.truth_efficiency is not None and not callable(self.truth_efficiency):
++            raise TypeError('truth_efficiency must be callable')
++        if not isinstance(self.policy, IntegrationPolicy):
++            raise TypeError('policy must be IntegrationPolicy')
++        object.__setattr__(self, 'truth_bin_edges_keV', tuple(truth))
++        object.__setattr__(self, 'observed_bin_edges_keV', tuple(observed))
++        object.__setattr__(self, 'matrix', tuple(tuple(row) for row in matrix))
++        object.__setattr__(self, 'within_bin_averaging', text(self.within_bin_averaging, 'within_bin_averaging'))
++
++    def apply_truth_counts(self, truth_counts):
++        values = counts(truth_counts, 'truth_counts')
++        if values.shape != (len(self.truth_bin_edges_keV)-1,):
++            raise ValueError('truth counts must match matrix truth bins')
++        with np.errstate(over='raise', invalid='raise'):
++            return output(np.asarray(self.matrix) @ values)
++
++    def expected_counts(self, truth_spectrum, observed_bin_edges_keV, exposure_kg_day,
++                        truth_energy_range_keV, *, truth_breakpoints=()):
++        bins, exposure, interval, points = _inputs(truth_spectrum, observed_bin_edges_keV,
++            exposure_kg_day, truth_energy_range_keV, truth_breakpoints)
++        if not np.array_equal(bins, self.observed_bin_edges_keV) or not np.array_equal(
++                interval, (self.truth_bin_edges_keV[0], self.truth_bin_edges_keV[-1])):
++            raise ValueError('matrix requires exact observed edges and its complete truth range')
++        if exposure == 0:
++            return np.zeros(len(bins)-1)
++        def integrand(energy):
++            efficiency = 1 if self.truth_efficiency is None else sample(
++                self.truth_efficiency, energy, 'truth efficiency', probability=True)
++            return sample(truth_spectrum, energy, 'truth spectrum') * efficiency
++        truth_counts = [exposure*self.policy.integrate(integrand, lo, hi, breakpoints=points)
++                        for lo, hi in zip(self.truth_bin_edges_keV[:-1], self.truth_bin_edges_keV[1:])]
++        return self.apply_truth_counts(truth_counts)
+diff --git a/tests/test_detector.py b/tests/test_detector.py
+index e69de29bb2d1d6434b8b29ae775ad8c2e48c5391..5a40fe16188de94156f37f0f74a46352671432eb 100644
+--- a/tests/test_detector.py
++++ b/tests/test_detector.py
+@@ -0,0 +1,171 @@
++"""Independent elementary integrals and probability references, synthetic only."""
++from dataclasses import FrozenInstanceError, replace
++from math import erf, sqrt, exp, pi
++import numpy as np
++import pytest
++from scipy.integrate import quad, IntegrationWarning
++from wimp_legend.detector import (
++    IntegrationPolicy, ConstantQuenching, LindhardQuenching, NoSmearing,
++    GaussianResolution, ConstantEfficiency, CallableEfficiency,
++    DetectorResponse, KernelResponse, MatrixResponse,
++)
++
++
++def test_identity_nonuniform_bins_analytic_spectrum():
++    d=DetectorResponse(ConstantQuenching(1),NoSmearing())
++    bins=np.array([0.,.2,1.,3.])
++    actual=d.expected_counts(lambda e:2+3*e,bins,7,(0,3))
++    primitive=lambda e:2*e+1.5*e**2
++    np.testing.assert_allclose(actual,7*np.diff(primitive(bins)),rtol=2e-14)
++    assert sum(actual)==pytest.approx(7*(6+13.5))
++    assert np.all(d.expected_counts(lambda e:1,bins,0,(0,3))==0)
++
++
++@pytest.mark.parametrize('q',[1.,.2,.01])
++def test_constant_quenching_jacobian_and_total(q):
++    d=DetectorResponse(ConstantQuenching(q),NoSmearing())
++    bins=np.array([0,.1,.3,1.])*q
++    actual=d.expected_counts(lambda e:4,bins,2,(0,1))
++    np.testing.assert_allclose(actual,8*np.diff(bins)/q,rtol=1e-14)
++    assert sum(actual)==pytest.approx(8)
++
++
++def test_lindhard_independent_formula_and_zero_shapes():
++    e=np.array([[0.,.1],[1.,5.]])
++    m=LindhardQuenching(17,.11)
++    eps=11.5*e*17**(-7/3);g=3*eps**.15+.7*eps**.6+eps
++    np.testing.assert_allclose(m.mean_energy_keV(e),e*.11*g/(1+.11*g),rtol=4e-16)
++    assert m.mean_energy_keV(0)==0
++    assert isinstance(m.mean_energy_keV(1),float)
++    assert m.mean_energy_keV(np.empty((0,2))).shape==(0,2)
++    assert np.all(np.diff(m.mean_energy_keV(np.linspace(0,10,100)))>0)
++    d=DetectorResponse(m,NoSmearing())
++    obs=m.mean_energy_keV([0,1,5])
++    np.testing.assert_allclose(d.expected_counts(lambda e:2,obs,1,(0,5)),[2,8],rtol=2e-13)
++
++
++@pytest.mark.parametrize('bad',[-1,np.nan,np.inf,True,1j,'1'])
++def test_models_reject_invalid_energy(bad):
++    for model in [ConstantQuenching(.2),LindhardQuenching(17,.11)]:
++        with pytest.raises(ValueError):model.mean_energy_keV(bad)
++    with pytest.raises(ValueError):GaussianResolution(1).bin_probabilities(bad,[0,1])
++
++
++@pytest.mark.parametrize('bad',[0,-1,1.01,np.inf,np.nan,True])
++def test_bad_quenching(bad):
++    with pytest.raises(ValueError):ConstantQuenching(bad)
++
++
++@pytest.mark.parametrize('args',[(0,.1),(1,0),(1,-1),(1.5,.1),(True,.1),(1,np.inf)])
++def test_bad_lindhard(args):
++    with pytest.raises(ValueError):LindhardQuenching(*args)
++
++
++@pytest.mark.parametrize('model',[NoSmearing(),GaussianResolution(0),GaussianResolution(lambda mean:0)])
++def test_delta_edge_assignment(model):
++    np.testing.assert_array_equal(model.bin_probabilities([0,1,2,3],[0,1,2]),
++                                  [[1,0],[0,1],[0,1],[0,0]])
++    assert model.bin_probabilities(np.empty((0,2)),[0,1]).shape==(0,2,1)
++
++
++def test_gaussian_probabilities_normalization_threshold_loss_and_tails():
++    g=GaussianResolution(.3)
++    bins=np.array([-3.,.4,1.,1.7,4.])
++    actual=g.bin_probabilities(1,bins)
++    cdf=lambda x:(1+erf((x-1)/(.3*sqrt(2))))/2
++    np.testing.assert_allclose(actual,np.diff([cdf(x) for x in bins]),rtol=1e-12,atol=2e-16)
++    assert sum(actual)==pytest.approx(1,abs=2e-14)
++    assert g.bin_probabilities(1,[1,1.3])[0]==pytest.approx(erf(1/sqrt(2))/2)
++    # Far positive tail independent PDF quadrature avoids subtracting near-one CDFs.
++    tail=GaussianResolution(1).bin_probabilities(0,[9,9.2])[0]
++    ref=quad(lambda z:exp(-z*z/2)/sqrt(2*pi),9,9.2,epsabs=0,epsrel=1e-12)[0]
++    assert tail>0 and tail==pytest.approx(ref,rel=2e-14)
++    assert sum(g.bin_probabilities(1,[.9,1.1]))<.3
++
++
++@pytest.mark.parametrize('sigma',[1e-5,10.])
++def test_narrow_and_broad_gaussian(sigma):
++    actual=GaussianResolution(sigma).bin_probabilities(2,[2-sigma,2,2+sigma])
++    np.testing.assert_allclose(actual,[erf(1/sqrt(2))/2]*2,rtol=2e-11)
++
++
++def test_callable_sigma_means_and_ownership():
++    g=GaussianResolution(lambda mean:.1+mean*.2)
++    e=np.array([0.,1.,2.]);original=e.copy()
++    d=DetectorResponse(ConstantQuenching(.2),g)
++    result=d.bin_probabilities(e,[0,1,2])
++    assert result.shape==(3,2)
++    np.testing.assert_array_equal(e,original)
++    assert g.sigma_at([0,.2,.4])==pytest.approx([.1,.14,.18])
++    e[:]=9
++    assert result[0,0]>.49
++    with pytest.raises(FrozenInstanceError):g.sigma_keV=2
++
++
++def test_truth_and_observed_efficiency_stages_and_in_bin_integration():
++    base=DetectorResponse(ConstantQuenching(1),GaussianResolution(.2))
++    eps=CallableEfficiency(lambda obs: .2 if obs<.4 else .8)
++    observed=replace(base,observed_efficiency=eps,observed_breakpoints=[.4])
++    mean=.5
++    # Independent integral of piecewise efficiency against the normal PDF.
++    density=lambda x:exp(-.5*((x-mean)/.2)**2)/(.2*sqrt(2*pi))
++    expected=.2*quad(density,0,.4)[0]+.8*quad(density,.4,1)[0]
++    assert observed.bin_probabilities(mean,[0,1])[0]==pytest.approx(expected,rel=2e-12)
++    truth=replace(base,truth_efficiency=ConstantEfficiency(.4))
++    np.testing.assert_allclose(truth.expected_counts(lambda e:1,[0,.5,1],2,(0,1)),
++        .4*base.expected_counts(lambda e:1,[0,.5,1],2,(0,1)),rtol=1e-13)
++    with pytest.raises(ValueError):CallableEfficiency(lambda e:1.01)(1)
++    assert CallableEfficiency(lambda e:.2 if e<1 else .4)([0,1]).tolist()==[.2,.4]
++    assert CallableEfficiency(lambda e:.5)([]).shape==(0,)
++
++
++def test_kernel_matrix_equivalence_and_efficiency_ownership():
++    matrix=np.array([[.8,.2],[.1,.6]])
++    d=MatrixResponse([0,1,2],[0,2,3],matrix,False,'piecewise constant probabilities')
++    kernel=KernelResponse(lambda e,edges: matrix[:,0 if e<1 else 1],False)
++    truth=lambda e:1+e
++    actual=d.expected_counts(truth,[0,2,3],2,(0,2))
++    ref=kernel.expected_counts(truth,[0,2,3],2,(0,2),truth_breakpoints=[1])
++    np.testing.assert_allclose(actual,ref,rtol=2e-14)
++    np.testing.assert_allclose(actual,matrix@np.array([3.,5.]),rtol=1e-14)
++    matrix[:]=0
++    assert sum(d.apply_truth_counts([3,5]))>0
++    with pytest.raises(FrozenInstanceError):d.matrix=()
++    with pytest.raises(ValueError):replace(d,includes_efficiency=True,truth_efficiency=ConstantEfficiency(.5))
++    with pytest.raises(ValueError):KernelResponse(lambda e,edges:[1,0],True,ConstantEfficiency(.5))
++    with pytest.raises(ValueError):d.expected_counts(truth,[0,1,3],1,(0,2))
++    with pytest.raises(ValueError):d.expected_counts(truth,[0,2,3],1,(0,1))
++
++
++@pytest.mark.parametrize('matrix',[[[1.1]], [[-1]], [[np.nan]], [[.6],[.6]], [[1,0]]])
++def test_invalid_matrix(matrix):
++    with pytest.raises(ValueError):MatrixResponse([0,1],[0,1],matrix,False,'test')
++
++
++@pytest.mark.parametrize('bad',[[0,0],[1,0],[0,np.inf],[0,np.nan],[0],[True,False]])
++def test_invalid_edges(bad):
++    with pytest.raises(ValueError):DetectorResponse(ConstantQuenching(1),NoSmearing()).expected_counts(
++        lambda e:1,bad,1,(0,2))
++
++
++@pytest.mark.parametrize('bad',[-1,np.nan,np.inf,True,[1,2]])
++def test_invalid_spectrum_sample(bad):
++    with pytest.raises(ValueError):DetectorResponse(ConstantQuenching(1),NoSmearing()).expected_counts(
++        lambda e:bad,[0,1],1,(0,1))
++
++
++@pytest.mark.parametrize('probability',[[1.1],[-1],[np.nan],[.6,.6],[]])
++def test_invalid_custom_kernel(probability):
++    with pytest.raises(ValueError):KernelResponse(lambda e,edges:probability,False).expected_counts(
++        lambda e:1,[0,1],1,(0,1))
++
++
++def test_policy_warning_propagation(monkeypatch):
++    import warnings
++    import wimp_legend._analysis as module
++    def warning(*args,**kwargs):
++        warnings.warn('injected integration failure',IntegrationWarning)
++        return (1.,0.)
++    monkeypatch.setattr(module,'quad',warning)
++    with pytest.raises(IntegrationWarning):IntegrationPolicy().integrate(lambda e:1,0,1)
++    with pytest.raises(ValueError):IntegrationPolicy(epsrel=0)
+-- 
+2.51.1
+
+
+From e6fc884a2cd9c89f36f1726c1a332d83d57507d2 Mon Sep 17 00:00:00 2001
+From: Codex <codex@openai.com>
+Date: Fri, 9 Oct 2026 08:02:15 -0400
+Subject: [PATCH 3/4] Add generic backgrounds exact Poisson CLs and asymptotic
+ shape statistics
+
+---
+ src/wimp_legend/backgrounds/__init__.py |   5 +
+ src/wimp_legend/backgrounds/model.py    | 132 ++++++++++++++++++
+ src/wimp_legend/statistics/__init__.py  |   6 +
+ src/wimp_legend/statistics/base.py      | 125 +++++++++++++++++
+ src/wimp_legend/statistics/binned.py    | 136 +++++++++++++++++++
+ src/wimp_legend/statistics/counting.py  | 125 +++++++++++++++++
+ tests/test_backgrounds.py               |  64 +++++++++
+ tests/test_statistics.py                | 172 ++++++++++++++++++++++++
+ 8 files changed, 765 insertions(+)
+ create mode 100644 src/wimp_legend/statistics/base.py
+
+diff --git a/src/wimp_legend/backgrounds/__init__.py b/src/wimp_legend/backgrounds/__init__.py
+index e69de29bb2d1d6434b8b29ae775ad8c2e48c5391..3d810d7fb12792d6fe7b041381c112a9e9afa7b3 100644
+--- a/src/wimp_legend/backgrounds/__init__.py
++++ b/src/wimp_legend/backgrounds/__init__.py
+@@ -0,0 +1,5 @@
++"""Generic background interfaces; no radioactive or neutrino models supplied."""
++from .model import (BackgroundModel, ZeroBackground, FlatBackground, CallableBackground,
++                    BinnedBackground, CompositeBackground)
++__all__ = ['BackgroundModel', 'ZeroBackground', 'FlatBackground', 'CallableBackground',
++           'BinnedBackground', 'CompositeBackground']
+diff --git a/src/wimp_legend/backgrounds/model.py b/src/wimp_legend/backgrounds/model.py
+index e69de29bb2d1d6434b8b29ae775ad8c2e48c5391..1b5568149c7c5f67b6fdbcb480bdf8e3972dd07b 100644
+--- a/src/wimp_legend/backgrounds/model.py
++++ b/src/wimp_legend/backgrounds/model.py
+@@ -0,0 +1,132 @@
++"""Generic observed-energy background counts; empirical inputs are external."""
++from dataclasses import dataclass
++from typing import Callable, Protocol
++import numpy as np
++from .._analysis import IntegrationPolicy, array, counts, edges, elementwise, output, sample, scalar, text
++
++
++class BackgroundModel(Protocol):
++    def expected_counts(self, observed_bin_edges_keV, exposure_kg_day):
++        ...
++
++
++@dataclass(frozen=True)
++class ZeroBackground:
++    def expected_counts(self, observed_bin_edges_keV, exposure_kg_day):
++        bins = edges(observed_bin_edges_keV)
++        scalar(exposure_kg_day, 'exposure_kg_day')
++        return np.zeros(len(bins)-1)
++
++
++@dataclass(frozen=True)
++class FlatBackground:
++    rate_per_kg_day_keV_obs: float
++
++    def __post_init__(self):
++        object.__setattr__(self, 'rate_per_kg_day_keV_obs', scalar(
++            self.rate_per_kg_day_keV_obs, 'rate_per_kg_day_keV_obs'))
++
++    def expected_counts(self, observed_bin_edges_keV, exposure_kg_day):
++        bins = edges(observed_bin_edges_keV)
++        exposure = scalar(exposure_kg_day, 'exposure_kg_day')
++        with np.errstate(over='raise', invalid='raise'):
++            return output(exposure * self.rate_per_kg_day_keV_obs * np.diff(bins))
++
++
++@dataclass(frozen=True)
++class CallableBackground:
++    callback: Callable
++    policy: IntegrationPolicy = IntegrationPolicy()
++    breakpoints_keV_obs: tuple[float, ...] = ()
++    provenance: str = 'user-supplied; unverified'
++
++    def __post_init__(self):
++        if not callable(self.callback) or not isinstance(self.policy, IntegrationPolicy):
++            raise TypeError('background callback/policy invalid')
++        points = array(tuple(self.breakpoints_keV_obs), 'breakpoints_keV_obs', nonnegative=False)
++        if points.ndim != 1:
++            raise ValueError('breakpoints_keV_obs must be a vector')
++        object.__setattr__(self, 'breakpoints_keV_obs', tuple(points))
++        object.__setattr__(self, 'provenance', text(self.provenance, 'provenance'))
++
++    def differential_rate(self, E_obs_keV):
++        return elementwise(self.callback, E_obs_keV, 'background rate', nonnegative_input=False)
++
++    def expected_counts(self, observed_bin_edges_keV, exposure_kg_day):
++        bins = edges(observed_bin_edges_keV)
++        exposure = scalar(exposure_kg_day, 'exposure_kg_day')
++        if exposure == 0:
++            return np.zeros(len(bins)-1)
++        return output([exposure*self.policy.integrate(
++            lambda e: sample(self.callback, e, 'background rate'), lo, hi,
++            breakpoints=self.breakpoints_keV_obs) for lo, hi in zip(bins[:-1], bins[1:])])
++
++
++@dataclass(frozen=True)
++class BinnedBackground:
++    """Exact-edge binned input, with explicit exposure semantics.
++
++    normalization='per_unit_exposure': values in events/(kg day), no reference
++    exposure. normalization='fixed_expected_counts': values are events for the
++    required exposure_kg_day, and a different requested exposure is rejected.
++    """
++    observed_bin_edges_keV: tuple[float, ...]
++    values: tuple[float, ...]
++    normalization: str
++    exposure_kg_day: float | None = None
++    provenance: str = 'user-supplied; unverified'
++
++    def __post_init__(self):
++        bins = edges(self.observed_bin_edges_keV)
++        values = counts(self.values, 'background values')
++        if values.shape != (len(bins)-1,):
++            raise ValueError('background values must match observed bins')
++        mode = text(self.normalization, 'normalization')
++        if mode == 'per_unit_exposure':
++            if self.exposure_kg_day is not None:
++                raise ValueError('per-unit-exposure values must not specify a fixed exposure')
++        elif mode == 'fixed_expected_counts':
++            exposure = scalar(self.exposure_kg_day, 'exposure_kg_day')
++            if exposure == 0 and np.any(values > 0):
++                raise ValueError('nonzero fixed counts cannot represent zero exposure')
++            object.__setattr__(self, 'exposure_kg_day', exposure)
++        else:
++            raise ValueError('unknown background normalization')
++        object.__setattr__(self, 'observed_bin_edges_keV', tuple(bins))
++        object.__setattr__(self, 'values', tuple(values))
++        object.__setattr__(self, 'normalization', mode)
++        object.__setattr__(self, 'provenance', text(self.provenance, 'provenance'))
++
++    def expected_counts(self, observed_bin_edges_keV, exposure_kg_day):
++        bins = edges(observed_bin_edges_keV)
++        exposure = scalar(exposure_kg_day, 'exposure_kg_day')
++        if not np.array_equal(bins, self.observed_bin_edges_keV):
++            raise ValueError('binned background requires exact edges; no implicit rebinning')
++        if self.normalization == 'fixed_expected_counts':
++            if exposure != self.exposure_kg_day:
++                raise ValueError('fixed counts belong to a different exposure')
++            return np.array(self.values)
++        return output(np.asarray(self.values)*exposure)
++
++
++@dataclass(frozen=True)
++class CompositeBackground:
++    components: tuple[BackgroundModel, ...]
++
++    def __post_init__(self):
++        values = tuple(self.components)
++        if any(not callable(getattr(component, 'expected_counts', None)) for component in values):
++            raise TypeError('background components must implement expected_counts')
++        object.__setattr__(self, 'components', values)
++
++    def expected_counts(self, observed_bin_edges_keV, exposure_kg_day):
++        bins = edges(observed_bin_edges_keV)
++        exposure = scalar(exposure_kg_day, 'exposure_kg_day')
++        result = np.zeros(len(bins)-1)
++        for component in self.components:
++            values = counts(component.expected_counts(bins.copy(), exposure), 'background component counts')
++            if values.shape != result.shape:
++                raise ValueError('background component has incompatible count shape')
++            with np.errstate(over='raise', invalid='raise'):
++                result += values
++        return output(result)
+diff --git a/src/wimp_legend/statistics/__init__.py b/src/wimp_legend/statistics/__init__.py
+index e69de29bb2d1d6434b8b29ae775ad8c2e48c5391..6c95591a65ca5ed614c18181cb1121a62f1ab874 100644
+--- a/src/wimp_legend/statistics/__init__.py
++++ b/src/wimp_legend/statistics/__init__.py
+@@ -0,0 +1,6 @@
++"""Count-only replaceable statistical backends; exact counting vs asymptotic shape."""
++from .base import StatisticsBackend, LimitResult, RootPolicy
++from .counting import PoissonCLsCounting
++from .binned import BinnedPoissonProfile, FitResult
++__all__ = ['StatisticsBackend','LimitResult','RootPolicy','PoissonCLsCounting',
++           'BinnedPoissonProfile','FitResult']
+diff --git a/src/wimp_legend/statistics/base.py b/src/wimp_legend/statistics/base.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..c240f7552909eabad133b01b051dd61a7ff1b481
+--- /dev/null
++++ b/src/wimp_legend/statistics/base.py
+@@ -0,0 +1,125 @@
++"""Replaceable count-only statistical contracts and auditable numerical results."""
++from dataclasses import dataclass
++from math import fsum, isfinite
++from numbers import Integral
++from typing import Protocol
++import numpy as np
++from scipy.optimize import brentq
++from .._analysis import counts, scalar, text
++
++
++def data(signal, background, observed=None, *, asimov=False):
++    s, b = counts(signal, 'signal template'), counts(background, 'background template')
++    if s.shape != b.shape:
++        raise ValueError('signal and background must have identical shapes')
++    n = None if observed is None else counts(observed, 'observed counts', observed=not asimov)
++    if n is not None and n.shape != s.shape:
++        raise ValueError('observed counts must match expected-count shapes')
++    if n is not None and not asimov and np.any(n >= 2**53):
++        raise ValueError('observed counts exceed exact integer float precision')
++    return s, b, n
++
++
++def total(values):
++    try:
++        result = fsum(float(value) for value in values)
++    except OverflowError as exc:
++        raise ValueError('total expected counts overflow') from exc
++    if not isfinite(result):
++        raise ValueError('total counts are not finite')
++    return result
++
++
++def confidence(value, *, asymptotic=False):
++    value = scalar(value, 'confidence_level', positive=True)
++    if not (0.5 if asymptotic else 0) < value < 1:
++        raise ValueError('confidence_level outside supported interval')
++    return value
++
++
++@dataclass(frozen=True)
++class RootPolicy:
++    xtol: float = 1e-10
++    rtol: float = 1e-10
++    maxiter: int = 200
++    max_bracket_steps: int = 128
++
++    def __post_init__(self):
++        for name in ('xtol', 'rtol'):
++            object.__setattr__(self, name, scalar(getattr(self, name), name, positive=True))
++        if self.rtol < 4*np.finfo(float).eps:
++            raise ValueError('rtol must be at least four machine epsilons')
++        for name in ('maxiter', 'max_bracket_steps'):
++            value = getattr(self, name)
++            if isinstance(value, (bool, np.bool_)) or not isinstance(value, Integral) or value < 1:
++                raise ValueError(f'{name} must be a positive integer')
++            object.__setattr__(self, name, int(value))
++
++    def crossing(self, function, *, lower=0., initial=1.):
++        """Root of a bracketed increasing sign change; failures are explicit."""
++        lower = scalar(lower, 'root lower bound')
++        initial = scalar(initial, 'root initial step', positive=True)
++        left = float(function(lower))
++        if np.isnan(left) or left > 0:
++            raise ValueError('root lower bound does not bracket the accepted region')
++        if left == 0:
++            return lower
++        upper = lower + initial
++        for _ in range(self.max_bracket_steps):
++            if not isfinite(upper) or upper <= lower:
++                raise ValueError('root bracket is outside numerical range')
++            right = float(function(upper))
++            if np.isnan(right):
++                raise ValueError('root function returned NaN')
++            if right >= 0:
++                break
++            upper = lower + 2*(upper-lower)
++        else:
++            raise RuntimeError('failed to bracket statistical root')
++        root, result = brentq(function, lower, upper, xtol=self.xtol,
++                              rtol=self.rtol, maxiter=self.maxiter, full_output=True, disp=False)
++        if not result.converged or not isfinite(root):
++            raise RuntimeError('statistical root did not converge')
++        return float(root)
++
++
++@dataclass(frozen=True)
++class LimitResult:
++    mu_upper: float
++    method: str
++    construction: str
++    confidence_level: float
++    kind: str
++    approximation: str
++    status: str
++    converged: bool
++    reference_counts: tuple[float, ...] = ()
++    notes: tuple[str, ...] = ()
++    strength_convention: str = 'lambda_i = mu * S_i + B_i; S_i supplied at mu=1'
++
++    def __post_init__(self):
++        # Infinity is reserved for an explicitly insensitive zero template.
++        if self.mu_upper == np.inf and self.status != 'no_sensitivity':
++            raise ValueError('infinite limit requires no_sensitivity status')
++        if self.mu_upper != np.inf:
++            object.__setattr__(self, 'mu_upper', scalar(self.mu_upper, 'mu_upper'))
++        object.__setattr__(self, 'confidence_level', confidence(self.confidence_level))
++        for name in ('method','construction','kind','approximation','status','strength_convention'):
++            object.__setattr__(self, name, text(getattr(self,name), name))
++        if type(self.converged) is not bool:
++            raise ValueError('converged must be bool')
++        reference = tuple(scalar(x, 'reference count') for x in self.reference_counts)
++        object.__setattr__(self, 'reference_counts', reference)
++        object.__setattr__(self, 'notes', tuple(text(x, 'note') for x in self.notes))
++
++
++class StatisticsBackend(Protocol):
++    def observed_upper_limit(self, signal, background, observed, *, confidence_level=.90) -> LimitResult:
++        ...
++
++    def expected_upper_limit(self, signal, background, *, confidence_level=.90) -> LimitResult:
++        ...
++
++    def acceptance_margin(self, signal, background, observed, *, confidence_level=.90) -> float:
++        """Nonnegative means accepted; test supplied absolute signal at strength 1."""
++        ...
+diff --git a/src/wimp_legend/statistics/binned.py b/src/wimp_legend/statistics/binned.py
+index e69de29bb2d1d6434b8b29ae775ad8c2e48c5391..8d8202efb184c00c764962ba47107d2259dff39f 100644
+--- a/src/wimp_legend/statistics/binned.py
++++ b/src/wimp_legend/statistics/binned.py
+@@ -0,0 +1,136 @@
++"""Independent-bin Poisson shape likelihood and explicitly asymptotic limits."""
++from dataclasses import dataclass
++from math import isfinite, log1p
++import numpy as np
++from scipy.special import gammaln, xlogy
++from scipy.stats import norm
++from .._analysis import scalar
++from .base import LimitResult, RootPolicy, confidence, data, total
++
++
++def _means(mu,s,b):
++    mu = scalar(mu,'mu')
++    with np.errstate(over='raise', invalid='raise'):
++        means = mu*s+b
++    if np.any(~np.isfinite(means)) or (mu > 0 and np.any((s > 0) & (means == b))):
++        raise ValueError('signal mean increment is outside supported numerical precision')
++    return means
++
++
++def _log_likelihood(mu,s,b,n):
++    means = _means(mu,s,b)
++    if np.any((means == 0) & (n > 0)):
++        return -np.inf
++    with np.errstate(over='raise', invalid='raise'):
++        value = np.sum(xlogy(n,means)-means-gammaln(n+1))
++    if not isfinite(value):
++        raise ValueError('log likelihood outside numerical range')
++    return float(value)
++
++
++@dataclass(frozen=True)
++class FitResult:
++    mu_hat: float
++    log_likelihood: float
++    converged: bool
++    status: str
++
++
++@dataclass(frozen=True)
++class BinnedPoissonProfile:
++    """Known-background one-sided profile limits with q_mu=z_CL^2.
++
++    Asymptotic only; no exact coverage or sparse-count quantitative calibration.
++    The separate Asimov path uses fractional n=B explicitly. Actual observations
++    must be integer counts. No nuisance profiling or toy Monte Carlo is supplied.
++    """
++    root_policy: RootPolicy = RootPolicy()
++
++    def __post_init__(self):
++        if not isinstance(self.root_policy,RootPolicy):
++            raise TypeError('root_policy must be RootPolicy')
++
++    def log_likelihood(self, mu, signal, background, observed):
++        s,b,n = data(signal,background,observed)
++        return _log_likelihood(mu,s,b,n)
++
++    def _fit(self,s,b,n):
++        if np.any((n > 0) & (s == 0) & (b == 0)):
++            raise ValueError('observations have zero probability for every signal strength')
++        strength = total(s)
++        if strength == 0:
++            return FitResult(0.,_log_likelihood(0,s,b,n),True,'no_sensitivity')
++        def derivative(mu):
++            means = _means(mu,s,b)
++            if np.any((means == 0) & (s > 0) & (n > 0)):
++                return np.inf
++            positive = means > 0
++            with np.errstate(over='raise', invalid='raise', divide='raise'):
++                terms = np.zeros_like(s)
++                terms[positive] = s[positive]*n[positive]/means[positive]
++            return total(terms)-strength
++        if derivative(0.) <= 0:
++            mu = 0.
++        else:
++            mu = self.root_policy.crossing(lambda x:-derivative(x),
++                                           initial=max(1.,total(n))/strength)
++        return FitResult(mu,_log_likelihood(mu,s,b,n),True,'success')
++
++    def fit(self, signal, background, observed):
++        return self._fit(*data(signal,background,observed))
++
++    def _q(self,mu,s,b,n,fit):
++        mu = scalar(mu,'mu')
++        if fit.mu_hat > mu:
++            return 0.
++        if mu == fit.mu_hat:
++            return 0.
++        means, best = _means(mu,s,b),_means(fit.mu_hat,s,b)
++        terms = []
++        # Direct likelihood ratio with log1p; no subtraction of large log Ls.
++        for si,ni,mi,bi in zip(s,n,means,best):
++            delta = (mu-fit.mu_hat)*si
++            if bi == 0:
++                if ni > 0:
++                    raise ValueError('profile best fit has zero likelihood')
++                terms.append(float(mi))
++            elif mi == 0 and ni > 0:
++                return np.inf
++            else:
++                terms.append(float(delta-ni*log1p(delta/bi)))
++        from math import fsum
++        value = 2*fsum(terms)
++        if np.isnan(value) or value < 0:
++            raise ValueError('profile likelihood ratio lost numerical precision')
++        return value
++
++    def q_mu(self, mu, signal, background, observed):
++        s,b,n = data(signal,background,observed)
++        return self._q(mu,s,b,n,self._fit(s,b,n))
++
++    def acceptance_margin(self, signal, background, observed, *, confidence_level=.90):
++        cl = confidence(confidence_level,asymptotic=True)
++        return float(norm.ppf(cl))**2-self.q_mu(1.,signal,background,observed)
++
++    def _limit(self,s,b,n,cl,kind):
++        fit = self._fit(s,b,n)
++        strength = total(s)
++        if strength == 0:
++            limit, status = np.inf,'no_sensitivity'
++        else:
++            threshold = float(norm.ppf(cl))**2
++            limit = self.root_policy.crossing(lambda x:self._q(x,s,b,n,fit)-threshold,
++                lower=fit.mu_hat,initial=max(1.,total(n)**.5)/strength)
++            status = 'asymptotic_unvalidated'
++        return LimitResult(limit,'binned_poisson_profile',
++            'constrained mu_hat>=0; q_mu=0 when mu_hat>mu; q_mu=z_CL^2',cl,kind,
++            'asymptotic one-sided profile likelihood',status,True,tuple(n),
++            ('Sparse-count quantitative coverage unsupported/not validated; no nuisances or toys',))
++
++    def observed_upper_limit(self, signal, background, observed, *, confidence_level=.90):
++        s,b,n = data(signal,background,observed)
++        return self._limit(s,b,n,confidence(confidence_level,asymptotic=True),'observed')
++
++    def expected_upper_limit(self, signal, background, *, confidence_level=.90):
++        s,b,_ = data(signal,background)
++        return self._limit(s,b,b.copy(),confidence(confidence_level,asymptotic=True),'expected_asimov')
+diff --git a/src/wimp_legend/statistics/counting.py b/src/wimp_legend/statistics/counting.py
+index e69de29bb2d1d6434b8b29ae775ad8c2e48c5391..4bd0472cb57ce1fef887896792ccf6ff0f9d7b0e 100644
+--- a/src/wimp_legend/statistics/counting.py
++++ b/src/wimp_legend/statistics/counting.py
+@@ -0,0 +1,125 @@
++"""Exact known-background Poisson CLs, optionally collapsing bins to totals."""
++from dataclasses import dataclass
++from math import exp, isfinite, log, log1p
++import numpy as np
++from scipy.special import gammaln
++from scipy.stats import poisson
++from .._analysis import scalar
++from .base import LimitResult, RootPolicy, confidence, data, total
++
++
++def _log_tail_sum(n, mean):
++    """log(sum_{k=0}^n (n!/k!)*mean^(k-n)), mean>n.
++
++    Positive descending terms are summed until their contribution rounds away.
++    This avoids log-CDF underflow and large absolute exponent cancellation.
++    """
++    term, result = 1., 1.
++    for k in range(n, 0, -1):
++        term *= k/mean
++        previous = result
++        result += term
++        if result == previous:
++            return log(result)
++    return log(result)
++
++
++def _log_cdf(n, mean):
++    if mean == 0:
++        return 0.
++    if n == 0:
++        return -mean
++    value = float(poisson.logcdf(n, mean))
++    if isfinite(value):
++        return value
++    if mean <= n:
++        raise ValueError('Poisson CDF unsupported numerical range')
++    return -mean+n*log(mean)-float(gammaln(n+1))+_log_tail_sum(n,mean)
++
++
++def _log_cls_events(signal_events, background_events, n):
++    if signal_events == 0:
++        return 0.
++    if n == 0:
++        # Exact cancellation of known background, even when B+s rounds to B.
++        return -signal_events
++    mean = background_events + signal_events
++    if not isfinite(mean) or mean == background_events:
++        raise ValueError('Poisson mean increment is outside supported numerical precision')
++    if background_events > n:
++        return (-signal_events + n*log1p(signal_events/background_events)
++                + _log_tail_sum(n,mean)-_log_tail_sum(n,background_events))
++    return _log_cdf(n,mean)-_log_cdf(n,background_events)
++
++
++@dataclass(frozen=True)
++class PoissonCLsCounting:
++    """Known-background exact CLs; all supplied bins collapse into one count.
++
++    Default confidence .90 is explicit in each result. Expected sensitivity is
++    the smallest-integer Poisson .5 quantile, not n=B or a rounded Asimov count.
++    No nuisance uncertainty or bin shape information is used.
++    """
++    root_policy: RootPolicy = RootPolicy()
++
++    def __post_init__(self):
++        if not isinstance(self.root_policy, RootPolicy):
++            raise TypeError('root_policy must be RootPolicy')
++
++    def log_cls(self, mu, signal, background, observed):
++        s,b,n = data(signal,background,observed)
++        strength = scalar(mu, 'mu')
++        events = strength*total(s)
++        if not isfinite(events):
++            raise ValueError('signal event total overflows')
++        n_total = total(n)
++        if n_total >= 2**53:
++            raise ValueError('total observed count exceeds exact integer precision')
++        return _log_cls_events(events,total(b),int(n_total))
++
++    def acceptance_margin(self, signal, background, observed, *, confidence_level=.90):
++        cl = confidence(confidence_level)
++        return self.log_cls(1.,signal,background,observed)-log1p(-cl)
++
++    def _limit(self, signal, background, observed, cl, kind, notes=()):
++        s,b,n = data(signal,background,observed)
++        signal_total, bg, n_total = total(s),total(b),total(n)
++        if n_total >= 2**53:
++            raise ValueError('total observed count exceeds exact integer precision')
++        target = log1p(-cl)
++        if signal_total == 0:
++            limit, status = np.inf, 'no_sensitivity'
++        else:
++            # Solve in signal events, then convert to strength. This avoids
++            # bracket dependence on template normalization.
++            if n_total == 0:
++                events = -target
++            else:
++                events = self.root_policy.crossing(
++                    lambda x: target-_log_cls_events(x,bg,int(n_total)),
++                    initial=max(1.,n_total**.5))
++            limit = events/signal_total
++            if not isfinite(limit) or limit == 0:
++                raise ValueError('signal strength limit is outside numerical range')
++            status = 'success'
++        return LimitResult(limit,'poisson_cls_counting',
++            'P(N<=n|B+mu*S) / P(N<=n|B); known B; bins collapsed',cl,kind,
++            'exact discrete Poisson construction; numerical root',status,True,
++            tuple(n),tuple(notes))
++
++    def observed_upper_limit(self, signal, background, observed, *, confidence_level=.90):
++        return self._limit(signal,background,observed,confidence(confidence_level),'observed')
++
++    def expected_upper_limit(self, signal, background, *, confidence_level=.90):
++        s,b,_ = data(signal,background)
++        bg = total(b)
++        if bg >= 2**52:
++            raise ValueError('expected Poisson quantile outside supported integer precision')
++        n = float(poisson.ppf(.5,bg))
++        if not isfinite(n):
++            raise ValueError('Poisson median quantile failed')
++        # Check the declared discrete quantile, including means near a jump.
++        if poisson.cdf(n,bg) < .5 or (n > 0 and poisson.cdf(n-1,bg) >= .5):
++            raise ValueError('Poisson median quantile failed its discrete bracket')
++        return self._limit([total(s)],[bg],[n],confidence(confidence_level),'expected_median',
++                           ('N~Poisson(B); smallest integer n with CDF(n)>=0.5',))
+diff --git a/tests/test_backgrounds.py b/tests/test_backgrounds.py
+index e69de29bb2d1d6434b8b29ae775ad8c2e48c5391..bfa4078d25c5cbefbe2db68bc76e184f0d8c9a79 100644
+--- a/tests/test_backgrounds.py
++++ b/tests/test_backgrounds.py
+@@ -0,0 +1,64 @@
++from dataclasses import FrozenInstanceError
++import numpy as np
++import pytest
++from wimp_legend.backgrounds import (ZeroBackground, FlatBackground, CallableBackground,
++                                    BinnedBackground, CompositeBackground)
++
++
++def test_flat_zero_and_composite_analytic_counts():
++    bins=np.array([-.2,.1,.7,2.])
++    np.testing.assert_array_equal(ZeroBackground().expected_counts(bins,9),[0,0,0])
++    flat=FlatBackground(3)
++    np.testing.assert_allclose(flat.expected_counts(bins,9),27*np.diff(bins),rtol=1e-15)
++    components=[flat,FlatBackground(2)]
++    c=CompositeBackground(components);components.clear()
++    np.testing.assert_allclose(c.expected_counts(bins,9),45*np.diff(bins),rtol=1e-15)
++    assert len(c.components)==2
++    assert np.all(c.expected_counts(bins,0)==0)
++    assert np.all(CompositeBackground([]).expected_counts(bins,1)==0)
++
++
++def test_callable_rate_integral_scalar_array_breakpoint():
++    c=CallableBackground(lambda e:1 if e<.5 else 3,breakpoints_keV_obs=[.5])
++    np.testing.assert_allclose(c.expected_counts([0,1,2],4),[8,12],rtol=1e-14)
++    np.testing.assert_array_equal(c.differential_rate([0,1]),[1,3])
++    assert c.differential_rate(.2)==1
++    assert c.differential_rate([]).shape==(0,)
++    polynomial=CallableBackground(lambda e:2+e*e)
++    bins=np.array([0,.3,1.7])
++    np.testing.assert_allclose(polynomial.expected_counts(bins,2),2*np.diff(2*bins+bins**3/3),rtol=1e-14)
++
++
++def test_binned_modes_edges_exposure_and_ownership():
++    bins=np.array([0.,1.,3.]);values=np.array([2.,4.])
++    c=BinnedBackground(bins,values,'per_unit_exposure')
++    f=BinnedBackground(bins,values,'fixed_expected_counts',5,provenance='synthetic fixture')
++    bins[:]=9;values[:]=9
++    np.testing.assert_array_equal(c.expected_counts([0,1,3],5),[10,20])
++    np.testing.assert_array_equal(f.expected_counts([0,1,3],5),[2,4])
++    with pytest.raises(ValueError):f.expected_counts([0,1,3],6)
++    with pytest.raises(ValueError):c.expected_counts([0,2,3],5)
++    with pytest.raises(FrozenInstanceError):c.normalization='fixed_expected_counts'
++    with pytest.raises(ValueError):BinnedBackground([0,1],[2],'fixed_expected_counts')
++    with pytest.raises(ValueError):BinnedBackground([0,1],[2],'per_unit_exposure',5)
++    with pytest.raises(ValueError):BinnedBackground([0,1],[2],'fixed_expected_counts',0)
++
++
++@pytest.mark.parametrize('bad',[-1,np.nan,np.inf,True,1j,'1'])
++def test_bad_rates_and_exposures(bad):
++    with pytest.raises(ValueError):FlatBackground(bad)
++    with pytest.raises(ValueError):ZeroBackground().expected_counts([0,1],bad)
++    with pytest.raises(ValueError):CallableBackground(lambda e:bad).expected_counts([0,1],1)
++
++
++@pytest.mark.parametrize('values',[[1,2],[-1],[np.nan],[True],[]])
++def test_bad_binned_values(values):
++    with pytest.raises(ValueError):BinnedBackground([0,1],values,'per_unit_exposure')
++
++
++def test_background_provenance_and_callback_failures():
++    with pytest.raises(ValueError):CallableBackground(lambda e:1,provenance=np.array('mutable'))
++    with pytest.raises(ValueError):CallableBackground(lambda e:[1,2]).expected_counts([0,1],1)
++    class WrongShape:
++        def expected_counts(self,*args):return [1,2]
++    with pytest.raises(ValueError):CompositeBackground([WrongShape()]).expected_counts([0,1],1)
+diff --git a/tests/test_statistics.py b/tests/test_statistics.py
+index e69de29bb2d1d6434b8b29ae775ad8c2e48c5391..41ca8b685171c504a55f84a22c35d4ccb8a92f15 100644
+--- a/tests/test_statistics.py
++++ b/tests/test_statistics.py
+@@ -0,0 +1,172 @@
++"""Independent Poisson sums, elementary likelihoods, and synthetic shape tests."""
++from dataclasses import FrozenInstanceError
++from math import exp, factorial, lgamma, log, sqrt
++import numpy as np
++import pytest
++from scipy.optimize import brentq
++from scipy.stats import norm
++from wimp_legend.statistics import PoissonCLsCounting, BinnedPoissonProfile, RootPolicy
++
++
++def poisson_cdf_sum(n,mean):
++    return exp(-mean)*sum(mean**k/factorial(k) for k in range(n+1))
++
++
++@pytest.mark.parametrize('background',[0.,.3,12.,1000.,1e200])
++def test_exact_zero_observation_limit_known_background(background):
++    result=PoissonCLsCounting().observed_upper_limit([1],[background],[0])
++    assert result.mu_upper==pytest.approx(-log(.1),rel=2e-15)
++    assert result.method=='poisson_cls_counting'
++    assert result.confidence_level==.9 and result.kind=='observed' and result.converged
++    assert 'exact' in result.approximation
++    assert PoissonCLsCounting().log_cls(2,[1],[background],[0])==-2
++
++
++@pytest.mark.parametrize('n,bg',[(1,0.),(4,1.3),(6,5.),(20,25.)])
++def test_exact_cls_nonzero_observations_independent_sum(n,bg):
++    backend=PoissonCLsCounting()
++    root=brentq(lambda s:poisson_cdf_sum(n,bg+s)/poisson_cdf_sum(n,bg)-.1,0,100)
++    result=backend.observed_upper_limit([2],[bg],[n])
++    assert result.mu_upper==pytest.approx(root/2,rel=2e-10)
++    values=[backend.log_cls(x,[2],[bg],[n]) for x in [0,.1,1,5,10]]
++    assert values[0]==0 and np.all(np.diff(values)<0)
++    assert backend.acceptance_margin([2*result.mu_upper],[bg],[n])==pytest.approx(0,abs=2e-9)
++
++
++@pytest.mark.parametrize('background',[0.,.001,.5,.8,3.2,15.])
++def test_expected_median_discrete_poisson(background):
++    # Find smallest count with cumulative mass >= 1/2 from elementary probabilities.
++    cumulative=0.;n=0
++    while True:
++        cumulative+=exp(-background)*background**n/factorial(n)
++        if cumulative>=.5:break
++        n+=1
++    result=PoissonCLsCounting().expected_upper_limit([1],[background])
++    assert result.reference_counts==(float(n),)
++    root=brentq(lambda s:poisson_cdf_sum(n,background+s)/poisson_cdf_sum(n,background)-.1,0,100)
++    assert result.mu_upper==pytest.approx(root,rel=2e-10)
++    assert result.kind=='expected_median'
++    assert 'smallest integer' in result.notes[0]
++
++
++def test_large_background_logcdf_and_template_scale():
++    backend=PoissonCLsCounting()
++    # n=1: ratio=e^-s*(1+B+s)/(1+B), even when each CDF underflows.
++    bg=1e5
++    root=brentq(lambda s:-s+log((1+bg+s)/(1+bg))-log(.1),0,10)
++    assert backend.observed_upper_limit([1],[bg],[1]).mu_upper==pytest.approx(root,rel=2e-10)
++    high=backend.expected_upper_limit([1],[1e6])
++    assert high.mu_upper>1000 and np.isfinite(high.mu_upper)
++    tiny=backend.observed_upper_limit([1e-150],[0],[0])
++    assert tiny.mu_upper==pytest.approx(-log(.1)*1e150)
++    assert backend.observed_upper_limit([1,2],[3,4],[1,2]).mu_upper==pytest.approx(
++        backend.observed_upper_limit([3],[7],[3]).mu_upper)
++
++
++@pytest.mark.parametrize('backend',[PoissonCLsCounting(),BinnedPoissonProfile()])
++def test_zero_signal_explicit_no_sensitivity(backend):
++    result=backend.observed_upper_limit([0,0],[0,2],[0,1])
++    assert result.mu_upper==np.inf and result.status=='no_sensitivity' and result.converged
++    assert backend.expected_upper_limit([0],[0]).mu_upper==np.inf
++    with pytest.raises(FrozenInstanceError):result.method='other'
++
++
++@pytest.mark.parametrize('n,mean',[(0,0),(0,3),(2,3),(9,7)])
++def test_one_bin_log_likelihood(n,mean):
++    got=BinnedPoissonProfile().log_likelihood(0,[1],[mean],[n])
++    expected=0 if mean==0 and n==0 else n*log(mean)-mean-lgamma(n+1)
++    assert got==pytest.approx(expected,abs=2e-14)
++    assert BinnedPoissonProfile().log_likelihood(0,[1],[0],[1])==-np.inf
++
++
++@pytest.mark.parametrize('n,bg,signal',[(12,3.,2.),(2,3.,2.),(0,0.,1.),(9,0.,3.)])
++def test_one_bin_constrained_fit_and_likelihood_ratio(n,bg,signal):
++    backend=BinnedPoissonProfile()
++    muhat=max(0,(n-bg)/signal)
++    fit=backend.fit([signal],[bg],[n])
++    assert fit.mu_hat==pytest.approx(muhat,abs=2e-10) and fit.converged
++    for mu in [0.,.2,2.,10.]:
++        if mu<muhat:expected=0.
++        elif mu==muhat:expected=0.
++        else:
++            best=bg+muhat*signal;tested=bg+mu*signal
++            expected=2*(tested-best-(n*log(tested/best) if n else 0))
++        assert backend.q_mu(mu,[signal],[bg],[n])==pytest.approx(expected,rel=2e-10,abs=2e-11)
++
++
++def test_shape_independent_ratio_fit_and_one_sided_threshold():
++    backend=BinnedPoissonProfile()
++    signal=np.array([10.,40.]);background=np.array([100.,200.]);n=np.array([130,230])
++    fit=backend.fit(signal,background,n)
++    oracle=brentq(lambda m:sum(s*(ni/(m*s+b)-1) for s,b,ni in zip(signal,background,n)),0,10)
++    assert fit.mu_hat==pytest.approx(oracle,rel=1e-10)
++    mu=2.
++    expected=2*sum((mu-oracle)*s-ni*log((mu*s+b)/(oracle*s+b)) for s,b,ni in zip(signal,background,n))
++    assert backend.q_mu(mu,signal,background,n)==pytest.approx(expected,rel=2e-10)
++    result=backend.observed_upper_limit(signal,background,n)
++    assert backend.q_mu(result.mu_upper,signal,background,n)==pytest.approx(norm.ppf(.9)**2,rel=2e-10)
++    assert result.status=='asymptotic_unvalidated' and 'Sparse-count' in result.notes[0]
++
++
++def test_identical_shape_splitting_no_spurious_information():
++    backend=BinnedPoissonProfile()
++    collapsed=backend.observed_upper_limit([30],[300],[330])
++    split=backend.observed_upper_limit([10,20],[100,200],[110,220])
++    assert split.mu_upper==pytest.approx(collapsed.mu_upper,rel=1e-10)
++    assert backend.q_mu(2,[10,20],[100,200],[110,220])==pytest.approx(
++        backend.q_mu(2,[30],[300],[330]),rel=1e-11)
++
++
++def test_high_count_shape_improves_and_distinct_templates():
++    backend=BinnedPoissonProfile()
++    s=[100,0];b=[1000,9000];n=[1000,9000]
++    shape=backend.observed_upper_limit(s,b,n)
++    collapsed=backend.observed_upper_limit([100],[10000],[10000])
++    assert shape.mu_upper<collapsed.mu_upper/2.5
++    expected=brentq(lambda m:2*(m*100-1000*log(1+m*.1))-norm.ppf(.9)**2,1e-5,10)
++    assert shape.mu_upper==pytest.approx(expected,rel=1e-10)
++    assert backend.log_likelihood(1,[100,0],b,n)!=backend.log_likelihood(1,[0,100],b,n)
++    assert shape.mu_upper<PoissonCLsCounting().observed_upper_limit(s,b,n).mu_upper
++
++
++def test_asimov_fractional_counts_explicit_path():
++    backend=BinnedPoissonProfile()
++    s=[1.,2.];b=[.2,1.7]
++    result=backend.expected_upper_limit(s,b)
++    expected=brentq(lambda m:2*sum(m*si-bi*log(1+m*si/bi) for si,bi in zip(s,b))-
++                    norm.ppf(.9)**2,1e-6,20)
++    assert result.mu_upper==pytest.approx(expected,rel=1e-10)
++    assert result.kind=='expected_asimov' and result.reference_counts==tuple(b)
++    with pytest.raises(ValueError):backend.log_likelihood(1,s,b,b)
++    with pytest.raises(ValueError):backend.fit([0],[0],[1])
++
++
++@pytest.mark.parametrize('backend',[PoissonCLsCounting(),BinnedPoissonProfile()])
++@pytest.mark.parametrize('s,b,n',[
++    ([-1],[0],[0]),([np.nan],[0],[0]),([1],[np.inf],[0]),([1],[0],[-1]),
++    ([1],[0],[.2]),([1],[0],[True]),([1,2],[0],[0]),([1],[0],[0,1]),
++    ([],[],[]),([True],[0],[0]),([1],[0],[2**53]),
++])
++def test_invalid_statistical_data(backend,s,b,n):
++    with pytest.raises(ValueError):backend.observed_upper_limit(s,b,n)
++
++
++@pytest.mark.parametrize('cl',[0,1,-1,np.nan,np.inf,True])
++def test_invalid_confidence(cl):
++    for backend in [PoissonCLsCounting(),BinnedPoissonProfile()]:
++        with pytest.raises(ValueError):backend.expected_upper_limit([1],[1],confidence_level=cl)
++    with pytest.raises(ValueError):BinnedPoissonProfile().expected_upper_limit([1],[1],confidence_level=.5)
++
++
++def test_root_failures_and_data_ownership():
++    with pytest.raises(RuntimeError):RootPolicy(max_bracket_steps=1).crossing(lambda x:x-100)
++    with pytest.raises(RuntimeError):RootPolicy(maxiter=1).crossing(lambda x:x*x-2,initial=2)
++    with pytest.raises(ValueError):RootPolicy().crossing(lambda x:np.nan)
++    with pytest.raises(ValueError):RootPolicy().crossing(lambda x:x+1)
++    with pytest.raises(ValueError):RootPolicy(rtol=1e-20)
++    s=np.array([1.,2.]);b=np.array([4.,5.]);n=np.array([4,5])
++    before=[x.copy() for x in (s,b,n)]
++    result=PoissonCLsCounting().observed_upper_limit(s,b,n)
++    for x,y in zip((s,b,n),before):np.testing.assert_array_equal(x,y)
++    n[:]=100
++    assert result.reference_counts==(4.,5.)
+-- 
+2.51.1
+
+
+From cc1655f37566ac12ad834435666a1e4a2a4c262c Mon Sep 17 00:00:00 2001
+From: Codex <codex@openai.com>
+Date: Fri, 9 Oct 2026 08:15:53 -0400
+Subject: [PATCH 4/4] Connect generic sensitivity pipeline with synthetic
+ validation and contracts
+
+---
+ docs/BACKGROUNDS.md                           |  65 +++++
+ docs/DETECTOR_RESPONSE.md                     | 141 ++++++++++
+ ...ERIC_ANALYSIS_001_IMPLEMENTATION_REPORT.md | 261 ++++++++++++++++++
+ docs/SENSITIVITY.md                           |  80 ++++++
+ docs/STATISTICS.md                            | 149 ++++++++++
+ examples/generic_analysis.py                  |  46 +++
+ src/wimp_legend/detector/response.py          |  14 +-
+ src/wimp_legend/sensitivity.py                | 188 +++++++++++++
+ src/wimp_legend/statistics/base.py            |   4 +
+ src/wimp_legend/statistics/binned.py          |   4 +
+ src/wimp_legend/statistics/counting.py        |  13 +-
+ tests/test_detector.py                        |  24 ++
+ tests/test_sensitivity.py                     | 187 +++++++++++++
+ 13 files changed, 1168 insertions(+), 8 deletions(-)
+ create mode 100644 docs/BACKGROUNDS.md
+ create mode 100644 docs/DETECTOR_RESPONSE.md
+ create mode 100644 docs/GENERIC_ANALYSIS_001_IMPLEMENTATION_REPORT.md
+ create mode 100644 docs/SENSITIVITY.md
+ create mode 100644 docs/STATISTICS.md
+ create mode 100644 examples/generic_analysis.py
+ create mode 100644 tests/test_sensitivity.py
+
+diff --git a/docs/BACKGROUNDS.md b/docs/BACKGROUNDS.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..c6897c4d5394af3777cedcdc62bfc4de98ee8715
+--- /dev/null
++++ b/docs/BACKGROUNDS.md
+@@ -0,0 +1,65 @@
++# Generic observed-energy backgrounds
++
++No radioactive, cosmogenic, neutrino, or LEGEND spectrum is supplied. The
++existing radioactive/neutrino skeletons remain untouched. All empirical rates,
++shapes, normalizations, uncertainties and provenance are external inputs.
++
++The common `BackgroundModel.expected_counts(observed_bin_edges_keV,
++exposure_kg_day)` returns an owned one-dimensional ndarray of expected events,
++matching the detector count port. Differential rates are **events/(kg day
++keV_obs)**. For exposure X in kg day:
++
++\[
++B_j=X\int_{a_j}^{b_j}b(E_{\rm obs})\,dE_{\rm obs}.
++\]
++
++Finite negative reconstructed-energy edges are permitted. Edges must increase
++strictly; exposure is finite nonnegative. Counts and rate samples must be finite
++nonnegative; booleans, complex, malformed shapes and nonfinite inputs fail.
++Background rates already describe observed energy: detector efficiencies are
++not automatically applied again.
++
++## Public API (wimp_legend.backgrounds)
++
++| Model | Contract |
++| --- | --- |
++| `ZeroBackground()` | zero counts after validating bins/exposure |
++| `FlatBackground(rate_per_kg_day_keV_obs)` | counts = exposure × rate × bin width; explicit nonnegative rate |
++| `CallableBackground(callback,policy=IntegrationPolicy(),breakpoints_keV_obs=(),provenance='user-supplied; unverified')` | scalar rate callback integrated independently in each bin; `.differential_rate(E_obs_keV)` supports scalar/array/empty inputs |
++| `BinnedBackground(observed_bin_edges_keV,values,normalization,exposure_kg_day=None,provenance='user-supplied; unverified')` | exact-edge immutable binned input; explicit mode below |
++| `CompositeBackground(components)` | tuple-owned independent components summed bin by bin; empty tuple means zero |
++
++For `normalization='per_unit_exposure'`, values are **events/(kg day)** per bin,
++and a fixed exposure is forbidden. The requested exposure multiplies them.
++For `normalization='fixed_expected_counts'`, values are already **events**; an
++explicit reference exposure is required. A request at any other exposure raises
++ValueError; fixed values are never silently rescaled. Nonzero fixed counts at
++zero reference exposure are rejected. Binned models require exact edge equality;
++there is no implicit rebinning or interpolation.
++
++Stored edges, values, breakpoints, and component containers are immutable tuples.
++Returned arrays are independent copies. Custom component objects/callbacks must
++remain pure. The default provenance string explicitly marks an unverified input;
++replace it with a source/version/normalization description for real analyses.
++These descriptive records do not certify any empirical dataset. Keep original
++source data and uncertainty treatment separately with the analysis configuration.
++
++Callable models use `IntegrationPolicy` from the generic numerical utilities.
++IntegrationWarning is an error. Supply known narrow features/discontinuities in
++`breakpoints_keV_obs`; adaptive quadrature does not promise to discover them.
++Absolute tolerance has units events/(kg day), before exposure multiplication.
++No signal, detector, target, or interaction module is imported by this layer.
++
++```python
++from wimp_legend.backgrounds import *
++background = CompositeBackground([
++    FlatBackground(.2),
++    BinnedBackground([0,1,3], [.1,.4], 'per_unit_exposure',
++                     provenance='synthetic example'),
++])
++B = background.expected_counts([0,1,3], 10.)  # [3.,8.] expected events
++```
++
++The example is synthetic; an observed histogram is not automatically a known
++background template. Statistical inference here treats the supplied B as known;
++empirical uncertainty requires a future/external nuisance-aware backend.
+diff --git a/docs/DETECTOR_RESPONSE.md b/docs/DETECTOR_RESPONSE.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..4a68a618aeee25b833a17227d99f350b3b5bf650
+--- /dev/null
++++ b/docs/DETECTOR_RESPONSE.md
+@@ -0,0 +1,141 @@
++# Generic detector response
++
++No calibration, LEGEND enrichment, or physical nuclear dataset is supplied.
++Lindhard quenching and a Gaussian resolution are configurable phenomenological
++fallbacks. They are not an official LEGEND response. A collaboration may replace
++any protocol with its own pure implementation without subclassing these models.
++
++## Energy and count contract
++
++The input callable takes **E_nr_keV**, true nuclear recoil energy, and returns
++**events/(kg day keV_nr)**. Quenching maps it to a mean **E_ee_keV**, and
++resolution maps that mean to **E_obs_keV**, reconstructed energy. Bin counts are
++expected events, not a differential rate. Exposure is **kg day**.
++
++For exposure X, the normative fold is
++
++\[
++S_j=X\int_{E_{\rm nr,lo}}^{E_{\rm nr,hi}}r(E_{\rm nr})
++\epsilon_{\rm truth}(E_{\rm nr})
++\int_{a_j}^{b_j}K(E_{\rm obs}\mid E_{\rm nr})
++\epsilon_{\rm obs}(E_{\rm obs})\,dE_{\rm obs}\,dE_{\rm nr}.
++\]
++
++Truth energies must be finite nonnegative. Reconstructed bins may extend below
++zero: a Gaussian on the real line produces negative reconstructed outcomes.
++Bounds and bin edges are finite and strictly increasing. Truth range must be
++supplied explicitly; it is never inferred from observed bins. Events outside
++that truth range are excluded by the caller's model, and events outside the
++observed window remain lost. Neither loss is renormalized away.
++
++## Public API (wimp_legend.detector)
++
++| API | Inputs and meaning |
++| --- | --- |
++| `QuenchingModel.mean_energy_keV(E_nr_keV)` | scalar/array true keV -> same-shape mean electron-equivalent keV |
++| `ConstantQuenching(q)` | explicit 0<q<=1, E_ee=q E_nr; zero quenching unsupported |
++| `LindhardQuenching(Z,k)` | explicit positive integer Z and positive k; `quenching_factor(E_nr_keV)` also available |
++| `ResolutionModel.bin_probabilities(E_ee_mean_keV, observed_bin_edges_keV, *, observed_efficiency=None, policy=IntegrationPolicy(), observed_breakpoints=())` | shape mean.shape+(number of bins,), probabilities with optional observed efficiency integrated |
++| `NoSmearing()` | deterministic reconstruction at E_ee |
++| `GaussianResolution(sigma_keV)` | finite nonnegative constant keV or scalar callable of **E_ee_mean_keV**; `sigma_at(...)` preserves shape |
++| `Efficiency.__call__(energy_keV)` | probability in [0,1], same scalar/array shape |
++| `ConstantEfficiency(epsilon)` | explicit [0,1] |
++| `CallableEfficiency(callback)` | scalar callback evaluated elementwise, supporting scalar or array callers |
++| `DetectorResponse(quenching,resolution,truth_efficiency=None,observed_efficiency=None,policy=...,observed_breakpoints=())` | composed conditional response, no hidden quenching/resolution values |
++| `DetectorResponse.bin_probabilities(E_nr_keV, observed_bin_edges_keV)` | includes observed efficiency; truth efficiency is applied only during truth folding |
++| `CountResponse.expected_counts(truth_spectrum, observed_bin_edges_keV, exposure_kg_day, truth_energy_range_keV, *, truth_breakpoints=())` | common response port; returns owned one-dimensional expected-count ndarray |
++| `KernelResponse(kernel,includes_efficiency,truth_efficiency=None,policy=...)` | bin-integrated custom kernel port, callback(E_nr_keV, observed_edges) -> probability vector |
++| `MatrixResponse(truth_bin_edges_keV,observed_bin_edges_keV,matrix,includes_efficiency,within_bin_averaging,truth_efficiency=None,policy=...)` | fixed-edge matrix port; same expected_counts method |
++| `MatrixResponse.apply_truth_counts(truth_counts)` | already integrated truth-bin counts -> observed counts |
++| `IntegrationPolicy(epsrel=1e-8,epsabs=0,limit=300).integrate(callback,lower,upper,breakpoints=())` | finite positive-integrand adaptive quadrature; generic numerical utility |
++
++None means unit efficiency at that stage, not a calibration assumption. No
++input probability is silently clipped. Efficiency values have no tolerance:
++0<=epsilon<=1 is enforced. Callbacks are scalar-sampled; returned booleans,
++complex, nonscalar, negative or nonfinite values are rejected. Energy-array
++inputs including empty and zero-dimensional arrays are supported. Configuration
++numbers are owned floats/ints; array-like stored values become immutable tuples.
++Callable closures and external models remain caller-owned pure contracts: their
++captured mutable state cannot be deep-frozen by this interface.
++
++## Mathematical models
++
++The Lindhard fallback uses the formula supplied for GENERIC-ANALYSIS-001:
++
++\[
++\epsilon=11.5 E_{\rm nr,keV} Z^{-7/3},\qquad
++ g=3\epsilon^{0.15}+0.7\epsilon^{0.6}+\epsilon,\qquad
++ Q=\frac{kg}{1+kg},\qquad E_{\rm ee}=QE_{\rm nr}.
++\]
++
++The decimal coefficients define this phenomenological parametrization; no
++isotope-dependent k or empirical numbers are supplied. Zero recoil gives zero
++Q and mean. Positive Q is evaluated as `1/(1+(1/g)/k)` to avoid overflow of kg.
++
++Gaussian migration is a normal distribution with mean E_ee and sigma evaluated
++at that mean. Each bin probability is a normal-CDF difference. Bins in the
++positive standardized tail use survival-CDF differences to avoid cancellation
++near one. sigma=0 uses deterministic bins **[a,b)**; the final bin includes its
++right edge. This convention matters for point-like truth inputs; it has measure
++zero for regular differential spectra. No half-event splitting is used at a
++zero-width boundary.
++
++An arbitrary observed efficiency is integrated inside the bin after changing
++to its conditional normal-probability coordinate. It is not sampled only at a
++bin center. Constant efficiencies use the exact probability scaling shortcut.
++Known observed-efficiency jumps should be supplied in `observed_breakpoints`.
++True efficiency is sampled at E_nr, observed efficiency at E_obs.
++
++## Custom ports and ownership
++
++A kernel callback supplies the complete probability of reconstruction in each
++observed bin. `includes_efficiency` is a **required bool**. If true, adding a
++truth efficiency is rejected. If false, an optional truth efficiency may be
++applied separately. A separate observed efficiency is not accepted by a
++bin-integrated custom port: the callback must integrate it itself and declare
++ownership. `includes_efficiency=True` conservatively owns both stages.
++
++Matrix orientation is **M[j,i]**: observed bin j, truth bin i,
++`observed_counts = M @ truth_counts`. Entries are nonnegative and <=1;
++column sums must be <=1 within **8 machine epsilons** of probability roundoff.
++The same sum tolerance applies to custom kernel vectors; no renormalization is
++performed. Matrices are stored as immutable nested tuples. Edges must match
++exactly; no implicit rebinning. `expected_counts` requires the full matrix truth
++range to avoid an unstated partial-bin convention. The required nonempty
++`within_bin_averaging` text records how each column was obtained. A matrix with
++uniform-within-bin averages is not exact for arbitrary varying sub-bin spectra.
++Extra observed efficiency is unavailable for the same sub-bin-information reason.
++`apply_truth_counts` receives already integrated counts, including any separately
++owned truth acceptance; the caller must honor this count-level contract.
++
++## Numerics and example
++
++Both truth folding and observed-efficiency folding use adaptive scalar SciPy
++quadrature. `epsabs` has the units of each integral (before exposure for truth
++folding; dimensionless conditional efficiency average for observed folding).
++The returned count has events units. Relative tolerance must lie between 50
++machine epsilons and 1; limit is a positive subdivision budget.
++`IntegrationWarning` becomes an error. Nonfinite arithmetic fails explicitly.
++Known breakpoints are copied, sorted/deduplicated, and filtered to each interval.
++No guarantee is made that adaptive integration discovers arbitrary narrow
++features in user callbacks. Supply their breakpoints and verify convergence.
++
++For the two built-in monotone quenchers, deterministic bin crossings are split
++explicitly. Constant Gaussian widths also insert truth crossings at each
++observed edge and its +/-1,2,4,8 sigma positions. These are quadrature hints,
++**not Gaussian truncation**. Callable widths or custom kernels must supply
++additional truth breakpoints themselves. Repeated bin-by-bin folding is a
++transparent reference implementation, not an optimized response cache.
++Very extreme finite scales can still underflow intermediate integrands or fail;
++this layer is not arbitrary precision and does not extend the rate product fix.
++
++```python
++from wimp_legend.detector import *
++response = DetectorResponse(ConstantQuenching(.2), GaussianResolution(.1),
++                            observed_efficiency=ConstantEfficiency(.4))
++S = response.expected_counts(lambda E_nr_keV: 2., [0,.2,.6,1.2],
++                             exposure_kg_day=100., truth_energy_range_keV=(0,5))
++```
++
++All numbers in this example are synthetic choices, not experimental data.
++See `examples/generic_analysis.py` for the complete count-to-limit chain.
+diff --git a/docs/GENERIC_ANALYSIS_001_IMPLEMENTATION_REPORT.md b/docs/GENERIC_ANALYSIS_001_IMPLEMENTATION_REPORT.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..71fbf36212a06fcb14dc597d33f23b7944e25fab
+--- /dev/null
++++ b/docs/GENERIC_ANALYSIS_001_IMPLEMENTATION_REPORT.md
+@@ -0,0 +1,261 @@
++# GENERIC-ANALYSIS-001 implementation report
++
++**Coder implementation and verification; not independent certification.**
++Date: 2026-10-09. Repository: https://github.com/tiagocamison/WIMP-LEGEND.
++
++## Source identity and staged history
++
++The restored checkout's `refactor` and `origin/refactor` tips both exactly match
++**44c4f2523b83b926a8b11d153ebfd5d8d04531a5**, parent
++**efd56745fa5e35461122ae36afcfe105115061b1**. This is the exact audited base,
++not a newer unpinned substitute. Initial tracked/untracked repository status was
++clean. Work is isolated on **generic-analysis-001**, directly based on that SHA.
++No main/refactor mutation, push, merge or history rewrite is performed.
++
++Required architecture/rate/convention/resolution documents, relevant tests and
++all existing analysis skeletons were inspected before editing. The two audit
++reports were recovered from the supplied file collection. Their original test
++blocks were extracted outside the checkout and match the published SHA-256
++hashes. The existing detector/background/statistics tests and skeletons were
++empty. No nonempty inherited test was modified.
++
++Separate commits:
++
++1. **be9825f7350865bcb586934c50bd2c2e11b27532** — Phase-A rate range fix,
++   permanent reproducer, green regression gate and resolution record.
++2. **10fcb541575ba43c3a8ce01a7eef8087c9a37c56** — detector ports/models and
++   generic numerical/count validation utility, with 54 initial detector cases.
++3. **e6fc884a2cd9c89f36f1726c1a332d83d57507d2** — backgrounds and statistical
++   backends, with 15 background and 59 statistics cases.
++4. Final commit — sensitivity integration, scan metadata, narrow-window Gaussian
++   integration hints, eight additional detector cases, end-to-end tests, example
++   and documentation. Its exact SHA is supplied in the delivery message; this
++   report is itself included in that commit. `git rev-parse HEAD` identifies it
++   after checkout of the delivered branch/patch series.
++
++Unlike the squashed history discussed in RATE-AUDIT-002, this branch preserves
++an actual separately committed green Phase-A checkpoint before Phase B.
++
++## Phase A: original defect and closure
++
++Before edits: **492 repository tests pass**; original independent audit scripts
++**154 pass**, second rate audit **236 pass / 1 fails**. The failing original
++RATE-AUDIT-001 reproducer returns zero instead of
++**2.669722691466525e-291 events/(kg day keV)**. The area conversion erased a tiny
++natural-unit integral before the larger target-count factor could restore it.
++
++The final product uses frexp/ldexp mantissa/exponent arithmetic, with exactly
++these factors: natural speed-flux integral, (hbar c)^2, 1e-6 recoil Jacobian,
++c in cm/s, rho/m_chi, nuclei/kg, seconds/day. The mass division is incorporated
++separately so the density/mass ratio does not itself overflow/underflow first.
++Zero and signs are preserved. Genuine overflow and a nonzero result rounding to
++zero raise ValueError. Representable subnormals retain ordinary reduced relative
++precision. This does not fix upstream response/callback/quadrature underflow,
++ill-conditioned cancellation, or arbitrary-precision errors.
++
++Verified corrected output: **2.6697226914665258e-291**, within the original
++90-digit Decimal oracle's 1e-12 relative tolerance (absolute tolerance zero).
++The permanent original reproducer is copied verbatim, with its synthetic fixture,
++into tests/test_rate_product.py; additional scaling/sign/Decimal range tests are
++included. The original external scripts remain unchanged.
++
++At the Phase-A gate: **504 repository tests pass**, **154 old audit tests pass**,
++**237 rate-audit tests pass**, all `-W error`, before commit be9825f and before
++any Phase-B code. See RATE_AUDIT_002_RESOLUTION.md for commands and hashes.
++
++## Public API inventory and data flow
++
++Full signatures, units, semantics and examples are in the linked documents:
++
++| Layer | Public exports / operations | Detailed contract |
++| --- | --- | --- |
++| Detector | IntegrationPolicy; QuenchingModel, ConstantQuenching, LindhardQuenching; ResolutionModel, NoSmearing, GaussianResolution; Efficiency, ConstantEfficiency, CallableEfficiency; CountResponse, DetectorResponse, KernelResponse, MatrixResponse | [DETECTOR_RESPONSE.md](DETECTOR_RESPONSE.md) |
++| Detector methods | mean_energy_keV, quenching_factor, sigma_at, bin_probabilities, expected_counts, apply_truth_counts | truth/mean/reconstructed energies explicit; expected-count vector output |
++| Background | BackgroundModel, ZeroBackground, FlatBackground, CallableBackground, BinnedBackground, CompositeBackground; expected_counts, differential_rate | [BACKGROUNDS.md](BACKGROUNDS.md) |
++| Statistics | StatisticsBackend, RootPolicy, LimitResult, FitResult, PoissonCLsCounting, BinnedPoissonProfile | [STATISTICS.md](STATISTICS.md) |
++| Statistics methods | observed_upper_limit, expected_upper_limit, acceptance_margin, acceptance_metadata; log_cls; log_likelihood, fit, q_mu | exact counting and asymptotic shape independently named |
++| Sensitivity | SensitivityAnalysis, AnalysisResult, GridResult, ParameterScan, scan_parameter | [SENSITIVITY.md](SENSITIVITY.md) |
++| Sensitivity methods | observed_limit, expected_limit, expected_grid; accepted_sample_ranges | delegates models and count-level inference |
++| Existing rate | differential_rate_per_kg_day_keV API unchanged | final product arithmetic only |
++
++Dependency direction:
++
++- Detector/background/statistics depend on generic numerical/count utilities,
++  their own layer and NumPy/SciPy only.
++- Sensitivity depends on those ports and supplied callables/counts, without
++  importing rate/halo/target/interaction physics.
++- The rate/particle/foundation layers never import the new analysis layers.
++- Custom pure models/backends need no subclassing or mutable global registry.
++
++A shared output is an owned 1D ndarray of **expected events per observed bin**;
++immutable result records retain tuples. No general-purpose hierarchy, empirical
++registry, hidden mutable state or new numerical dependency is introduced.
++
++## Equations, units and frozen choices
++
++Input truth spectrum r: **events/(kg day keV_nr)**. Exposure X: **kg day**.
++E_nr is true nuclear keV, E_ee is quenched mean electron-equivalent keV, E_obs is
++reconstructed keV. Truth range is explicit and nonnegative; finite negative
++observed edges are legitimate Gaussian outcomes.
++
++\[
++S_j=X\int r(E_{\rm nr})\epsilon_{\rm truth}(E_{\rm nr})
++\int_{a_j}^{b_j}K(E_{\rm obs}\mid E_{\rm nr})\epsilon_{\rm obs}(E_{\rm obs})
++\,dE_{\rm obs}\,dE_{\rm nr}.
++\]
++
++Constant q is explicit in (0,1]; zero quenching is unsupported. Lindhard Z and k
++are explicit; the formula specified in the task is implemented with zero-recoil
++handling and no Ge k. Gaussian sigma is a constant or function of **E_ee_mean**,
++not E_nr or E_obs. Bin probabilities use CDF/survival differences, never window
++renormalization. Arbitrary observed efficiency is integrated inside each bin.
++Efficiencies are strictly [0,1]. Deterministic bins are [a,b), final upper edge
++included. Known monotone quenchers split bin crossings; constant Gaussian widths
++also supply scale-aware truth breakpoints, without truncating their tails.
++
++Custom kernel/matrix efficiency ownership is required explicitly. An embedded
++acceptance rejects an additional truth efficiency. Separate observed efficiency
++requires sub-bin information and belongs inside the supplied kernel/matrix.
++Matrix M[j,i] gives observed=M@truth_counts, column probabilities <=1 (8 eps
++sum roundoff tolerance, no renormalization). Its within-bin averaging description
++is required, and its exact edges/full truth range are enforced.
++
++Background differential rate b: **events/(kg day keV_obs)**;
++B_j=X integral_bin b dE_obs. Binned mode is explicitly per_unit_exposure or
++fixed_expected_counts at a required reference exposure. Fixed counts do not
++silently scale, and incompatible edges do not silently rebin.
++
++Statistics uses known finite nonnegative S/B, actual integer n, and
++lambda_i=mu*S_i+B_i. Confidence default .90 is recorded explicitly.
++Counting CLs=P(N<=n|B+mu*S)/P(N<=n|B), with root CLs=1-CL. It collapses bins,
++uses stable log-CDF/series arithmetic, and solves in signal events. Expected
++median uses the smallest integer Poisson .5 quantile, not n=B.
++
++Shape log L=sum(n log lambda-lambda-log(n!)); fit mu_hat>=0;
++q_mu=0 if mu_hat>mu, otherwise 2(log L_hat-log L_mu).
++One-sided asymptotic root q_mu=[Phi^-1(CL)]^2, CL>.5. Expected shape sensitivity
++uses explicitly fractional background-only Asimov n=B. Sparse-count coverage is
++unsupported/not validated; it is never presented as exact. Counting and shape
++are different constructions, not interchangeable approximations.
++
++A zero template produces infinity with explicit no_sensitivity status. Numeric
++fits/roots are bracketed and checked. A nonlinear signal_counts(theta) uses an
++explicit domain/grid and backend acceptance margin/metadata; all accepted
++samples are retained, including disconnected regions. No arbitrary crossing is
++reported as a unique upper limit. Between-point regions are unresolved.
++
++The analytic NREFT convention and nuclear provenance documents are unchanged.
++NREFT_CONVENTIONS.md SHA-256 remains
++**a2c57658add45b273ca082d8b01fbab7dd739f8625d6f04a438d619d4cf385cd**.
++No isotope masses/fractions, physical Ge responses, Wilson functions, nuclear
++normalizations or physical detector/background values are added.
++
++## Final validation and independent references
++
++Runtime: Python **3.12.14**, NumPy **2.3.5**, SciPy **1.17.0**, pytest **9.1.1**.
++Temporary pytest installation only; pyproject.toml is unchanged.
++
++| Suite | Exact final result |
++| --- | --- |
++| Repository, `python -m pytest -q -W error` with temporary dependency path | **655 passed**, 0 failures, 0 skips, 0 warnings |
++| Unchanged original pre-rate audit scripts | **154 passed**, 0 failures/skips/warnings |
++| Unchanged rate-audit script, including original false-zero reproducer | **237 passed**, 0 failures/skips/warnings |
++| Standalone synthetic example | successful; outputs counts, exact median CLs and approximate Asimov shape limits |
++| Frozen document hash, dependency AST checks, git diff whitespace check | pass |
++
++Final case accounting: 492 inherited +12 rate-product +62 detector +15
++background +59 statistics +15 sensitivity = **655**. The three previously empty
++analysis test files were filled; no inherited nonempty test/tolerance was altered.
++External audit total is 391, separately 154+237.
++
++New tests use elementary polynomial integrals, independent normal-CDF/PDF
++references, independent finite Poisson sums/recurrences, and elementary likelihood
++ratios. They do not obtain expected results from the production routine tested.
++Tests cover identity/quenching Jacobian/count conservation, scalar/array/empty
++energies, Lindhard zero and monotonicity, deterministic edges, narrow/broad/far-tail
++Gaussians and partial-window losses, constant/varying truth and observed
++acceptance, custom/matrix equivalence and ownership, binned exposure/edge rejection,
++composite backgrounds, exact CLs and discrete medians, high/low backgrounds,
++shape fits/ratios/one-sided thresholds, identical-shape splitting, high-count shape
++improvement, explicit Asimov handling, impossible observations, invalid inputs,
++root failures, warnings, immutable outputs, replaceable backends and nonlinear
++scans. Import boundaries and all inherited missing nuclear-entry gates remain green.
++
++The full pipeline oracle integrates a flat truth spectrum analytically against
++a Gaussian via F(z)=z Phi(z)+phi(z), then applies explicit acceptance/exposure.
++It derives B from flat rate×width×exposure, counting limits from independent
++Poisson recurrences, and shape limits from elementary Asimov likelihood ratios.
++A separate test adapts the existing synthetic NREFT fixture into a truth callable
++and compares folded bins with independent SI constants and the closed polynomial
++speed-PDF rate, without changing that rate kernel.
++
++One new narrow-source test initially disagreed because the *fixture's* nominal
++2*halfwidth differed from its actual rounded floating endpoints by about 8e-11
++relative. Its density was corrected to 1/(upper-lower), explicitly normalizing
++the supplied synthetic source. The analytic finite-width tolerance was not
++relaxed. A narrow observed-window case is retained to verify the Gaussian truth
++breakpoints prevent adaptive quadrature from missing its small support region.
++No production clipping, warning suppression, xfail, skip, or tolerance weakening
++was used to obtain the final results.
++
++Reproduction commands:
++
++```bash
++# From the checkout:
++PYTHONPATH=/tmp/wimp-legend-test-deps python -m pytest -q -W error
++PYTHONPATH=src python examples/generic_analysis.py
++# From the workspace (audit-repo symlink points to WIMP-LEGEND):
++PYTHONPATH=/tmp/wimp-legend-test-deps:WIMP-LEGEND/src python -m pytest -q -W error audit-work/test_independent.py audit-work/test_falsifications.py audit-work/test_rate_audit.py
++```
++
++The supplied example uses synthetic r=2 on [0,5] keV_nr, q=.2, sigma=.1 keV,
++truth/observed efficiencies .4/.6, flat b=3 and exposure 100 kg day. It returns
++S approximately **(38.6291621332,95.7960516547,95.7963946196)** and
++B **(60,120,180)**. Exact median counting mu_up approximately **0.1413434826**;
++asymptotic Asimov shape mu_up approximately **0.1063046078**. These numbers
++validate software assembly only; they are not physical sensitivity predictions.
++
++## Files changed
++
++- Rate closure: src/wimp_legend/rates/recoil.py,
++  tests/test_rate_product.py, docs/RATE_AUDIT_002_RESOLUTION.md.
++- Shared utility: src/wimp_legend/_analysis.py.
++- Detector: all five existing detector/*.py files, tests/test_detector.py,
++  docs/DETECTOR_RESPONSE.md.
++- Background: backgrounds/__init__.py and model.py, tests/test_backgrounds.py,
++  docs/BACKGROUNDS.md; radioactive.py/neutrinos.py unchanged.
++- Statistics: statistics/__init__.py, counting.py, binned.py; new base.py;
++  tests/test_statistics.py, docs/STATISTICS.md.
++- Sensitivity: src/wimp_legend/sensitivity.py, new tests/test_sensitivity.py,
++  docs/SENSITIVITY.md, examples/generic_analysis.py, this report.
++
++All other tracked files are unchanged. No dependencies or physical datasets added.
++
++## Remaining limits and independent-tester priorities
++
++1. This is coder verification, not a new independent audit. Independently review
++   the mathematical/statistical contracts, unit boundaries and numerical scope.
++2. Exact counting assumes known background. Shape limits are asymptotic diagnostic
++   results without sparse-count quantitative coverage. Collaboration likelihoods,
++   nuisances and low-count toy calibration remain external/future work. Expected
++   bands are omitted; expected shape is Asimov, counting is discrete median.
++3. Adaptive integration needs caller-supplied narrow-feature/discontinuity points.
++   Callable widths/custom models can introduce features the reference integration
++   does not discover automatically. Validate convergence for intended analyses.
++4. Matrices approximate sub-bin migration according to their declared averaging;
++   no exact arbitrary-spectrum guarantee or implicit rebinning is made. Review
++   efficiency ownership and truth coverage when supplying empirical models.
++5. Nonlinear scans cover only explicit grid points. A unique upper limit or
++   continuous parameter confidence set needs further assumptions/refinement;
++   the default shape alternative fit is along each supplied point's shape.
++6. Finite float support is not arbitrary precision. The final rate product fix
++   cannot restore upstream erased values. Extreme quadrature/likelihood means,
++   near-cancellation, subnormal precision and tiny-root tolerances remain bounded.
++   Very large Poisson counts can be expensive or explicitly unsupported.
++7. Pure callbacks/external objects may capture mutable caller state; immutable
++   wrappers cannot certify their purity or freeze calibration versions. Record
++   providers, configurations, source versions, exposures, ranges and numerical
++   policies with analyses. Existing nuclear-source provenance remains external.
++8. Physical Ge input, isotope/target counts, LEGEND calibration and backgrounds,
++   and real-data validation all require separate sourced milestones. No normative
++   nuclear convention or unresolved dataset normalization is resolved here.
+diff --git a/docs/SENSITIVITY.md b/docs/SENSITIVITY.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..6055509e2268a7bfb5d27d12e0a679a33c307316
+--- /dev/null
++++ b/docs/SENSITIVITY.md
+@@ -0,0 +1,80 @@
++# Generic sensitivity orchestration
++
++The driver delegates scientific models and statistical methods. It contains no
++NREFT response, isotope handling, matching, detector calibration or background
++physics. A truth provider may be any pure callable returning
++**events/(kg day keV_nr)**, including an explicit adapter to the existing rate
++function. No physical Ge data or LEGEND predictions are included.
++
++## Public API (wimp_legend.sensitivity)
++
++| API | Contract |
++| --- | --- |
++| `SensitivityAnalysis(response,background,backend)` | immutable holder of CountResponse, BackgroundModel, StatisticsBackend ports |
++| `.observed_limit(truth_spectrum,observed_bin_edges_keV,exposure_kg_day,truth_energy_range_keV,observed_counts,*,confidence_level=.90,truth_breakpoints=())` | fold supplied unit-strength signal and background, validate actual integer n, delegate observed limit |
++| `.expected_limit(truth_spectrum,observed_bin_edges_keV,exposure_kg_day,truth_energy_range_keV,*,confidence_level=.90,truth_breakpoints=())` | delegate backend-defined background-only expectation |
++| `.expected_grid(truth_spectra,observed_bin_edges_keV,exposures_kg_day,truth_energy_range_keV,*,confidence_level=.90,truth_breakpoints=())` | named mapping of callable templates crossed with exposure vector -> tuple of GridResult |
++| `AnalysisResult` | immutable signal/background count tuples, edges, exposure, truth range, and LimitResult |
++| `GridResult` | immutable template_id, exposure_kg_day, analysis |
++| `scan_parameter(signal_counts,*,parameter_domain,parameter_grid,background_counts,observed_counts,backend,confidence_level=.90)` | explicit nonlinear absolute-count scan; returns ParameterScan |
++| `ParameterScan` | owned tuples of domain, parameters, margins, accepted flags; method, construction, approximation, confidence, status and notes |
++| `.accepted_sample_ranges` | connected ranges of **accepted supplied samples**, not interpolated confidence intervals |
++
++The default linear path is **S_i(mu)=mu*S_i(1)**. It is a strength limit on a
++supplied template. It is not automatically a Wilson-coefficient/cross-section
++limit: physical parameters may interfere or affect spectral shapes nonlinearly.
++Every exposure is explicit in kg day and every integration truth range is
++explicit in keV_nr. Fixed-count backgrounds still enforce their reference
++exposure. A zero signal/exposure produces a no-sensitivity result, not a finite
++sensitivity claim. Custom count providers and statistics need no subclassing.
++
++## Nonlinear signal models
++
++`signal_counts(theta)` returns absolute expected observed-bin events. The
++explicit domain may include negative parameter values. The finite, strictly
++increasing grid must span that domain exactly; it defines the resolution of the
++scan. For each theta the backend tests the supplied signal at strength one.
++Its `acceptance_margin` must return a finite scalar, nonnegative if accepted,
++and `acceptance_metadata()` returns the method ID, test definition and
++approximation. These are preserved in ParameterScan. Actual observations remain
++integer counts and vectors must match.
++
++The scan makes no monotonicity assumption. It reports all accepted samples,
++including disconnected regions, and labels its status `completed_explicit_grid`.
++It does not call an arbitrary crossing a unique upper limit, and cannot rule
++out narrower allowed/excluded regions between samples. Refinement or a dedicated
++parameter-specific statistical construction is needed for continuous confidence
++regions. The built-in shape test profiles strength along each point's signal
++shape; it does not fit theta over the whole nonlinear model. External backends
++can define a more appropriate acceptance quantity without changing signal code.
++Nonlinear scans currently require actual observations; background-only expected
++limits are implemented for linear templates through each backend's own method.
++
++No mutable global state, cache, implicit flux/density factor, silent normalization
++or automatic convention conversion is introduced. Stored arrays/containers are
++owned tuples; arrays passed into external providers/backends are copies. External
++objects and callback closures must be pure, and their versions/configuration must
++be recorded by the analyst. Returned counts and statistical metadata do not
++replace source/calibration provenance.
++
++## Example
++
++```python
++from wimp_legend.detector import DetectorResponse, ConstantQuenching, NoSmearing
++from wimp_legend.backgrounds import ZeroBackground
++from wimp_legend.statistics import PoissonCLsCounting
++from wimp_legend.sensitivity import SensitivityAnalysis
++
++analysis = SensitivityAnalysis(
++    DetectorResponse(ConstantQuenching(1.), NoSmearing()),
++    ZeroBackground(), PoissonCLsCounting(),
++)
++result = analysis.expected_limit(lambda E_nr_keV: 3., [0,.2,1,2], 5., (0,2))
++# S=(3,12,15), B=(0,0,0), mu_up=2.302585092994046/30.
++```
++
++All values above are synthetic. Run `PYTHONPATH=src python
++examples/generic_analysis.py` for quenching, Gaussian resolution, truth and
++observed efficiencies, flat background, both expected-limit constructions, and
++a disconnected nonlinear scan. Consult DETECTOR_RESPONSE.md, BACKGROUNDS.md and
++STATISTICS.md for units, probability/exposure ownership and approximation limits.
+diff --git a/docs/STATISTICS.md b/docs/STATISTICS.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..7740cd0e18a38d32e36e274a9edff9944c018bc8
+--- /dev/null
++++ b/docs/STATISTICS.md
+@@ -0,0 +1,149 @@
++# Count-only statistical inference
++
++Statistics consumes bin counts, not energy spectra, detector objects, WIMP
++parameters or cross sections. Expected S/B vectors must be nonempty, finite,
++nonnegative and have identical one-dimensional shapes. Actual observed n must
++match and contain nonnegative integers (integer-valued floats are accepted).
++There is no background subtraction. Actual observed counts/totals >=2^53 are
++rejected because this float implementation cannot preserve integer precision.
++No physical likelihood, data, nuisance prior or collaboration method is supplied.
++
++## Public API (wimp_legend.statistics)
++
++| API | Meaning |
++| --- | --- |
++| `StatisticsBackend.observed_upper_limit(signal,background,observed,*,confidence_level=.90)` | supplied templates and actual observations -> `LimitResult` |
++| `StatisticsBackend.expected_upper_limit(signal,background,*,confidence_level=.90)` | background-only expected limit, construction defined by backend |
++| `StatisticsBackend.acceptance_margin(signal,background,observed,*,confidence_level=.90)` | test absolute supplied signal at mu=1; nonnegative means accepted |
++| `StatisticsBackend.acceptance_metadata()` | immutable `(method ID, construction, approximation)` for explicit parameter scans |
++| `PoissonCLsCounting(root_policy=RootPolicy())` | exact known-background counting CLs; bins collapse to totals |
++| `PoissonCLsCounting.log_cls(mu,signal,background,observed)` | natural log of the counting CLs ratio |
++| `BinnedPoissonProfile(root_policy=RootPolicy())` | known-background independent-bin likelihood, asymptotic one-sided limits |
++| `BinnedPoissonProfile.log_likelihood(mu,signal,background,observed)` | actual integer-count log likelihood |
++| `BinnedPoissonProfile.fit(signal,background,observed)` | constrained maximum likelihood -> `FitResult` |
++| `BinnedPoissonProfile.q_mu(mu,signal,background,observed)` | one-sided likelihood-ratio statistic |
++| `RootPolicy(xtol=1e-10,rtol=1e-10,maxiter=200,max_bracket_steps=128)` | finite bracket growth followed by checked Brent root |
++| `RootPolicy.crossing(function,lower=0,initial=1)` | increasing sign crossing; lower must be accepted/nonpositive; initial is a positive step |
++| `LimitResult` | immutable limit and method metadata; fields below |
++| `FitResult` | immutable mu_hat, log_likelihood, converged, status |
++
++`LimitResult` records `mu_upper`, `method`, `construction`, `confidence_level`,
++`kind`, `approximation`, `status`, `converged`, owned `reference_counts`, `notes`,
++and `strength_convention`. The common strength convention is **lambda_i =
++mu*S_i+B_i**, with S supplied at mu=1. The .90 default is visible in every
++result. Infinity is reserved for `status='no_sensitivity'` when S is identically
++zero. Bracket, precision and convergence failures raise errors, rather than
++returning an apparently converged limit. Inputs are copied; results own tuples.
++A collaboration backend can implement this protocol without subclassing either
++fallback, and must return a LimitResult identifying its own construction.
++
++## Exact Poisson CLs counting
++
++Let S=sum S_i, B=sum B_i, n=sum n_i. The construction is
++
++\[
++\lambda=B+\mu S,\qquad
++{\rm CL_s}(\mu)=\frac{P(N\le n\mid B+\mu S)}{P(N\le n\mid B)},\qquad
++{\rm CL_s}(\mu_{\rm up})=1-CL.
++\]
++
++Known B is fixed and nonnegative. Shape information is deliberately discarded.
++The result is an exact discrete Poisson CLs construction, with a numerical
++root; it is not a classical central interval or a Gaussian S/sqrt(B) estimate.
++Exact construction does not mean arbitrary-precision arithmetic or unqualified
++coverage after including unmodeled background uncertainty.
++
++For n=0 the background cancels analytically: CLs=exp(-mu*S), hence
++`mu_up=-log(1-CL)/S`; S=1, CL=.90 gives **2.302585092994046**. This also works
++with nonzero known B without subtracting large log-CDF exponents. More general
++CDFs use scipy.stats.poisson.logcdf with a positive descending-series fallback
++when it underflows. For B>n the common -B exponent is canceled analytically:
++
++\[
++\log CL_s=-s+n\log(1+s/B)+\log T_n(B+s)-\log T_n(B),\quad s=\mu S,
++\]
++
++where `T_n(lambda)=sum_{k=0}^n (n!/k!)*lambda^(k-n)`; the series is accumulated
++from its largest term until further positive terms no longer change the sum.
++This prevents erased CDF ratios in the tested large-background regime. Extremely
++large counts near their mean can make the series expensive. Nonrepresentable
++mean increments, strength results or totals are rejected. The root is solved in
++signal **events**, then divided by S to reduce template-scale dependence.
++
++The expected median is the distribution of limits under **N~Poisson(B)**.
++Because the counting limit increases with n, take the **smallest integer n whose
++Poisson CDF is >=.5**, and calculate that experiment's exact CLs limit. The
++quantile bracket is checked. This is not n=B or a rounded Asimov observation.
++The resulting kind is `expected_median`; reference_counts contains that one
++collapsed count. Means >=2^52 are rejected for this quantile calculation.
++Expected bands are not implemented in this milestone.
++
++The scan acceptance margin is `log CLs(1)-log(1-CL)`.
++
++## Independent-bin likelihood and asymptotic shape limits
++
++\[
++\lambda_i(\mu)=\mu S_i+B_i,\qquad
++\log L(\mu)=\sum_i[n_i\log\lambda_i-\lambda_i-\log(n_i!)].
++\]
++
++For n=0, lambda=0 the term is zero. For n>0, lambda=0 the likelihood is zero
++(log L=-infinity). If a positive observed bin has S=B=0, no strength has a
++nonzero likelihood and fitting/limits raise ValueError.
++
++Fit **mu_hat>=0** using the monotone likelihood score and a checked bracket.
++A nonpositive score at zero fixes the fit to zero. For testing mu,
++
++\[
++q_\mu=\begin{cases}0,&\hat\mu>\mu,\\
++2[\log L(\hat\mu)-\log L(\mu)],&\hat\mu\le\mu.\end{cases}
++\]
++
++The ratio is evaluated directly using log1p of mean increments, avoiding
++subtraction of large absolute log likelihoods. Negative ratios from lost
++precision are rejected, not clipped. The limit root above mu_hat satisfies
++
++\[
++q_{\mu_{\rm up}}=[\Phi^{-1}(CL)]^2.
++\]
++
++**CL must exceed .5** for this one-sided calibration. At .90,
++z=Phi^-1(.90)=1.28155, and z^2 approximately 1.64237; this is not the
++2.70554 two-sided chi-square threshold. Here Phi is the standard normal CDF.
++This backend is **asymptotic only**. Results explicitly say
++`status='asymptotic_unvalidated'` and note that **sparse-count quantitative
++coverage is unsupported/not validated**. No threshold silently switches it to
++another construction. High counts alone do not certify coverage for an arbitrary
++analysis. Nuisance profiling, exact low-count shape calibration, Monte-Carlo CLs,
++and uncertainty-aware collaboration likelihoods are future/external work.
++
++Background-only expected shape sensitivity uses the **Asimov dataset n_i=B_i**,
++including fractional values, only through `expected_upper_limit`. The kind is
++`expected_asimov`; the actual-observation methods still reject fractional data.
++This is an approximation, not a discrete median experiment. Counting and shape
++results differ both in information retained and interval construction.
++
++The scan acceptance margin is `z_CL^2-q_mu(1)`. For an arbitrary nonlinear
++signal model, its alternative fit is along each tested point's fixed signal
++shape; it is not a profile fit across that nonlinear parameter. A collaborator
++must supply a different backend if that is the required test.
++
++## Numerical scope and examples
++
++RootPolicy grows a bracket by powers of two, verifies signs, calls Brent with
++explicit tolerances/iteration budget, and checks convergence. No silent fallback
++is applied after failure. Absolute tolerance is in the solver coordinate:
++signal events for counting, mu for shape. Accuracy relative to a tiny root may
++require a smaller explicit xtol. Very extreme float scales and cancellation can
++still be unsupported; errors must be investigated. No arbitrary physical cutoff
++or Python warning suppression is introduced.
++
++```python
++from wimp_legend.statistics import PoissonCLsCounting, BinnedPoissonProfile
++exact = PoissonCLsCounting().observed_upper_limit([1.], [0.], [0])
++median = PoissonCLsCounting().expected_upper_limit([1.], [3.2])
++shape = BinnedPoissonProfile().expected_upper_limit([100.,0.], [1000.,9000.])
++```
++
++These are synthetic known-background templates. Retain the complete returned
++metadata and supplied S/B/observations with any reported result.
+diff --git a/examples/generic_analysis.py b/examples/generic_analysis.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..c1e07b9fdf1166d554c1971ee3fd92c43baec661
+--- /dev/null
++++ b/examples/generic_analysis.py
+@@ -0,0 +1,46 @@
++"""Run: PYTHONPATH=src python examples/generic_analysis.py
++
++Entirely synthetic; no Ge response, detector calibration, or experimental data.
++The supplied truth callable could instead adapt the existing generic rate API.
++"""
++from wimp_legend.detector import (
++    DetectorResponse, ConstantQuenching, GaussianResolution, ConstantEfficiency,
++)
++from wimp_legend.backgrounds import FlatBackground
++from wimp_legend.statistics import PoissonCLsCounting, BinnedPoissonProfile
++from wimp_legend.sensitivity import SensitivityAnalysis, scan_parameter
++
++
++def truth(E_nr_keV):
++    # Synthetic rate in events/(kg day keV_nr), used only within explicit [0,5].
++    return 2.0
++
++
++def main():
++    response = DetectorResponse(
++        ConstantQuenching(.2), GaussianResolution(.1),
++        truth_efficiency=ConstantEfficiency(.4),
++        observed_efficiency=ConstantEfficiency(.6),
++    )
++    background = FlatBackground(3.)  # synthetic events/(kg day keV_obs)
++    bins, exposure, truth_range = [0., .2, .6, 1.2], 100., (0., 5.)
++    for backend in (PoissonCLsCounting(), BinnedPoissonProfile()):
++        analysis = SensitivityAnalysis(response, background, backend)
++        result = analysis.expected_limit(truth, bins, exposure, truth_range)
++        print(result.limit.method, result.limit.kind)
++        print('signal counts:', result.signal_counts)
++        print('background counts:', result.background_counts)
++        print('mu upper:', result.limit.mu_upper, result.limit.approximation)
++        print('status:', result.limit.status, result.limit.notes)
++
++    scan = scan_parameter(
++        lambda theta: [5*(theta*theta-1)**2],
++        parameter_domain=(-3.,3.), parameter_grid=[-3.,-2.,-1.,0.,1.,2.,3.],
++        background_counts=[0.], observed_counts=[0], backend=PoissonCLsCounting(),
++    )
++    print('nonlinear accepted sample ranges:', scan.accepted_sample_ranges)
++    print(scan.notes)
++
++
++if __name__ == '__main__':
++    main()
+diff --git a/src/wimp_legend/detector/response.py b/src/wimp_legend/detector/response.py
+index 59af72f9d20282aa1929f3fa509589bd1f5081f2..a9829ba9c982c448ad1fec7448707986a61375c9 100644
+--- a/src/wimp_legend/detector/response.py
++++ b/src/wimp_legend/detector/response.py
+@@ -93,17 +93,23 @@ class DetectorResponse:
+                         truth_energy_range_keV, *, truth_breakpoints=()):
+         bins, exposure, interval, points = _inputs(truth_spectrum, observed_bin_edges_keV,
+             exposure_kg_day, truth_energy_range_keV, truth_breakpoints)
+-        # Split deterministic migration jumps for the two known monotone models.
+-        # Other quenching/resolution models must supply their own truth breakpoints.
++        # Split known migration edges; add width-scale points for a constant
++        # Gaussian so quadrature can discover narrow migration windows.
++        # These are breakpoints only: the Gaussian is never truncated.
+         deterministic = isinstance(self.resolution, NoSmearing) or (
+             isinstance(self.resolution, GaussianResolution) and
+             not callable(self.resolution.sigma_keV) and self.resolution.sigma_keV == 0)
+-        if deterministic and isinstance(
++        constant_gaussian = isinstance(self.resolution, GaussianResolution) and not callable(self.resolution.sigma_keV)
++        if (deterministic or constant_gaussian) and isinstance(
+                 self.quenching, (ConstantQuenching, LindhardQuenching)):
+             mean_lo = float(self.quenching.mean_energy_keV(interval[0]))
+             mean_hi = float(self.quenching.mean_energy_keV(interval[1]))
+             crossings = []
+-            for edge in bins[(bins > mean_lo) & (bins < mean_hi)]:
++            candidates = bins
++            if constant_gaussian and self.resolution.sigma_keV > 0:
++                offsets = np.array([-8.,-4.,-2.,-1.,0.,1.,2.,4.,8.])
++                candidates = (bins[:,None]+offsets*self.resolution.sigma_keV).ravel()
++            for edge in candidates[(candidates > mean_lo) & (candidates < mean_hi)]:
+                 if isinstance(self.quenching, ConstantQuenching):
+                     crossings.append(edge/self.quenching.q)
+                 else:
+diff --git a/src/wimp_legend/sensitivity.py b/src/wimp_legend/sensitivity.py
+index e69de29bb2d1d6434b8b29ae775ad8c2e48c5391..6e410f08135efe38c5aa57e2c0e291f4868da39c 100644
+--- a/src/wimp_legend/sensitivity.py
++++ b/src/wimp_legend/sensitivity.py
+@@ -0,0 +1,188 @@
++"""Thin count-level analysis orchestration, with no signal-physics assumptions."""
++from dataclasses import dataclass
++from collections.abc import Mapping
++from typing import Callable
++import numpy as np
++from ._analysis import array, counts, edges, scalar, text
++from .backgrounds import BackgroundModel
++from .detector import CountResponse
++from .statistics import LimitResult, StatisticsBackend
++from .statistics.base import confidence, data
++
++
++@dataclass(frozen=True)
++class AnalysisResult:
++    signal_counts: tuple[float, ...]
++    background_counts: tuple[float, ...]
++    observed_bin_edges_keV: tuple[float, ...]
++    exposure_kg_day: float
++    truth_energy_range_keV: tuple[float, float]
++    limit: LimitResult
++
++    def __post_init__(self):
++        s,b,_ = data(self.signal_counts,self.background_counts)
++        bins = edges(self.observed_bin_edges_keV)
++        interval = edges(self.truth_energy_range_keV, 'truth_energy_range_keV', nonnegative=True)
++        if len(bins)-1 != len(s) or len(interval) != 2:
++            raise ValueError('analysis result has incompatible edges/range/counts')
++        if not isinstance(self.limit,LimitResult):
++            raise TypeError('backend must return a LimitResult with construction metadata')
++        object.__setattr__(self,'signal_counts',tuple(s))
++        object.__setattr__(self,'background_counts',tuple(b))
++        object.__setattr__(self,'observed_bin_edges_keV',tuple(bins))
++        object.__setattr__(self,'truth_energy_range_keV',tuple(interval))
++        object.__setattr__(self,'exposure_kg_day',scalar(self.exposure_kg_day,'exposure_kg_day'))
++
++
++@dataclass(frozen=True)
++class GridResult:
++    template_id: str
++    exposure_kg_day: float
++    analysis: AnalysisResult
++
++    def __post_init__(self):
++        object.__setattr__(self,'template_id',text(self.template_id,'template_id'))
++        object.__setattr__(self,'exposure_kg_day',scalar(self.exposure_kg_day,'exposure_kg_day'))
++        if not isinstance(self.analysis,AnalysisResult):
++            raise TypeError('analysis must be an AnalysisResult')
++
++
++@dataclass(frozen=True)
++class SensitivityAnalysis:
++    response: CountResponse
++    background: BackgroundModel
++    backend: StatisticsBackend
++
++    def __post_init__(self):
++        for model,methods in [(self.response,('expected_counts',)),
++                              (self.background,('expected_counts',)),
++                              (self.backend,('observed_upper_limit','expected_upper_limit','acceptance_margin'))]:
++            if any(not callable(getattr(model,method,None)) for method in methods):
++                raise TypeError('analysis component does not implement its protocol')
++
++    def _counts(self,truth_spectrum,bins,exposure,interval,truth_breakpoints):
++        observed = edges(bins)
++        exposure = scalar(exposure,'exposure_kg_day')
++        interval = edges(interval,'truth_energy_range_keV',nonnegative=True)
++        if len(interval) != 2:
++            raise ValueError('truth_energy_range_keV needs two endpoints')
++        s = self.response.expected_counts(truth_spectrum,observed.copy(),exposure,
++                                         interval.copy(),truth_breakpoints=truth_breakpoints)
++        b = self.background.expected_counts(observed.copy(),exposure)
++        s,b,_ = data(s,b)
++        if len(s) != len(observed)-1:
++            raise ValueError('response/background count shape does not match bins')
++        return s,b,observed,exposure,interval
++
++    def observed_limit(self,truth_spectrum,observed_bin_edges_keV,exposure_kg_day,
++                       truth_energy_range_keV,observed_counts,*,confidence_level=.90,truth_breakpoints=()):
++        s,b,bins,exposure,interval = self._counts(truth_spectrum,observed_bin_edges_keV,
++            exposure_kg_day,truth_energy_range_keV,truth_breakpoints)
++        _,_,n = data(s,b,observed_counts)
++        limit = self.backend.observed_upper_limit(s.copy(),b.copy(),n.copy(),confidence_level=confidence_level)
++        return AnalysisResult(tuple(s),tuple(b),tuple(bins),exposure,tuple(interval),limit)
++
++    def expected_limit(self,truth_spectrum,observed_bin_edges_keV,exposure_kg_day,
++                       truth_energy_range_keV,*,confidence_level=.90,truth_breakpoints=()):
++        s,b,bins,exposure,interval = self._counts(truth_spectrum,observed_bin_edges_keV,
++            exposure_kg_day,truth_energy_range_keV,truth_breakpoints)
++        limit = self.backend.expected_upper_limit(s.copy(),b.copy(),confidence_level=confidence_level)
++        return AnalysisResult(tuple(s),tuple(b),tuple(bins),exposure,tuple(interval),limit)
++
++    def expected_grid(self,truth_spectra,observed_bin_edges_keV,exposures_kg_day,
++                      truth_energy_range_keV,*,confidence_level=.90,truth_breakpoints=()):
++        """Named supplied templates crossed with supplied exposures; no theory scan."""
++        if not isinstance(truth_spectra,Mapping):
++            raise TypeError('truth_spectra must map template IDs to callables')
++        templates = tuple((text(name,'template_id'),spectrum) for name,spectrum in truth_spectra.items())
++        exposures = array(exposures_kg_day,'exposures_kg_day')
++        if exposures.ndim != 1:
++            raise ValueError('exposures_kg_day must be a vector')
++        # Own iterator-valued breakpoints once, so every grid point sees them.
++        points = tuple(truth_breakpoints)
++        return tuple(GridResult(name,float(exposure),self.expected_limit(
++            spectrum,observed_bin_edges_keV,float(exposure),truth_energy_range_keV,
++            confidence_level=confidence_level,truth_breakpoints=points))
++            for name,spectrum in templates for exposure in exposures)
++
++
++@dataclass(frozen=True)
++class ParameterScan:
++    parameter_domain: tuple[float, float]
++    parameters: tuple[float, ...]
++    acceptance_margins: tuple[float, ...]
++    accepted: tuple[bool, ...]
++    confidence_level: float
++    method: str
++    construction: str
++    approximation: str
++    status: str = 'completed_explicit_grid'
++    notes: tuple[str, ...] = (
++        'Acceptance is evaluated only at supplied grid points; between-point crossings are unresolved',
++        'Accepted sample ranges are not continuous confidence intervals or a unique upper limit',
++        'Construction and coverage are defined by the supplied backend acceptance_margin',
++    )
++
++    def __post_init__(self):
++        domain = edges(self.parameter_domain,'parameter_domain',nonnegative=False)
++        grid = edges(self.parameters,'parameters',nonnegative=False)
++        margins = array(self.acceptance_margins,'acceptance_margins',nonnegative=False)
++        if len(domain) != 2 or grid[0] != domain[0] or grid[-1] != domain[-1] or margins.shape != grid.shape:
++            raise ValueError('scan arrays/domain are incompatible')
++        accepted = tuple(self.accepted)
++        if any(type(x) is not bool for x in accepted) or accepted != tuple(bool(x>=0) for x in margins):
++            raise ValueError('accepted flags must agree with margin signs')
++        object.__setattr__(self,'parameter_domain',tuple(domain))
++        object.__setattr__(self,'parameters',tuple(grid))
++        object.__setattr__(self,'acceptance_margins',tuple(margins))
++        object.__setattr__(self,'accepted',accepted)
++        object.__setattr__(self,'confidence_level',confidence(self.confidence_level))
++        for name in ('method','construction','approximation','status'):
++            object.__setattr__(self,name,text(getattr(self,name),name))
++        object.__setattr__(self,'notes',tuple(text(x,'note') for x in self.notes))
++
++    @property
++    def accepted_sample_ranges(self):
++        ranges, start = [],None
++        for i,accepted in enumerate(self.accepted):
++            if accepted and start is None:
++                start = i
++            if start is not None and (not accepted or i == len(self.accepted)-1):
++                end = i if accepted else i-1
++                ranges.append((self.parameters[start],self.parameters[end]))
++                start = None
++        return tuple(ranges)
++
++
++def scan_parameter(signal_counts: Callable, *, parameter_domain, parameter_grid,
++                   background_counts, observed_counts, backend: StatisticsBackend,
++                   confidence_level=.90):
++    """Explicit nonlinear count-model scan, without assuming monotonicity.
++
++    Each supplied signal_counts(theta) is tested at strength 1 by the backend.
++    For BinnedPoissonProfile its alternative fit is along that point's fixed
++    signal shape, not a profile fit over theta. Choose an external backend if
++    the intended nonlinear model needs another construction.
++    """
++    if not callable(signal_counts) or any(not callable(getattr(backend,name,None))
++            for name in ('acceptance_margin','acceptance_metadata')):
++        raise TypeError('signal_counts/backend must implement callable count/test contracts')
++    domain = edges(parameter_domain,'parameter_domain',nonnegative=False)
++    grid = edges(parameter_grid,'parameter_grid',nonnegative=False)
++    if len(domain) != 2 or grid[0] != domain[0] or grid[-1] != domain[-1]:
++        raise ValueError('parameter_grid must span the complete explicit parameter_domain')
++    b,n = counts(background_counts,'background counts'),counts(observed_counts,'observed counts',observed=True)
++    cl = confidence(confidence_level)
++    values = []
++    for parameter in grid:
++        s = counts(signal_counts(float(parameter)),'nonlinear signal counts')
++        s,b,_ = data(s,b,n)
++        margin = array(backend.acceptance_margin(s.copy(),b.copy(),n.copy(),confidence_level=cl),
++                       'acceptance margin',nonnegative=False)
++        if margin.ndim != 0:
++            raise ValueError('backend acceptance margin must be a finite scalar')
++        values.append(float(margin))
++    metadata = tuple(backend.acceptance_metadata())
++    if len(metadata) != 3:
++        raise ValueError('backend acceptance metadata needs method, construction, approximation')
++    return ParameterScan(tuple(domain),tuple(grid),tuple(values),tuple(x >= 0 for x in values),cl,*metadata)
+diff --git a/src/wimp_legend/statistics/base.py b/src/wimp_legend/statistics/base.py
+index c240f7552909eabad133b01b051dd61a7ff1b481..a0dfd1c220ab11c67e015eaeac9be5c0caa491cd 100644
+--- a/src/wimp_legend/statistics/base.py
++++ b/src/wimp_legend/statistics/base.py
+@@ -123,3 +123,7 @@ class StatisticsBackend(Protocol):
+     def acceptance_margin(self, signal, background, observed, *, confidence_level=.90) -> float:
+         """Nonnegative means accepted; test supplied absolute signal at strength 1."""
+         ...
++
++    def acceptance_metadata(self) -> tuple[str, str, str]:
++        """Return method ID, test construction, and approximation status for scans."""
++        ...
+diff --git a/src/wimp_legend/statistics/binned.py b/src/wimp_legend/statistics/binned.py
+index 8d8202efb184c00c764962ba47107d2259dff39f..bdb559c5d056f1ae9ff9e063618e6e61820264b3 100644
+--- a/src/wimp_legend/statistics/binned.py
++++ b/src/wimp_legend/statistics/binned.py
+@@ -112,6 +112,10 @@ class BinnedPoissonProfile:
+         cl = confidence(confidence_level,asymptotic=True)
+         return float(norm.ppf(cl))**2-self.q_mu(1.,signal,background,observed)
+ 
++    def acceptance_metadata(self):
++        return ('binned_poisson_profile', 'z_CL^2-q_mu(mu=1); alternative fit along supplied shape',
++                'asymptotic; sparse-count quantitative coverage unsupported/not validated')
++
+     def _limit(self,s,b,n,cl,kind):
+         fit = self._fit(s,b,n)
+         strength = total(s)
+diff --git a/src/wimp_legend/statistics/counting.py b/src/wimp_legend/statistics/counting.py
+index 4bd0472cb57ce1fef887896792ccf6ff0f9d7b0e..1ac5de187be9ce914fc6995a11722ef09ee8ba32 100644
+--- a/src/wimp_legend/statistics/counting.py
++++ b/src/wimp_legend/statistics/counting.py
+@@ -1,6 +1,6 @@
+ """Exact known-background Poisson CLs, optionally collapsing bins to totals."""
+ from dataclasses import dataclass
+-from math import exp, isfinite, log, log1p
++from math import isfinite, log, log1p
+ import numpy as np
+ from scipy.special import gammaln
+ from scipy.stats import poisson
+@@ -69,9 +69,10 @@ class PoissonCLsCounting:
+     def log_cls(self, mu, signal, background, observed):
+         s,b,n = data(signal,background,observed)
+         strength = scalar(mu, 'mu')
+-        events = strength*total(s)
+-        if not isfinite(events):
+-            raise ValueError('signal event total overflows')
++        signal_total = total(s)
++        events = strength*signal_total
++        if not isfinite(events) or (strength > 0 and signal_total > 0 and events == 0):
++            raise ValueError('signal event total is outside floating-point range')
+         n_total = total(n)
+         if n_total >= 2**53:
+             raise ValueError('total observed count exceeds exact integer precision')
+@@ -81,6 +82,10 @@ class PoissonCLsCounting:
+         cl = confidence(confidence_level)
+         return self.log_cls(1.,signal,background,observed)-log1p(-cl)
+ 
++    def acceptance_metadata(self):
++        return ('poisson_cls_counting', 'log CLs(mu=1)-log(1-CL); known B; bins collapsed',
++                'exact discrete Poisson construction')
++
+     def _limit(self, signal, background, observed, cl, kind, notes=()):
+         s,b,n = data(signal,background,observed)
+         signal_total, bg, n_total = total(s),total(b),total(n)
+diff --git a/tests/test_detector.py b/tests/test_detector.py
+index 5a40fe16188de94156f37f0f74a46352671432eb..9ac6e1accc60b289bb817ab78ab751a0ea782cce 100644
+--- a/tests/test_detector.py
++++ b/tests/test_detector.py
+@@ -169,3 +169,27 @@ def test_policy_warning_propagation(monkeypatch):
+     monkeypatch.setattr(module,'quad',warning)
+     with pytest.raises(IntegrationWarning):IntegrationPolicy().integrate(lambda e:1,0,1)
+     with pytest.raises(ValueError):IntegrationPolicy(epsrel=0)
++
++
++def test_energy_dependent_efficiencies_use_the_declared_stages():
++    detector=DetectorResponse(ConstantQuenching(.5),NoSmearing(),
++        truth_efficiency=CallableEfficiency(lambda E_nr:E_nr/2),
++        observed_efficiency=CallableEfficiency(lambda E_obs:E_obs))
++    # epsilon_truth*epsilon_obs=E_nr^2/4, edges map to E_nr=[0,.6,2].
++    expected=np.diff(np.array([0.,.6,2.])**3/12)
++    np.testing.assert_allclose(detector.expected_counts(lambda e:1,[0,.3,1],1,(0,2)),
++                               expected,rtol=2e-14)
++
++
++def test_weighted_gaussian_positive_tail_stays_nonzero():
++    expected=.5*quad(lambda z:exp(-z*z/2)/sqrt(2*pi),9,9.2,epsabs=0,epsrel=1e-12)[0]
++    actual=GaussianResolution(1).bin_probabilities(0,[9,9.2],
++        observed_efficiency=CallableEfficiency(lambda obs:.5))[0]
++    assert actual>0 and actual==pytest.approx(expected,rel=3e-14)
++
++
++@pytest.mark.parametrize('bad',[-1,np.nan,np.inf,True,'1',1j])
++def test_invalid_resolution_and_efficiency_parameters(bad):
++    with pytest.raises(ValueError):GaussianResolution(bad)
++    with pytest.raises(ValueError):ConstantEfficiency(bad)
++    with pytest.raises(ValueError):GaussianResolution(lambda mean:bad).bin_probabilities(1,[0,2])
+diff --git a/tests/test_sensitivity.py b/tests/test_sensitivity.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..39d4dfb2a8a7f76a0cceaca31132818e3cf16778
+--- /dev/null
++++ b/tests/test_sensitivity.py
+@@ -0,0 +1,187 @@
++"""Independent synthetic end-to-end analysis references; no real detector data."""
++from dataclasses import FrozenInstanceError
++from math import erf, exp, log, pi, sqrt
++import ast
++from pathlib import Path
++import numpy as np
++import pytest
++from scipy.optimize import brentq
++from scipy.stats import norm
++from wimp_legend.detector import (
++    DetectorResponse, ConstantQuenching, NoSmearing, GaussianResolution,
++    ConstantEfficiency, CallableEfficiency, KernelResponse,
++)
++from wimp_legend.backgrounds import ZeroBackground, FlatBackground, CallableBackground
++from wimp_legend.statistics import PoissonCLsCounting, BinnedPoissonProfile, LimitResult
++from wimp_legend.sensitivity import SensitivityAnalysis, scan_parameter, ParameterScan
++
++
++def normal_cdf(z):return .5*(1+erf(z/sqrt(2)))
++def normal_primitive(z):return z*normal_cdf(z)+exp(-z*z/2)/sqrt(2*pi)
++
++
++def flat_gaussian_counts(edges,*,q,sigma,length,rate,exposure,efficiency):
++    # Integrate the normal CDF analytically over a flat truth interval [0,length].
++    integral=lambda edge:sigma/q*(normal_primitive(edge/sigma)-normal_primitive((edge-q*length)/sigma))
++    return np.diff([integral(edge) for edge in edges])*rate*exposure*efficiency
++
++
++def cdf_by_recursion(n,mean):
++    term=exp(-mean);result=term
++    for k in range(1,n+1):term*=mean/k;result+=term
++    return result
++
++
++def test_identity_zero_background_observed_and_expected():
++    analysis=SensitivityAnalysis(DetectorResponse(ConstantQuenching(1),NoSmearing()),
++                                 ZeroBackground(),PoissonCLsCounting())
++    expected=analysis.expected_limit(lambda e:3,[0,.2,1,2],5,(0,2))
++    np.testing.assert_allclose(expected.signal_counts,[3,12,15],rtol=2e-14)
++    assert expected.limit.mu_upper==pytest.approx(-log(.1)/30)
++    observed=analysis.observed_limit(lambda e:3,[0,.2,1,2],5,(0,2),[0,0,0])
++    assert observed.limit.mu_upper==expected.limit.mu_upper
++    assert analysis.expected_limit(lambda e:3,[0,2],0,(0,2)).limit.status=='no_sensitivity'
++    with pytest.raises(FrozenInstanceError):expected.signal_counts=()
++
++
++def test_full_quenching_gaussian_efficiency_background_pipeline():
++    bins=[0.,.2,.6,1.2];exposure=100.
++    detector=DetectorResponse(ConstantQuenching(.2),GaussianResolution(.1),
++        truth_efficiency=ConstantEfficiency(.4),observed_efficiency=ConstantEfficiency(.6))
++    expected_signal=flat_gaussian_counts(bins,q=.2,sigma=.1,length=5,rate=2,
++                                         exposure=exposure,efficiency=.24)
++    expected_background=3*exposure*np.diff(bins)
++    for backend in [PoissonCLsCounting(),BinnedPoissonProfile()]:
++        result=SensitivityAnalysis(detector,FlatBackground(3),backend).expected_limit(
++            lambda e:2,bins,exposure,(0,5))
++        np.testing.assert_allclose(result.signal_counts,expected_signal,rtol=3e-12)
++        np.testing.assert_allclose(result.background_counts,expected_background,rtol=3e-15)
++        if isinstance(backend,PoissonCLsCounting):
++            bg=sum(expected_background)
++            n=0
++            while cdf_by_recursion(n,bg)<.5:n+=1
++            oracle=brentq(lambda m:cdf_by_recursion(n,bg+m*sum(expected_signal))/
++                         cdf_by_recursion(n,bg)-.1,0,5)
++            assert result.limit.kind=='expected_median'
++        else:
++            oracle=brentq(lambda m:2*sum(m*s-b*log(1+m*s/b) for s,b in
++                        zip(expected_signal,expected_background))-norm.ppf(.9)**2,1e-5,5)
++            assert result.limit.kind=='expected_asimov'
++        assert result.limit.mu_upper==pytest.approx(oracle,rel=2e-10)
++
++
++def test_narrow_truth_gaussian_migration_and_partial_window():
++    mean,halfwidth,sigma=1.2,1e-6,.2
++    d=DetectorResponse(ConstantQuenching(1),GaussianResolution(sigma))
++    bins=[-1.,1.1,1.2,1.6,4.]
++    interval=(mean-halfwidth,mean+halfwidth)
++    # Normalize to the actual floating endpoints, not their nominal difference.
++    density=1/(interval[1]-interval[0])
++    actual=d.expected_counts(lambda e:density,bins,1,interval)
++    expected=np.diff([normal_cdf((edge-mean)/sigma) for edge in bins])
++    # Finite uniform source vs delta limit: error bounded at O((halfwidth/sigma)^2).
++    np.testing.assert_allclose(actual,expected,atol=.2*(halfwidth/sigma)**2,rtol=0)
++    partial=d.expected_counts(lambda e:density,[1.1,1.2],1,interval)
++    assert sum(partial)<.2
++
++
++def test_narrow_migration_window_discovered_by_known_gaussian_breakpoints():
++    d=DetectorResponse(ConstantQuenching(1),GaussianResolution(1e-5))
++    actual=d.expected_counts(lambda e:1,[1.9,1.90001],1,(0,10))
++    assert actual[0]==pytest.approx(.00001,rel=3e-10)
++
++
++def test_nonconstant_observed_efficiency_full_fold_independent_integral():
++    from scipy.integrate import quad
++    detector=DetectorResponse(ConstantQuenching(.5),GaussianResolution(.2),
++        observed_efficiency=CallableEfficiency(lambda obs: .3 if obs<.4 else .7),
++        observed_breakpoints=[.4])
++    # Swap the two integrations. Truth E in [0,2], observed density is a difference
++    # of normal CDFs divided by q. Integrate efficiency in observed energy.
++    density=lambda obs:2*(normal_cdf(obs/.2)-normal_cdf((obs-1)/.2))
++    expected=3*(.3*quad(density,0,.4,epsabs=1e-12)[0]+
++                .7*quad(density,.4,1.3,epsabs=1e-12)[0])
++    actual=detector.expected_counts(lambda e:1,[0,1.3],3,(0,2))
++    assert actual[0]==pytest.approx(expected,rel=3e-11)
++
++
++def test_external_backends_and_custom_kernel_grid():
++    class CollaborationBackend:
++        def observed_upper_limit(self,s,b,n,*,confidence_level):
++            return LimitResult(7.,'synthetic_external','test-only construction',confidence_level,
++                               'observed','test-only','success',True,tuple(n))
++        def expected_upper_limit(self,s,b,*,confidence_level):
++            return LimitResult(11.,'synthetic_external','test-only construction',confidence_level,
++                               'expected','test-only','success',True)
++        def acceptance_margin(self,s,b,n,*,confidence_level):return 1-sum(s)
++        def acceptance_metadata(self):return ('synthetic_external','1-sum(S)','test-only')
++    kernel=KernelResponse(lambda e,bins:[.2,.6],True)
++    analysis=SensitivityAnalysis(kernel,CallableBackground(lambda e:1),CollaborationBackend())
++    grid=analysis.expected_grid({'one':lambda e:1,'two':lambda e:2},[0,1,3],[2,4],(0,1))
++    assert len(grid)==4 and all(point.analysis.limit.mu_upper==11 for point in grid)
++    np.testing.assert_allclose(grid[0].analysis.signal_counts,[.4,1.2],rtol=1e-14)
++    assert analysis.observed_limit(lambda e:1,[0,1,3],2,(0,1),[0,0]).limit.mu_upper==7
++    scan=scan_parameter(lambda t:[t*t],parameter_domain=(-2,2),parameter_grid=[-2,-1,0,1,2],
++        background_counts=[0],observed_counts=[0],backend=CollaborationBackend())
++    assert scan.accepted==(False,True,True,True,False)
++    assert scan.method=='synthetic_external'
++
++
++def test_nonmonotonic_parameter_scan_no_unique_upper_limit():
++    grid=np.linspace(-3,3,61)
++    result=scan_parameter(lambda t:[5*(t*t-1)**2],parameter_domain=(-3,3),parameter_grid=grid,
++        background_counts=[0],observed_counts=[0],backend=PoissonCLsCounting())
++    expected=tuple(5*(t*t-1)**2<=-log(.1) for t in grid)
++    assert result.accepted==expected and len(result.accepted_sample_ranges)==2
++    assert result.status=='completed_explicit_grid' and 'not continuous' in result.notes[1]
++    saved=result.parameters;grid[:]=0;assert result.parameters==saved
++    with pytest.raises(FrozenInstanceError):result.parameter_domain=(0,1)
++
++
++@pytest.mark.parametrize('kwargs',[
++    {'parameter_domain':(0,2),'parameter_grid':[0,1]},
++    {'parameter_grid':[0,0,1]}, {'parameter_domain':(0,0)},
++    {'observed_counts':[.5]}, {'background_counts':[np.nan]},
++    {'signal_counts':lambda t:[-1]},
++])
++def test_invalid_parameter_scan(kwargs):
++    inputs=dict(signal_counts=lambda t:[t],parameter_domain=(0,1),parameter_grid=[0,.5,1],
++                background_counts=[0],observed_counts=[0],backend=PoissonCLsCounting())
++    inputs.update(kwargs)
++    with pytest.raises(ValueError):scan_parameter(**inputs)
++
++
++def test_existing_nreft_rate_as_supplied_truth_adapter():
++    from test_rates import synthetic,polynomial_pdf
++    from wimp_legend.rates import differential_rate_per_kg_day_keV,NREFTRateConfig
++    from wimp_legend.interactions import WilsonCoefficients
++    dataset=synthetic({('M',0,0):(1,)})
++    rate=lambda e:differential_rate_per_kg_day_keV(e,m_chi_GeV=5,rho_chi_GeV_cm3=.3,
++        targets_per_kg=1e25,dataset=dataset,coefficients=WilsonCoefficients({1:(2e-7,0)}),
++        j_chi=.5,config=NREFTRateConfig(1),speed_pdf=polynomial_pdf(.01),beta_max=.01)
++    detector=DetectorResponse(ConstantQuenching(1),NoSmearing())
++    actual=detector.expected_counts(rate,[0,1,3],2,(0,3))
++    # Independent SI + eta(Er)=3/(2L)*(1-Er/Emax); constant W and J=.5.
++    mu=5*10/(5+10);endpoint=2*mu**2*.01**2/10*1e6
++    hc=6.62607015e-34*29979245800/(2*pi*1.602176634e-10)
++    prefactor=1e25*.3/5*hc**2*1e-6*29979245800*86400*10*(2e-7)**2*3/(2*.01)
++    primitive=lambda e:prefactor*(e-e*e/(2*endpoint))
++    np.testing.assert_allclose(actual,2*np.diff([primitive(e) for e in [0,1,3]]),rtol=4e-12)
++
++
++def test_new_dependency_boundaries():
++    root=Path(__file__).resolve().parents[1]/'src/wimp_legend'
++    for area in ('detector','backgrounds','statistics'):
++        forbidden={'rates','halo','targets','interactions','kinematics','sensitivity'}
++        if area!='detector':forbidden.add('detector')
++        if area!='backgrounds':forbidden.add('backgrounds')
++        if area!='statistics':forbidden.add('statistics')
++        for path in (root/area).glob('*.py'):
++            for node in ast.walk(ast.parse(path.read_text())):
++                names=[x.name for x in node.names] if isinstance(node,ast.Import) else [node.module or ''] if isinstance(node,ast.ImportFrom) else []
++                for name in names:assert not set(name.split('.'))&forbidden,(path,name)
++    for area in ('rates','interactions'):
++        for path in (root/area).glob('*.py'):
++            for node in ast.walk(ast.parse(path.read_text())):
++                if isinstance(node,ast.ImportFrom):
++                    assert not set((node.module or '').split('.'))&{'detector','backgrounds','statistics','sensitivity'}
+-- 
+2.51.1
+

@@ -6,7 +6,7 @@ All 32 canonical nuclear entries are required, including explicit known zeros.
 """
 
 from dataclasses import dataclass
-from math import isfinite, pi
+from math import frexp, isfinite, ldexp, pi
 from numbers import Real
 import warnings
 
@@ -52,6 +52,35 @@ def _output(value):
     if np.any(~np.isfinite(value)):
         raise ValueError('rate assembly produced nonfinite values')
     return float(value) if np.ndim(value) == 0 else np.array(value, copy=True)
+
+
+def _scaled_product(*factors, divisor=1.0):
+    """Multiply finite factors with a positive divisor, rounding scale once.
+
+    Exact zero stays zero; signed factors retain their sign. Overflow and a
+    nonzero product rounding to zero are explicit range errors. Representable
+    subnormals are returned with their inherently reduced relative precision.
+    This cannot recover information already lost in the supplied factors.
+    """
+    if any(factor == 0 for factor in factors):
+        return 0.0
+    mantissa, exponent = 1.0, 0
+    for factor in factors:
+        part, power = frexp(float(factor))
+        mantissa *= part
+        mantissa, shift = frexp(mantissa)
+        exponent += power + shift
+    part, power = frexp(divisor)
+    mantissa /= part
+    mantissa, shift = frexp(mantissa)
+    exponent += shift - power
+    try:
+        result = ldexp(mantissa, exponent)
+    except OverflowError as exc:
+        raise ValueError('final rate product overflows floating-point range') from exc
+    if not isfinite(result) or result == 0:
+        raise ValueError('nonzero final rate product is outside floating-point range')
+    return result
 
 
 @dataclass(frozen=True)
@@ -256,8 +285,7 @@ def differential_rate_per_kg_day_keV(
         integral = integrate_speed_flux(speed_pdf, cross_section, beta_min=float(minimum[index]),
                                         beta_max=upper, breakpoints=points,
                                         epsrel=relative, epsabs=absolute)
-        with np.errstate(over='raise', invalid='raise'):
-            # Apply the area/Jacobian conversion before the large target count.
-            physical_flux = integral * GEV_MINUS2_TO_CM2 * KEV_TO_GEV * C_CM_S
-            result[index] = physical_flux * (density / mass) * count * SECONDS_PER_DAY
+        result[index] = _scaled_product(
+            integral, GEV_MINUS2_TO_CM2, KEV_TO_GEV, C_CM_S,
+            density, count, SECONDS_PER_DAY, divisor=mass)
     return _output(result)
