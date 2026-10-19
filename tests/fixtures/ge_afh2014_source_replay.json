@@ -1,0 +1,8472 @@
+{
+  "source_sha256": "943a403e216633840887bbfcbec55c56e0c5813b86335b49868acb89e74a49b9",
+  "interpreter": "Mathics3 10.0.1",
+  "scope": "original single-particle expressions evaluated at two positive y; Python p/n assembly and explicit canonical map",
+  "limitations": "shares SymPy angular backend; not commercial Mathematica or independent shell-model validation",
+  "cutsum": 5,
+  "triangle_bound": "g<=l+1<=5",
+  "single_particle": [
+    {
+      "operator": "Delta",
+      "quantum": [
+        0,
+        1,
+        0,
+        1,
+        0
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        0,
+        1,
+        0,
+        1,
+        0
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        1,
+        1,
+        1,
+        1,
+        0
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        1,
+        1,
+        1,
+        1,
+        0
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        1,
+        3,
+        1,
+        3,
+        0
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        1,
+        3,
+        1,
+        3,
+        0
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        2,
+        1,
+        2,
+        1,
+        0
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        2,
+        1,
+        2,
+        1,
+        0
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        2,
+        3,
+        2,
+        3,
+        0
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        2,
+        3,
+        2,
+        3,
+        0
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        2,
+        5,
+        2,
+        5,
+        0
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        2,
+        5,
+        2,
+        5,
+        0
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        1,
+        3,
+        1,
+        0
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        1,
+        3,
+        1,
+        0
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        1,
+        3,
+        1,
+        1
+      ],
+      "y": 1.0,
+      "value": -0.4000000000000014
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        1,
+        3,
+        1,
+        1
+      ],
+      "y": 0.25,
+      "value": -0.5500000000000023
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        1,
+        3,
+        3,
+        1
+      ],
+      "y": 1.0,
+      "value": 0.282842712474621
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        1,
+        3,
+        3,
+        1
+      ],
+      "y": 0.25,
+      "value": 0.38890872965260415
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        1,
+        3,
+        3,
+        2
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        1,
+        3,
+        3,
+        2
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        1,
+        3,
+        5,
+        2
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        1,
+        3,
+        5,
+        2
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        1,
+        3,
+        5,
+        3
+      ],
+      "y": 1.0,
+      "value": 0.20158105227158885
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        1,
+        3,
+        5,
+        3
+      ],
+      "y": 0.25,
+      "value": 0.08819171036882006
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        3,
+        3,
+        1,
+        1
+      ],
+      "y": 1.0,
+      "value": -0.282842712474621
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        3,
+        3,
+        1,
+        1
+      ],
+      "y": 0.25,
+      "value": -0.38890872965260415
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        3,
+        3,
+        1,
+        2
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        3,
+        3,
+        1,
+        2
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        3,
+        3,
+        3,
+        0
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        3,
+        3,
+        3,
+        0
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        3,
+        3,
+        3,
+        1
+      ],
+      "y": 1.0,
+      "value": -0.6324555320336782
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        3,
+        3,
+        3,
+        1
+      ],
+      "y": 0.25,
+      "value": -0.8696263565463082
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        3,
+        3,
+        3,
+        2
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        3,
+        3,
+        3,
+        2
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        3,
+        3,
+        5,
+        1
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        3,
+        3,
+        5,
+        1
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        3,
+        3,
+        5,
+        2
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        3,
+        3,
+        5,
+        2
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        3,
+        3,
+        5,
+        3
+      ],
+      "y": 1.0,
+      "value": 0.22537446792760493
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        3,
+        3,
+        5,
+        3
+      ],
+      "y": 0.25,
+      "value": 0.09860132971832714
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        3,
+        3,
+        5,
+        4
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        3,
+        3,
+        5,
+        4
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        5,
+        3,
+        1,
+        2
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        5,
+        3,
+        1,
+        2
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        5,
+        3,
+        1,
+        3
+      ],
+      "y": 1.0,
+      "value": 0.20158105227158815
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        5,
+        3,
+        1,
+        3
+      ],
+      "y": 0.25,
+      "value": 0.0881917103688201
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        5,
+        3,
+        3,
+        1
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        5,
+        3,
+        3,
+        1
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        5,
+        3,
+        3,
+        2
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        5,
+        3,
+        3,
+        2
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        5,
+        3,
+        3,
+        3
+      ],
+      "y": 1.0,
+      "value": -0.22537446792760418
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        5,
+        3,
+        3,
+        3
+      ],
+      "y": 0.25,
+      "value": -0.09860132971832718
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        5,
+        3,
+        3,
+        4
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        5,
+        3,
+        3,
+        4
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        0
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        0
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        1
+      ],
+      "y": 1.0,
+      "value": -1.0624796345158498
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        1
+      ],
+      "y": 0.25,
+      "value": -2.7286408795520676
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        2
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        2
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        3
+      ],
+      "y": 1.0,
+      "value": 1.0327955589886484
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        3
+      ],
+      "y": 0.25,
+      "value": 0.313527223264411
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        4
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        4
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        5
+      ],
+      "y": 1.0,
+      "value": -0.15772927070682416
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        5
+      ],
+      "y": 0.25,
+      "value": -0.00985807941917651
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        7,
+        3,
+        7,
+        0
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        3,
+        7,
+        3,
+        7,
+        0
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        0
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        0
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        1
+      ],
+      "y": 1.0,
+      "value": -0.670580042907385
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        1
+      ],
+      "y": 0.25,
+      "value": -4.116364655279456
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        2
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        2
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        3
+      ],
+      "y": 1.0,
+      "value": 1.8212173748228295
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        3
+      ],
+      "y": 0.25,
+      "value": 0.6810272598648927
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        4
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        4
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        5
+      ],
+      "y": 1.0,
+      "value": -0.547879996576516
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        5
+      ],
+      "y": 0.25,
+      "value": -0.03891193157503664
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        6
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        6
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        7
+      ],
+      "y": 1.0,
+      "value": 0.06305477944195126
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        7
+      ],
+      "y": 0.25,
+      "value": 0.0009852309287804886
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        8
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        8
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        9
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Delta",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        9
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        0,
+        1,
+        0,
+        1,
+        0
+      ],
+      "y": 1.0,
+      "value": 1.4142135623731
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        0,
+        1,
+        0,
+        1,
+        0
+      ],
+      "y": 0.25,
+      "value": 1.4142135623730996
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        1,
+        1,
+        1,
+        1,
+        0
+      ],
+      "y": 1.0,
+      "value": 0.4714045207910327
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        1,
+        1,
+        1,
+        1,
+        0
+      ],
+      "y": 0.25,
+      "value": 1.1785113019775817
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        1,
+        3,
+        1,
+        3,
+        0
+      ],
+      "y": 1.0,
+      "value": 0.6666666666666686
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        1,
+        3,
+        1,
+        3,
+        0
+      ],
+      "y": 0.25,
+      "value": 1.6666666666666714
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        2,
+        1,
+        2,
+        1,
+        0
+      ],
+      "y": 1.0,
+      "value": 0.4714045207910332
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        2,
+        1,
+        2,
+        1,
+        0
+      ],
+      "y": 0.25,
+      "value": 1.0017346066809456
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        2,
+        3,
+        2,
+        3,
+        0
+      ],
+      "y": 1.0,
+      "value": -0.1333333333333333
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        2,
+        3,
+        2,
+        3,
+        0
+      ],
+      "y": 0.25,
+      "value": 1.3666666666666671
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        2,
+        5,
+        2,
+        5,
+        0
+      ],
+      "y": 1.0,
+      "value": -0.1632993161855452
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        2,
+        5,
+        2,
+        5,
+        0
+      ],
+      "y": 0.25,
+      "value": 1.6738179909018382
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        1,
+        3,
+        1,
+        0
+      ],
+      "y": 1.0,
+      "value": 0.2828427124746197
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        1,
+        3,
+        1,
+        0
+      ],
+      "y": 0.25,
+      "value": 0.8308504678941954
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        1,
+        3,
+        1,
+        1
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        1,
+        3,
+        1,
+        1
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        1,
+        3,
+        3,
+        1
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        1,
+        3,
+        3,
+        1
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        1,
+        3,
+        3,
+        2
+      ],
+      "y": 1.0,
+      "value": 0.8000000000000014
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        1,
+        3,
+        3,
+        2
+      ],
+      "y": 0.25,
+      "value": 0.47500000000000053
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        1,
+        3,
+        5,
+        2
+      ],
+      "y": 1.0,
+      "value": -0.5237229365663836
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        1,
+        3,
+        5,
+        2
+      ],
+      "y": 0.25,
+      "value": -0.47462391126328485
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        1,
+        3,
+        5,
+        3
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        1,
+        3,
+        5,
+        3
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        3,
+        3,
+        1,
+        1
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        3,
+        3,
+        1,
+        1
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        3,
+        3,
+        1,
+        2
+      ],
+      "y": 1.0,
+      "value": -0.8000000000000014
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        3,
+        3,
+        1,
+        2
+      ],
+      "y": 0.25,
+      "value": -0.47500000000000053
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        3,
+        3,
+        3,
+        0
+      ],
+      "y": 1.0,
+      "value": 0.40000000000000124
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        3,
+        3,
+        3,
+        0
+      ],
+      "y": 0.25,
+      "value": 1.1750000000000036
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        3,
+        3,
+        3,
+        1
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        3,
+        3,
+        3,
+        1
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        3,
+        3,
+        3,
+        2
+      ],
+      "y": 1.0,
+      "value": -0.8000000000000003
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        3,
+        3,
+        3,
+        2
+      ],
+      "y": 0.25,
+      "value": -0.47500000000000003
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        3,
+        3,
+        5,
+        1
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        3,
+        3,
+        5,
+        1
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        3,
+        3,
+        5,
+        2
+      ],
+      "y": 1.0,
+      "value": -0.2799416848895059
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        3,
+        3,
+        5,
+        2
+      ],
+      "y": 0.25,
+      "value": -0.2536971519311146
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        3,
+        3,
+        5,
+        3
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        3,
+        3,
+        5,
+        3
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        3,
+        3,
+        5,
+        4
+      ],
+      "y": 1.0,
+      "value": 0.9142857142857126
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        3,
+        3,
+        5,
+        4
+      ],
+      "y": 0.25,
+      "value": 0.07857142857142846
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        5,
+        3,
+        1,
+        2
+      ],
+      "y": 1.0,
+      "value": -0.5237229365663836
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        5,
+        3,
+        1,
+        2
+      ],
+      "y": 0.25,
+      "value": -0.47462391126328485
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        5,
+        3,
+        1,
+        3
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        5,
+        3,
+        1,
+        3
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        5,
+        3,
+        3,
+        1
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        5,
+        3,
+        3,
+        1
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        5,
+        3,
+        3,
+        2
+      ],
+      "y": 1.0,
+      "value": 0.2799416848895059
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        5,
+        3,
+        3,
+        2
+      ],
+      "y": 0.25,
+      "value": 0.2536971519311146
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        5,
+        3,
+        3,
+        3
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        5,
+        3,
+        3,
+        3
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        5,
+        3,
+        3,
+        4
+      ],
+      "y": 1.0,
+      "value": -0.9142857142857126
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        5,
+        3,
+        3,
+        4
+      ],
+      "y": 0.25,
+      "value": -0.07857142857142846
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        0
+      ],
+      "y": 1.0,
+      "value": -0.6765257384829728
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        0
+      ],
+      "y": 0.25,
+      "value": 1.3443032993131483
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        1
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        1
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        2
+      ],
+      "y": 1.0,
+      "value": -1.5462296222436036
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        2
+      ],
+      "y": 0.25,
+      "value": -0.6764754597315764
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        3
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        3
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        4
+      ],
+      "y": 1.0,
+      "value": 0.7775269159046987
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        4
+      ],
+      "y": 0.25,
+      "value": 0.05669467095138427
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        5
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        5
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        7,
+        3,
+        7,
+        0
+      ],
+      "y": 1.0,
+      "value": -0.7811846344537092
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        3,
+        7,
+        3,
+        7,
+        0
+      ],
+      "y": 0.25,
+      "value": 1.552267743461896
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        0
+      ],
+      "y": 1.0,
+      "value": -1.1210190647157747
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        0
+      ],
+      "y": 0.25,
+      "value": 1.355470999705772
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        1
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        1
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        2
+      ],
+      "y": 1.0,
+      "value": -1.6431457048939955
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        2
+      ],
+      "y": 0.25,
+      "value": -1.0179858690213501
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        3
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        3
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        4
+      ],
+      "y": 1.0,
+      "value": 1.3534470712503388
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        4
+      ],
+      "y": 0.25,
+      "value": 0.11597794804628729
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        5
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        5
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        6
+      ],
+      "y": 1.0,
+      "value": -0.3427042971123751
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        6
+      ],
+      "y": 0.25,
+      "value": -0.00597261094727096
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        7
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        7
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        8
+      ],
+      "y": 1.0,
+      "value": 0.044323412859660294
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        8
+      ],
+      "y": 0.25,
+      "value": 0.00017313833148304808
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        9
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "M",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        9
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        0,
+        1,
+        0,
+        1,
+        0
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        0,
+        1,
+        0,
+        1,
+        0
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        1,
+        1,
+        1,
+        1,
+        0
+      ],
+      "y": 1.0,
+      "value": 0.9428090415820691
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        1,
+        1,
+        1,
+        1,
+        0
+      ],
+      "y": 0.25,
+      "value": 0.9428090415820695
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        1,
+        3,
+        1,
+        3,
+        0
+      ],
+      "y": 1.0,
+      "value": -0.6666666666666713
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        1,
+        3,
+        1,
+        3,
+        0
+      ],
+      "y": 0.25,
+      "value": -0.6666666666666715
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        2,
+        1,
+        2,
+        1,
+        0
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        2,
+        1,
+        2,
+        1,
+        0
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        2,
+        3,
+        2,
+        3,
+        0
+      ],
+      "y": 1.0,
+      "value": 1.200000000000008
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        2,
+        3,
+        2,
+        3,
+        0
+      ],
+      "y": 0.25,
+      "value": 1.8000000000000105
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        2,
+        5,
+        2,
+        5,
+        0
+      ],
+      "y": 1.0,
+      "value": -0.9797958971132797
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        2,
+        5,
+        2,
+        5,
+        0
+      ],
+      "y": 0.25,
+      "value": -1.4696938456699182
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        1,
+        3,
+        1,
+        0
+      ],
+      "y": 1.0,
+      "value": 0.5656854249492416
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        1,
+        3,
+        1,
+        0
+      ],
+      "y": 0.25,
+      "value": 0.7778174593052073
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        1,
+        3,
+        1,
+        1
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        1,
+        3,
+        1,
+        1
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        1,
+        3,
+        3,
+        1
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        1,
+        3,
+        3,
+        1
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        1,
+        3,
+        3,
+        2
+      ],
+      "y": 1.0,
+      "value": -0.20000000000000254
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        1,
+        3,
+        3,
+        2
+      ],
+      "y": 0.25,
+      "value": -0.27500000000000396
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        1,
+        3,
+        5,
+        2
+      ],
+      "y": 1.0,
+      "value": -0.9601587170383776
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        1,
+        3,
+        5,
+        2
+      ],
+      "y": 0.25,
+      "value": -0.33823772986579176
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        1,
+        3,
+        5,
+        3
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        1,
+        3,
+        5,
+        3
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        1,
+        1
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        1,
+        1
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        1,
+        2
+      ],
+      "y": 1.0,
+      "value": 0.20000000000000304
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        1,
+        2
+      ],
+      "y": 0.25,
+      "value": 0.27500000000000396
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        3,
+        0
+      ],
+      "y": 1.0,
+      "value": -0.40000000000000274
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        3,
+        0
+      ],
+      "y": 0.25,
+      "value": -0.5500000000000039
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        3,
+        1
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        3,
+        1
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        3,
+        2
+      ],
+      "y": 1.0,
+      "value": -0.4000000000000038
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        3,
+        2
+      ],
+      "y": 0.25,
+      "value": -0.5500000000000055
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        5,
+        1
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        5,
+        1
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        5,
+        2
+      ],
+      "y": 1.0,
+      "value": -0.7231826859645616
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        5,
+        2
+      ],
+      "y": 0.25,
+      "value": -0.20704020444953133
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        5,
+        3
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        5,
+        3
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        5,
+        4
+      ],
+      "y": 1.0,
+      "value": 0.2285714285714285
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        5,
+        4
+      ],
+      "y": 0.25,
+      "value": -0.007142857142857203
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        1,
+        2
+      ],
+      "y": 1.0,
+      "value": -0.9601587170383766
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        1,
+        2
+      ],
+      "y": 0.25,
+      "value": -0.3382377298657926
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        1,
+        3
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        1,
+        3
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        3,
+        1
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        3,
+        1
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        3,
+        2
+      ],
+      "y": 1.0,
+      "value": 0.7231826859645639
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        3,
+        2
+      ],
+      "y": 0.25,
+      "value": 0.2070402044495326
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        3,
+        3
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        3,
+        3
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        3,
+        4
+      ],
+      "y": 1.0,
+      "value": -0.22857142857142854
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        3,
+        4
+      ],
+      "y": 0.25,
+      "value": 0.007142857142857416
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        0
+      ],
+      "y": 1.0,
+      "value": 1.0264528445948617
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        0
+      ],
+      "y": 0.25,
+      "value": 2.6361175327095294
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        1
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        1
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        2
+      ],
+      "y": 1.0,
+      "value": -0.7731148111218042
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        2
+      ],
+      "y": 0.25,
+      "value": 0.38655740556090307
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        3
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        3
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        4
+      ],
+      "y": 1.0,
+      "value": 0.08639187954496587
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        4
+      ],
+      "y": 0.25,
+      "value": -0.043195939772483274
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        5
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        5
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        7,
+        3,
+        7,
+        0
+      ],
+      "y": 1.0,
+      "value": -0.8889342392059482
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        3,
+        7,
+        3,
+        7,
+        0
+      ],
+      "y": 0.25,
+      "value": -2.282944750688002
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        0
+      ],
+      "y": 1.0,
+      "value": -0.4952561838147304
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        0
+      ],
+      "y": 0.25,
+      "value": -3.040136776997857
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        1
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        1
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        2
+      ],
+      "y": 1.0,
+      "value": 0.48262799852267635
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        2
+      ],
+      "y": 0.25,
+      "value": -1.5482779876271404
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        3
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        3
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        4
+      ],
+      "y": 1.0,
+      "value": 1.0400172231713132
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        4
+      ],
+      "y": 0.25,
+      "value": 0.4416511495659
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        5
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        5
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        6
+      ],
+      "y": 1.0,
+      "value": -0.48769457665991844
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        6
+      ],
+      "y": 0.25,
+      "value": -0.0354237614803657
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        7
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        7
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        8
+      ],
+      "y": 1.0,
+      "value": 0.08864682571932077
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        8
+      ],
+      "y": 0.25,
+      "value": 0.0013851066518643872
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        9
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_double_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        9
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        0,
+        1,
+        0,
+        1,
+        0
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        0,
+        1,
+        0,
+        1,
+        0
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        1,
+        1,
+        1,
+        1,
+        0
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        1,
+        1,
+        1,
+        1,
+        0
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        1,
+        3,
+        1,
+        3,
+        0
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        1,
+        3,
+        1,
+        3,
+        0
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        2,
+        1,
+        2,
+        1,
+        0
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        2,
+        1,
+        2,
+        1,
+        0
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        2,
+        3,
+        2,
+        3,
+        0
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        2,
+        3,
+        2,
+        3,
+        0
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        2,
+        5,
+        2,
+        5,
+        0
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        2,
+        5,
+        2,
+        5,
+        0
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        1,
+        3,
+        1,
+        0
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        1,
+        3,
+        1,
+        0
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        1,
+        3,
+        1,
+        1
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        1,
+        3,
+        1,
+        1
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        1,
+        3,
+        3,
+        1
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        1,
+        3,
+        3,
+        1
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        1,
+        3,
+        3,
+        2
+      ],
+      "y": 1.0,
+      "value": -0.24494897427831783
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        1,
+        3,
+        3,
+        2
+      ],
+      "y": 0.25,
+      "value": -0.3368048396326896
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        1,
+        3,
+        5,
+        2
+      ],
+      "y": 1.0,
+      "value": -0.10690449676496962
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        1,
+        3,
+        5,
+        2
+      ],
+      "y": 0.25,
+      "value": -0.013363062095619521
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        1,
+        3,
+        5,
+        3
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        1,
+        3,
+        5,
+        3
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        1,
+        1
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        1,
+        1
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        1,
+        2
+      ],
+      "y": 1.0,
+      "value": 0.24494897427832388
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        1,
+        2
+      ],
+      "y": 0.25,
+      "value": 0.3368048396326928
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        3,
+        0
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        3,
+        0
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        3,
+        1
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        3,
+        1
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        3,
+        2
+      ],
+      "y": 1.0,
+      "value": -0.4898979485566405
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        3,
+        2
+      ],
+      "y": 0.25,
+      "value": -0.67360967926538
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        5,
+        1
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        5,
+        1
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        5,
+        2
+      ],
+      "y": 1.0,
+      "value": -0.6000000000000029
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        5,
+        2
+      ],
+      "y": 0.25,
+      "value": -0.21785714285714305
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        5,
+        3
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        5,
+        3
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        5,
+        4
+      ],
+      "y": 1.0,
+      "value": -1.3372717085621048e-15
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        5,
+        4
+      ],
+      "y": 0.25,
+      "value": -0.023957871187497943
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        1,
+        2
+      ],
+      "y": 1.0,
+      "value": -0.10690449676497617
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        1,
+        2
+      ],
+      "y": 0.25,
+      "value": -0.013363062095623943
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        1,
+        3
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        1,
+        3
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        3,
+        1
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        3,
+        1
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        3,
+        2
+      ],
+      "y": 1.0,
+      "value": 0.600000000000004
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        3,
+        2
+      ],
+      "y": 0.25,
+      "value": 0.2178571428571449
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        3,
+        3
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        3,
+        3
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        3,
+        4
+      ],
+      "y": 1.0,
+      "value": -7.354994397091577e-16
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        3,
+        4
+      ],
+      "y": 0.25,
+      "value": 0.023957871187497953
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        0
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        0
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        1
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        1
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        2
+      ],
+      "y": 1.0,
+      "value": 1.191221535381098
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        2
+      ],
+      "y": 0.25,
+      "value": 1.1224972160321867
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        3
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        3
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        4
+      ],
+      "y": 1.0,
+      "value": -0.48294528841629586
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        4
+      ],
+      "y": 0.25,
+      "value": -0.08451542547285186
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        5
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        5
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        7,
+        3,
+        7,
+        0
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        3,
+        7,
+        3,
+        7,
+        0
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        0
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        0
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        1
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        1
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        2
+      ],
+      "y": 1.0,
+      "value": -1.0062171375090228
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        2
+      ],
+      "y": 0.25,
+      "value": -2.4935459444660224
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        3
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        3
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        4
+      ],
+      "y": 1.0,
+      "value": 1.5131998276318812
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        4
+      ],
+      "y": 0.25,
+      "value": 0.5186691514448746
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        5
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        5
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        6
+      ],
+      "y": 1.0,
+      "value": -0.5552444214538564
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        6
+      ],
+      "y": 0.25,
+      "value": -0.03870694284173519
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        7
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        7
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        8
+      ],
+      "y": 1.0,
+      "value": 0.09402415739519028
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        8
+      ],
+      "y": 0.25,
+      "value": 0.0014691274592998481
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        9
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Phi_tilde_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        9
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        0,
+        1,
+        0,
+        1,
+        0
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        0,
+        1,
+        0,
+        1,
+        0
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        1,
+        1,
+        1,
+        1,
+        0
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        1,
+        1,
+        1,
+        1,
+        0
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        1,
+        3,
+        1,
+        3,
+        0
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        1,
+        3,
+        1,
+        3,
+        0
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        2,
+        1,
+        2,
+        1,
+        0
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        2,
+        1,
+        2,
+        1,
+        0
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        2,
+        3,
+        2,
+        3,
+        0
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        2,
+        3,
+        2,
+        3,
+        0
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        2,
+        5,
+        2,
+        5,
+        0
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        2,
+        5,
+        2,
+        5,
+        0
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        1,
+        3,
+        1,
+        0
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        1,
+        3,
+        1,
+        0
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        1,
+        3,
+        1,
+        1
+      ],
+      "y": 1.0,
+      "value": -0.8485281374238621
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        1,
+        3,
+        1,
+        1
+      ],
+      "y": 0.25,
+      "value": -0.7247844507162156
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        1,
+        3,
+        3,
+        1
+      ],
+      "y": 1.0,
+      "value": -1.5441483618360064e-16
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        1,
+        3,
+        3,
+        1
+      ],
+      "y": 0.25,
+      "value": 0.625000000000003
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        1,
+        3,
+        3,
+        2
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        1,
+        3,
+        3,
+        2
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        1,
+        3,
+        5,
+        2
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        1,
+        3,
+        5,
+        2
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        1,
+        3,
+        5,
+        3
+      ],
+      "y": 1.0,
+      "value": 0.872871560943969
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        1,
+        3,
+        5,
+        3
+      ],
+      "y": 0.25,
+      "value": 0.1363861813974953
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        1,
+        1
+      ],
+      "y": 1.0,
+      "value": 1.5441483618360064e-16
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        1,
+        1
+      ],
+      "y": 0.25,
+      "value": -0.625000000000003
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        1,
+        2
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        1,
+        2
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        3,
+        0
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        3,
+        0
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        3,
+        1
+      ],
+      "y": 1.0,
+      "value": 0.5366563145999534
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        3,
+        1
+      ],
+      "y": 0.25,
+      "value": 1.0174109297624112
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        3,
+        2
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        3,
+        2
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "y": 1.0,
+      "value": -1.0733126291999036
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "y": 0.25,
+      "value": -0.6372793735874422
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        5,
+        1
+      ],
+      "y": 1.0,
+      "value": 0.5737097324805125
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        5,
+        1
+      ],
+      "y": 0.25,
+      "value": 0.5199244450604644
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        5,
+        2
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        5,
+        2
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        5,
+        3
+      ],
+      "y": 1.0,
+      "value": -0.3122880233435354
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        5,
+        3
+      ],
+      "y": 0.25,
+      "value": 0.08295150620062469
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        5,
+        4
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        5,
+        4
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        1,
+        2
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        1,
+        2
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        1,
+        3
+      ],
+      "y": 1.0,
+      "value": 0.872871560943969
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        1,
+        3
+      ],
+      "y": 0.25,
+      "value": 0.1363861813974953
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        3,
+        1
+      ],
+      "y": 1.0,
+      "value": -0.5737097324805113
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        3,
+        1
+      ],
+      "y": 0.25,
+      "value": -0.5199244450604632
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        3,
+        2
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        3,
+        2
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        3,
+        3
+      ],
+      "y": 1.0,
+      "value": 0.3122880233435317
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        3,
+        3
+      ],
+      "y": 0.25,
+      "value": -0.08295150620062602
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        3,
+        4
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        3,
+        4
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        0
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        0
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        1
+      ],
+      "y": 1.0,
+      "value": -0.7990956988121453
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        1
+      ],
+      "y": 0.25,
+      "value": -1.1499806691238799
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        2
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        2
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        3
+      ],
+      "y": 1.0,
+      "value": 1.3288632551998822
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        3
+      ],
+      "y": 0.25,
+      "value": 0.2619393916499768
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        4
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        4
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        5
+      ],
+      "y": 1.0,
+      "value": -0.43195939772483305
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        5
+      ],
+      "y": 0.25,
+      "value": -0.013498731178901014
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        7,
+        3,
+        7,
+        0
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        3,
+        7,
+        3,
+        7,
+        0
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        0
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        0
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        1
+      ],
+      "y": 1.0,
+      "value": -0.022718299915304024
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        1
+      ],
+      "y": 0.25,
+      "value": 1.2943969821937082
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        2
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        2
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        3
+      ],
+      "y": 1.0,
+      "value": -1.5820186626000372
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        3
+      ],
+      "y": 0.25,
+      "value": -0.7417426106005491
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        4
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        4
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        5
+      ],
+      "y": 1.0,
+      "value": 1.2639995871934084
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        5
+      ],
+      "y": 0.25,
+      "value": 0.1024442111473075
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        6
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        6
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        7
+      ],
+      "y": 1.0,
+      "value": -0.4163459669477271
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        7
+      ],
+      "y": 0.25,
+      "value": -0.007155946306914056
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        8
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        8
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        9
+      ],
+      "y": 1.0,
+      "value": 0.09675005977494945
+    },
+    {
+      "operator": "Sigma_double_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        9
+      ],
+      "y": 0.25,
+      "value": 0.00037792992099589613
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        0,
+        1,
+        0,
+        1,
+        0
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        0,
+        1,
+        0,
+        1,
+        0
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        1,
+        1,
+        1,
+        1,
+        0
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        1,
+        1,
+        1,
+        1,
+        0
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        1,
+        3,
+        1,
+        3,
+        0
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        1,
+        3,
+        1,
+        3,
+        0
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        2,
+        1,
+        2,
+        1,
+        0
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        2,
+        1,
+        2,
+        1,
+        0
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        2,
+        3,
+        2,
+        3,
+        0
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        2,
+        3,
+        2,
+        3,
+        0
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        2,
+        5,
+        2,
+        5,
+        0
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        2,
+        5,
+        2,
+        5,
+        0
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        1,
+        3,
+        1,
+        0
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        1,
+        3,
+        1,
+        0
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        1,
+        3,
+        1,
+        1
+      ],
+      "y": 1.0,
+      "value": 0.4000000000000003
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        1,
+        3,
+        1,
+        1
+      ],
+      "y": 0.25,
+      "value": -0.07500000000000279
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        1,
+        3,
+        3,
+        1
+      ],
+      "y": 1.0,
+      "value": 0.5656854249492413
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        1,
+        3,
+        3,
+        1
+      ],
+      "y": 0.25,
+      "value": 1.219759197546804
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        1,
+        3,
+        3,
+        2
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        1,
+        3,
+        3,
+        2
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        1,
+        3,
+        5,
+        2
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        1,
+        3,
+        5,
+        2
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        1,
+        3,
+        5,
+        3
+      ],
+      "y": 1.0,
+      "value": -0.6047431568147642
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        1,
+        3,
+        5,
+        3
+      ],
+      "y": 0.25,
+      "value": 0.018898223650461263
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        1,
+        1
+      ],
+      "y": 1.0,
+      "value": -0.5656854249492413
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        1,
+        1
+      ],
+      "y": 0.25,
+      "value": -1.219759197546804
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        1,
+        2
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        1,
+        2
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        3,
+        0
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        3,
+        0
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        3,
+        1
+      ],
+      "y": 1.0,
+      "value": 0.2529822128134736
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        3,
+        1
+      ],
+      "y": 0.25,
+      "value": 1.1384199576606286
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        3,
+        2
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        3,
+        2
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "y": 1.0,
+      "value": -1.2393546707863765
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "y": 0.25,
+      "value": -0.7358668357794108
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        5,
+        1
+      ],
+      "y": 1.0,
+      "value": -0.40567404226968906
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        5,
+        1
+      ],
+      "y": 0.25,
+      "value": -0.3676421008069056
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        5,
+        2
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        5,
+        2
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        5,
+        3
+      ],
+      "y": 1.0,
+      "value": 0.5408987230262546
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        5,
+        3
+      ],
+      "y": 0.25,
+      "value": 0.1732566222193458
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        5,
+        4
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        3,
+        3,
+        5,
+        4
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        1,
+        2
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        1,
+        2
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        1,
+        3
+      ],
+      "y": 1.0,
+      "value": -0.604743156814764
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        1,
+        3
+      ],
+      "y": 0.25,
+      "value": 0.018898223650461288
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        3,
+        1
+      ],
+      "y": 1.0,
+      "value": 0.40567404226968823
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        3,
+        1
+      ],
+      "y": 0.25,
+      "value": 0.3676421008069048
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        3,
+        2
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        3,
+        2
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        3,
+        3
+      ],
+      "y": 1.0,
+      "value": -0.5408987230262541
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        3,
+        3
+      ],
+      "y": 0.25,
+      "value": -0.17325662221934696
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        3,
+        4
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        3,
+        4
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        0
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        0
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        1
+      ],
+      "y": 1.0,
+      "value": 1.2653166556506972
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        1
+      ],
+      "y": 0.25,
+      "value": -0.5783269828785151
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        2
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        2
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        3
+      ],
+      "y": 1.0,
+      "value": -0.2360675563402646
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        3
+      ],
+      "y": 0.25,
+      "value": 0.1733621116873802
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        4
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        4
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        5
+      ],
+      "y": 1.0,
+      "value": 0.15772927070682488
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        5,
+        3,
+        5,
+        5
+      ],
+      "y": 0.25,
+      "value": -0.0049290397095882454
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        7,
+        3,
+        7,
+        0
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        3,
+        7,
+        3,
+        7,
+        0
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        0
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        0
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        1
+      ],
+      "y": 1.0,
+      "value": -1.5018027250862083
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        1
+      ],
+      "y": 0.25,
+      "value": 0.9200395260067724
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        2
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        2
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        3
+      ],
+      "y": 1.0,
+      "value": -0.9244597539300592
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        3
+      ],
+      "y": 0.25,
+      "value": -0.7791719597684261
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        4
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        4
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        5
+      ],
+      "y": 1.0,
+      "value": 1.2119769621238008
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        5
+      ],
+      "y": 0.25,
+      "value": 0.10921282128726893
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        6
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        6
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        7
+      ],
+      "y": 1.0,
+      "value": -0.43025614207449264
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        7
+      ],
+      "y": 0.25,
+      "value": -0.007592073627661439
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        8
+      ],
+      "y": 1.0,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        8
+      ],
+      "y": 0.25,
+      "value": 0.0
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        9
+      ],
+      "y": 1.0,
+      "value": 0.10198351754875934
+    },
+    {
+      "operator": "Sigma_prime",
+      "quantum": [
+        4,
+        9,
+        4,
+        9,
+        9
+      ],
+      "y": 0.25,
+      "value": 0.00039837311542484106
+    }
+  ],
+  "datasets": [
+    {
+      "A": 70,
+      "y": 0.25,
+      "responses": [
+        {
+          "channel": "M",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 106.82409999053621
+        },
+        {
+          "channel": "M",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": -7.282284652407721
+        },
+        {
+          "channel": "M",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": -7.2822846524077285
+        },
+        {
+          "channel": "M",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.49643919081359955
+        },
+        {
+          "channel": "Sigma_double_prime",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_double_prime",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_double_prime",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_double_prime",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_prime",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_prime",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_prime",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_prime",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Phi_double_prime",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 3.164685807038901
+        },
+        {
+          "channel": "Phi_double_prime",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 0.6038030523078182
+        },
+        {
+          "channel": "Phi_double_prime",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 0.6038030523078183
+        },
+        {
+          "channel": "Phi_double_prime",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.1152019973563703
+        },
+        {
+          "channel": "Phi_tilde_prime",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Phi_tilde_prime",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Phi_tilde_prime",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Phi_tilde_prime",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Phi_double_prime_M",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": -18.386536190641085
+        },
+        {
+          "channel": "Phi_double_prime_M",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 1.2534249324254259
+        },
+        {
+          "channel": "Phi_double_prime_M",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": -3.508040718792526
+        },
+        {
+          "channel": "Phi_double_prime_M",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.2391459519785095
+        },
+        {
+          "channel": "Delta_Sigma_prime",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta_Sigma_prime",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta_Sigma_prime",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta_Sigma_prime",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.0
+        }
+      ]
+    },
+    {
+      "A": 70,
+      "y": 1.0,
+      "responses": [
+        {
+          "channel": "M",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.08298956635595915
+        },
+        {
+          "channel": "M",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 0.02504579136474354
+        },
+        {
+          "channel": "M",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 0.025045791364743542
+        },
+        {
+          "channel": "M",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.007558681080410518
+        },
+        {
+          "channel": "Sigma_double_prime",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_double_prime",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_double_prime",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_double_prime",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_prime",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_prime",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_prime",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_prime",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Phi_double_prime",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.09212895692195017
+        },
+        {
+          "channel": "Phi_double_prime",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 0.025456120585798075
+        },
+        {
+          "channel": "Phi_double_prime",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 0.025456120585798072
+        },
+        {
+          "channel": "Phi_double_prime",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.007033771974946783
+        },
+        {
+          "channel": "Phi_tilde_prime",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Phi_tilde_prime",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Phi_tilde_prime",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Phi_tilde_prime",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Phi_double_prime_M",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": -0.0874399347196662
+        },
+        {
+          "channel": "Phi_double_prime_M",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": -0.026388887881907817
+        },
+        {
+          "channel": "Phi_double_prime_M",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": -0.024160498464384624
+        },
+        {
+          "channel": "Phi_double_prime_M",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": -0.007291504587597271
+        },
+        {
+          "channel": "Delta_Sigma_prime",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta_Sigma_prime",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta_Sigma_prime",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta_Sigma_prime",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.0
+        }
+      ]
+    },
+    {
+      "A": 72,
+      "y": 0.25,
+      "responses": [
+        {
+          "channel": "M",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 112.83615412242904
+        },
+        {
+          "channel": "M",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": -10.378797404137373
+        },
+        {
+          "channel": "M",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": -10.378797404137378
+        },
+        {
+          "channel": "M",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.9546535540306696
+        },
+        {
+          "channel": "Sigma_double_prime",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_double_prime",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_double_prime",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_double_prime",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_prime",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_prime",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_prime",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_prime",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Phi_double_prime",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 2.5532048637848423
+        },
+        {
+          "channel": "Phi_double_prime",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 2.110056208124108
+        },
+        {
+          "channel": "Phi_double_prime",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 2.110056208124108
+        },
+        {
+          "channel": "Phi_double_prime",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 1.7438229358700945
+        },
+        {
+          "channel": "Phi_tilde_prime",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Phi_tilde_prime",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Phi_tilde_prime",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Phi_tilde_prime",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Phi_double_prime_M",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": -16.973326648484733
+        },
+        {
+          "channel": "Phi_double_prime_M",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 1.561225831640182
+        },
+        {
+          "channel": "Phi_double_prime_M",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": -14.027340216664907
+        },
+        {
+          "channel": "Phi_double_prime_M",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 1.2902506591079779
+        },
+        {
+          "channel": "Delta_Sigma_prime",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta_Sigma_prime",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta_Sigma_prime",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta_Sigma_prime",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.0
+        }
+      ]
+    },
+    {
+      "A": 72,
+      "y": 1.0,
+      "responses": [
+        {
+          "channel": "M",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.1316895309643084
+        },
+        {
+          "channel": "M",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 0.04106849816617537
+        },
+        {
+          "channel": "M",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 0.04106849816617537
+        },
+        {
+          "channel": "M",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.012807559790628089
+        },
+        {
+          "channel": "Sigma_double_prime",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_double_prime",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_double_prime",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_double_prime",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_prime",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_prime",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_prime",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_prime",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Phi_double_prime",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.09093118796753069
+        },
+        {
+          "channel": "Phi_double_prime",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 0.0813054638692711
+        },
+        {
+          "channel": "Phi_double_prime",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 0.08130546386927111
+        },
+        {
+          "channel": "Phi_double_prime",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.07269869230519484
+        },
+        {
+          "channel": "Phi_tilde_prime",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Phi_tilde_prime",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Phi_tilde_prime",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Phi_tilde_prime",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Phi_double_prime_M",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": -0.10942890611475325
+        },
+        {
+          "channel": "Phi_double_prime_M",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": -0.03412633333258923
+        },
+        {
+          "channel": "Phi_double_prime_M",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": -0.09784506472678978
+        },
+        {
+          "channel": "Phi_double_prime_M",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": -0.030513814058541696
+        },
+        {
+          "channel": "Delta_Sigma_prime",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta_Sigma_prime",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta_Sigma_prime",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta_Sigma_prime",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.0
+        }
+      ]
+    },
+    {
+      "A": 73,
+      "y": 0.25,
+      "responses": [
+        {
+          "channel": "M",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 1146.7144430020567
+        },
+        {
+          "channel": "M",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": -114.63629471311918
+        },
+        {
+          "channel": "M",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": -114.63629471311926
+        },
+        {
+          "channel": "M",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 11.46316643822202
+        },
+        {
+          "channel": "Sigma_double_prime",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.09025150346351897
+        },
+        {
+          "channel": "Sigma_double_prime",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": -0.09089424844496592
+        },
+        {
+          "channel": "Sigma_double_prime",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": -0.09089424844496591
+        },
+        {
+          "channel": "Sigma_double_prime",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.09157891736627395
+        },
+        {
+          "channel": "Sigma_prime",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.05930020123046042
+        },
+        {
+          "channel": "Sigma_prime",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": -0.056653017559845247
+        },
+        {
+          "channel": "Sigma_prime",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": -0.056653017559845247
+        },
+        {
+          "channel": "Sigma_prime",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.05430009671027282
+        },
+        {
+          "channel": "Phi_double_prime",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 27.887237954821455
+        },
+        {
+          "channel": "Phi_double_prime",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 14.346313533703595
+        },
+        {
+          "channel": "Phi_double_prime",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 14.346313533703597
+        },
+        {
+          "channel": "Phi_double_prime",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 7.563535362901489
+        },
+        {
+          "channel": "Phi_tilde_prime",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.11713722304558097
+        },
+        {
+          "channel": "Phi_tilde_prime",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": -0.17572865216827654
+        },
+        {
+          "channel": "Phi_tilde_prime",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": -0.17572865216827654
+        },
+        {
+          "channel": "Phi_tilde_prime",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.2645402659588725
+        },
+        {
+          "channel": "Delta",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.8496316624019904
+        },
+        {
+          "channel": "Delta",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": -0.7649213661676031
+        },
+        {
+          "channel": "Delta",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": -0.7649213661676031
+        },
+        {
+          "channel": "Delta",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.6886882383724758
+        },
+        {
+          "channel": "Phi_double_prime_M",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": -178.44793859725547
+        },
+        {
+          "channel": "Phi_double_prime_M",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 17.857067591300414
+        },
+        {
+          "channel": "Phi_double_prime_M",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": -92.74209851621103
+        },
+        {
+          "channel": "Phi_double_prime_M",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 9.25870925951311
+        },
+        {
+          "channel": "Delta_Sigma_prime",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": -0.20044511831204304
+        },
+        {
+          "channel": "Delta_Sigma_prime",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 0.1860050302305452
+        },
+        {
+          "channel": "Delta_Sigma_prime",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 0.18107321339669394
+        },
+        {
+          "channel": "Delta_Sigma_prime",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": -0.1681118354114992
+        }
+      ]
+    },
+    {
+      "A": 73,
+      "y": 1.0,
+      "responses": [
+        {
+          "channel": "M",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 1.0021842594854966
+        },
+        {
+          "channel": "M",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 0.3770686064147257
+        },
+        {
+          "channel": "M",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 0.3770686064147257
+        },
+        {
+          "channel": "M",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.16944128317381765
+        },
+        {
+          "channel": "Sigma_double_prime",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.02565772378789087
+        },
+        {
+          "channel": "Sigma_double_prime",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": -0.027403505868087496
+        },
+        {
+          "channel": "Sigma_double_prime",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": -0.027403505868087496
+        },
+        {
+          "channel": "Sigma_double_prime",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.029333732111667694
+        },
+        {
+          "channel": "Sigma_prime",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.03498968333774845
+        },
+        {
+          "channel": "Sigma_prime",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": -0.03647558285886633
+        },
+        {
+          "channel": "Sigma_prime",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": -0.03647558285886633
+        },
+        {
+          "channel": "Sigma_prime",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.0381027756790261
+        },
+        {
+          "channel": "Phi_double_prime",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.7927696743085106
+        },
+        {
+          "channel": "Phi_double_prime",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 0.5638329398317167
+        },
+        {
+          "channel": "Phi_double_prime",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 0.5638329398317167
+        },
+        {
+          "channel": "Phi_double_prime",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.42115465127532475
+        },
+        {
+          "channel": "Phi_tilde_prime",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.012901616019932276
+        },
+        {
+          "channel": "Phi_tilde_prime",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": -0.016734535929951458
+        },
+        {
+          "channel": "Phi_tilde_prime",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": -0.016734535929951458
+        },
+        {
+          "channel": "Phi_tilde_prime",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.024600128464977666
+        },
+        {
+          "channel": "Delta",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.03270989186381251
+        },
+        {
+          "channel": "Delta",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": -0.029536208687006012
+        },
+        {
+          "channel": "Delta",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": -0.029536208687006012
+        },
+        {
+          "channel": "Delta",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.026859633498563403
+        },
+        {
+          "channel": "Phi_double_prime_M",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": -0.7977890949840863
+        },
+        {
+          "channel": "Phi_double_prime_M",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": -0.36355428760139413
+        },
+        {
+          "channel": "Phi_double_prime_M",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": -0.5714522632145493
+        },
+        {
+          "channel": "Phi_double_prime_M",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": -0.2523948275947242
+        },
+        {
+          "channel": "Delta_Sigma_prime",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": -0.005213490336079121
+        },
+        {
+          "channel": "Delta_Sigma_prime",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 0.004040863111721605
+        },
+        {
+          "channel": "Delta_Sigma_prime",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 0.007158944583058234
+        },
+        {
+          "channel": "Delta_Sigma_prime",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": -0.006235042114262942
+        }
+      ]
+    },
+    {
+      "A": 74,
+      "y": 0.25,
+      "responses": [
+        {
+          "channel": "M",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 116.38240031096039
+        },
+        {
+          "channel": "M",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": -12.504309098478993
+        },
+        {
+          "channel": "M",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": -12.504309098478988
+        },
+        {
+          "channel": "M",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 1.343482739765926
+        },
+        {
+          "channel": "Sigma_double_prime",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_double_prime",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_double_prime",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_double_prime",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_prime",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_prime",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_prime",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_prime",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Phi_double_prime",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 3.134053432256078
+        },
+        {
+          "channel": "Phi_double_prime",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 0.6078648443869327
+        },
+        {
+          "channel": "Phi_double_prime",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 0.6078648443869328
+        },
+        {
+          "channel": "Phi_double_prime",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.11789833103629056
+        },
+        {
+          "channel": "Phi_tilde_prime",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Phi_tilde_prime",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Phi_tilde_prime",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Phi_tilde_prime",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Phi_double_prime_M",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": -19.098394203407945
+        },
+        {
+          "channel": "Phi_double_prime_M",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 2.0519616691693368
+        },
+        {
+          "channel": "Phi_double_prime_M",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": -3.7042260674342895
+        },
+        {
+          "channel": "Phi_double_prime_M",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.39798790533691636
+        },
+        {
+          "channel": "Delta_Sigma_prime",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta_Sigma_prime",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta_Sigma_prime",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta_Sigma_prime",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.0
+        }
+      ]
+    },
+    {
+      "A": 74,
+      "y": 1.0,
+      "responses": [
+        {
+          "channel": "M",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.048462365284112276
+        },
+        {
+          "channel": "M",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 0.032059626956718344
+        },
+        {
+          "channel": "M",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 0.032059626956718344
+        },
+        {
+          "channel": "M",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.021208615687210348
+        },
+        {
+          "channel": "Sigma_double_prime",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_double_prime",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_double_prime",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_double_prime",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_prime",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_prime",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_prime",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_prime",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Phi_double_prime",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.069392363937759
+        },
+        {
+          "channel": "Phi_double_prime",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 0.03341382057497956
+        },
+        {
+          "channel": "Phi_double_prime",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 0.03341382057497956
+        },
+        {
+          "channel": "Phi_double_prime",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.016089427453694318
+        },
+        {
+          "channel": "Phi_tilde_prime",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Phi_tilde_prime",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Phi_tilde_prime",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Phi_tilde_prime",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Phi_double_prime_M",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": -0.05799067243169145
+        },
+        {
+          "channel": "Phi_double_prime_M",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": -0.03836295059537217
+        },
+        {
+          "channel": "Phi_double_prime_M",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": -0.027923676521424592
+        },
+        {
+          "channel": "Phi_double_prime_M",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": -0.01847253321806877
+        },
+        {
+          "channel": "Delta_Sigma_prime",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta_Sigma_prime",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta_Sigma_prime",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta_Sigma_prime",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.0
+        }
+      ]
+    },
+    {
+      "A": 76,
+      "y": 0.25,
+      "responses": [
+        {
+          "channel": "M",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 120.37981734659823
+        },
+        {
+          "channel": "M",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": -14.766548234622917
+        },
+        {
+          "channel": "M",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": -14.766548234622926
+        },
+        {
+          "channel": "M",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 1.8113580130931062
+        },
+        {
+          "channel": "Sigma_double_prime",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_double_prime",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_double_prime",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_double_prime",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_prime",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_prime",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_prime",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_prime",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Phi_double_prime",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 4.472971875406635
+        },
+        {
+          "channel": "Phi_double_prime",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": -0.32222353341617277
+        },
+        {
+          "channel": "Phi_double_prime",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": -0.3222235334161729
+        },
+        {
+          "channel": "Phi_double_prime",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.023212309037325365
+        },
+        {
+          "channel": "Phi_tilde_prime",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Phi_tilde_prime",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Phi_tilde_prime",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Phi_tilde_prime",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Phi_double_prime_M",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": -23.204644736731517
+        },
+        {
+          "channel": "Phi_double_prime_M",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 2.8464281914107556
+        },
+        {
+          "channel": "Phi_double_prime_M",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 1.671614046993509
+        },
+        {
+          "channel": "Phi_double_prime_M",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": -0.20505073025266868
+        },
+        {
+          "channel": "Delta_Sigma_prime",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta_Sigma_prime",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta_Sigma_prime",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta_Sigma_prime",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.0
+        }
+      ]
+    },
+    {
+      "A": 76,
+      "y": 1.0,
+      "responses": [
+        {
+          "channel": "M",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.016884841682119005
+        },
+        {
+          "channel": "M",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 0.027805761188510855
+        },
+        {
+          "channel": "M",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 0.027805761188510855
+        },
+        {
+          "channel": "M",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.045790204600572065
+        },
+        {
+          "channel": "Sigma_double_prime",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_double_prime",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_double_prime",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_double_prime",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_prime",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_prime",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_prime",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Sigma_prime",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Phi_double_prime",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.07773255473228956
+        },
+        {
+          "channel": "Phi_double_prime",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 0.022179577287204412
+        },
+        {
+          "channel": "Phi_double_prime",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 0.02217957728720441
+        },
+        {
+          "channel": "Phi_double_prime",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.006328540858245177
+        },
+        {
+          "channel": "Phi_tilde_prime",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Phi_tilde_prime",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Phi_tilde_prime",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Phi_tilde_prime",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Phi_double_prime_M",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": -0.036228467814708364
+        },
+        {
+          "channel": "Phi_double_prime_M",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": -0.05966062005474555
+        },
+        {
+          "channel": "Phi_double_prime_M",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": -0.010337137440814615
+        },
+        {
+          "channel": "Phi_double_prime_M",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": -0.017023077886273285
+        },
+        {
+          "channel": "Delta_Sigma_prime",
+          "tau": 0,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta_Sigma_prime",
+          "tau": 0,
+          "tau_prime": 1,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta_Sigma_prime",
+          "tau": 1,
+          "tau_prime": 0,
+          "value": 0.0
+        },
+        {
+          "channel": "Delta_Sigma_prime",
+          "tau": 1,
+          "tau_prime": 1,
+          "value": 0.0
+        }
+      ]
+    }
+  ]
+}

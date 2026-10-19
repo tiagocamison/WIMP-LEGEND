@@ -11,9 +11,13 @@ dependencies = ["numpy>=1.23", "scipy>=1.9"]
 
 [project.optional-dependencies]
 test = ["pytest>=7"]
+nuclear-data-regeneration = ["sympy==1.14.0", "Mathics3==10.0.1"]
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+"wimp_legend.targets" = ["data/ge_afh2014_v1/*.json"]

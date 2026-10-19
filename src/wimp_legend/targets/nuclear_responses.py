@@ -1,6 +1,7 @@
 """Evaluate supplied real nuclear-response data without DM or halo physics.
 
-References guiding the interface (no physical coefficients are bundled):
+References guiding the interface (the separate germanium importer supplies
+versioned, provenance-bearing AFH supplement coefficients):
 * Schneck et al., https://arxiv.org/abs/1503.03379v3 (including erratum).
 * Fitzpatrick et al., https://arxiv.org/abs/1203.3542v3, Sec. 3 and Appendix A.
 * Anand et al., https://arxiv.org/abs/1308.6288, nuclear/WIMP factorization.

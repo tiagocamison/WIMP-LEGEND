@@ -1,0 +1,1305 @@
+{
+  "schema_version": 1,
+  "dataset_version": "afh2014_ge_obdme_v1",
+  "isotope": {
+    "symbol": "Ge",
+    "Z": 32,
+    "A": 70,
+    "spin": "0",
+    "mass_GeV": null,
+    "mass_policy": "caller-supplied bare-nucleus mass with provenance"
+  },
+  "primary_source": {
+    "doi": "10.1103/PhysRevC.89.065501",
+    "supplement_sha256": "943a403e216633840887bbfcbec55c56e0c5813b86335b49868acb89e74a49b9",
+    "density_table": "pfGe70",
+    "density_row_count": 15,
+    "density_source_lines": [
+      373,
+      387
+    ],
+    "spin_source": "IsotopicSpins, supplement line 947",
+    "upstream": "Fitzpatrick et al., JCAP 02 (2013) 004, arXiv:1203.3542v3; source comment names v2",
+    "acquisition": "user-supplied attachment 2026-10-19; original APS download date/account not supplied"
+  },
+  "supporting_materials": {
+    "readme_install.txt": {
+      "sha256": "cc844dc64f5b0cd255d2e8a21e219281634ee1e7d064439211c5eeb99e145648",
+      "role": "primary supplement installation instructions, not numerical input"
+    },
+    "GE_DMFF_SUPPLEMENT_VS_ELASTIC_COMPARISON.md": {
+      "sha256": "230582e778f9653c68a22cc10e7f57461f2d4ea6125ab846a86b8fd81a2ba18f",
+      "role": "user-supplied audit, not primary nuclear-structure data"
+    }
+  },
+  "model": {
+    "label": "GCN2850",
+    "label_evidence": "supplied audit and published form-factor reproduction; not named in supplement"
+  },
+  "convention_id": "anand2014_prc89_065501_half_isospin_v1",
+  "representation": {
+    "formula": "exp(-2*y)*sum(coefficients[k]*y**k)",
+    "coefficient_order": "ascending",
+    "export_significant_digits": 40,
+    "density_precision": "written source decimals retained verbatim as exact rationals; original truncated decimal precision is not improved",
+    "runtime_precision": "float64",
+    "units": "dimensionless raw W; no external q^2/m_N^2 or nuclear spin factor absorbed"
+  },
+  "momentum": {
+    "variable": "y",
+    "definition": "y=q2_GeV2*b_GeV_inv^2/4",
+    "default_b_fm_prescription": "sqrt(41.467/(45*A^(-1/3)-25*A^(-2/3)))",
+    "prescription_source": "supplement SetIsotope line 1479",
+    "source_fm_in_GeV_inv": "5.0677",
+    "source_prescription_fm_conversion": "5.0677 GeV^-1/fm, exactly the source rounded unit; caller must explicitly select this prescription or supply another sourced b"
+  },
+  "domain": {
+    "mathematical_domain": [
+      0,
+      null
+    ],
+    "physically_validated_range": null,
+    "validated_range_policy": "no source-backed numerical cutoff was supplied; not a claim of physical validity at arbitrary y"
+  },
+  "normalization": {
+    "from_source_W": "4*W_source; transpose ordered isospin indices for source indices 7 and 8",
+    "pn_to_canonical": "W=(2J+1)/(4pi) S F_source S^T, S=[[1,1],[1,-1]]; transpose mixed channels",
+    "particle_number_rescaling": false,
+    "effective_protons_q0": "31.99778492097154366682464920367301432690",
+    "effective_neutrons_q0": "37.98663676891509558962630795344021362231",
+    "effective_A_q0": "69.98442168988663925645095715711322794921"
+  },
+  "responses": [
+    {
+      "channel": "M",
+      "tau": 0,
+      "tau_prime": 0,
+      "source_response_index": 1,
+      "source_isospin_indices": [
+        0,
+        0
+      ],
+      "coefficients": [
+        "389.7560743331332757906611063146553466417",
+        "-1123.875368431202457485140571293166299677",
+        "1228.318803549856956018208074441043059753",
+        "-645.9701419052970449735307907955846488231",
+        "174.5726173842693938470363761485235084951",
+        "-23.50813141098339177214365960426744264533",
+        "1.333905679684611094051759056227059148827",
+        "-0.01458926290770901621413328497161360111149",
+        "0.00004462487646104696778267168751594395142702"
+      ],
+      "exact_zero": false,
+      "verification_status": "symbolic_source_reconstruction"
+    },
+    {
+      "channel": "M",
+      "tau": 0,
+      "tau_prime": 1,
+      "source_response_index": 1,
+      "source_isospin_indices": [
+        0,
+        1
+      ],
+      "coefficients": [
+        "-33.35301385157435210102300244698811994584",
+        "119.5552765272679385379910341599562787040",
+        "-160.4753828659056078334805103921881758565",
+        "103.4105566209892523879645542901896821240",
+        "-34.25919274927989003548869588743372460964",
+        "5.720142691864321358512755236433686566335",
+        "-0.4220733503445527439201822077984329388673",
+        "0.008792656402096288905874335878899899856670",
+        "-0.00004092198300504249019894518749079384675209"
+      ],
+      "exact_zero": false,
+      "verification_status": "symbolic_source_reconstruction"
+    },
+    {
+      "channel": "M",
+      "tau": 1,
+      "tau_prime": 0,
+      "source_response_index": 1,
+      "source_isospin_indices": [
+        1,
+        0
+      ],
+      "coefficients": [
+        "-33.35301385157435210102300244698811994584",
+        "119.5552765272679385379910341599562787040",
+        "-160.4753828659056078334805103921881758565",
+        "103.4105566209892523879645542901896821240",
+        "-34.25919274927989003548869588743372460964",
+        "5.720142691864321358512755236433686566335",
+        "-0.4220733503445527439201822077984329388673",
+        "0.008792656402096288905874335878899899856670",
+        "-0.00004092198300504249019894518749079384675209"
+      ],
+      "exact_zero": false,
+      "verification_status": "symbolic_source_reconstruction"
+    },
+    {
+      "channel": "M",
+      "tau": 1,
+      "tau_prime": 1,
+      "source_response_index": 1,
+      "source_isospin_indices": [
+        1,
+        1
+      ],
+      "coefficients": [
+        "2.854153164608532063642836021791542077926",
+        "-12.23161218669625061821520948995425510317",
+        "19.87274179308082386565749523294251154737",
+        "-15.56605124883869667536366319448190113754",
+        "6.312464284077638768216292953245016954388",
+        "-1.305701491607481291390619645678248959187",
+        "0.1236772590791855370740954240497784353610",
+        "-0.003857581515782339335604707838013187184595",
+        "0.00003752634910993538508283048283798050552179"
+      ],
+      "exact_zero": false,
+      "verification_status": "symbolic_source_reconstruction"
+    },
+    {
+      "channel": "Sigma_double_prime",
+      "tau": 0,
+      "tau_prime": 0,
+      "source_response_index": 2,
+      "source_isospin_indices": [
+        0,
+        0
+      ],
+      "coefficients": [
+        "0"
+      ],
+      "exact_zero": true,
+      "verification_status": "symbolic_source_reconstruction"
+    },
+    {
+      "channel": "Sigma_double_prime",
+      "tau": 0,
+      "tau_prime": 1,
+      "source_response_index": 2,
+      "source_isospin_indices": [
+        0,
+        1
+      ],
+      "coefficients": [
+        "0"
+      ],
+      "exact_zero": true,
+      "verification_status": "symbolic_source_reconstruction"
+    },
+    {
+      "channel": "Sigma_double_prime",
+      "tau": 1,
+      "tau_prime": 0,
+      "source_response_index": 2,
+      "source_isospin_indices": [
+        1,
+        0
+      ],
+      "coefficients": [
+        "0"
+      ],
+      "exact_zero": true,
+      "verification_status": "symbolic_source_reconstruction"
+    },
+    {
+      "channel": "Sigma_double_prime",
+      "tau": 1,
+      "tau_prime": 1,
+      "source_response_index": 2,
+      "source_isospin_indices": [
+        1,
+        1
+      ],
+      "coefficients": [
+        "0"
+      ],
+      "exact_zero": true,
+      "verification_status": "symbolic_source_reconstruction"
+    },
+    {
+      "channel": "Sigma_prime",
+      "tau": 0,
+      "tau_prime": 0,
+      "source_response_index": 3,
+      "source_isospin_indices": [
+        0,
+        0
+      ],
+      "coefficients": [
+        "0"
+      ],
+      "exact_zero": true,
+      "verification_status": "symbolic_source_reconstruction"
+    },
+    {
+      "channel": "Sigma_prime",
+      "tau": 0,
+      "tau_prime": 1,
+      "source_response_index": 3,
+      "source_isospin_indices": [
+        0,
+        1
+      ],
+      "coefficients": [
+        "0"
+      ],
+      "exact_zero": true,
+      "verification_status": "symbolic_source_reconstruction"
+    },
+    {
+      "channel": "Sigma_prime",
+      "tau": 1,
+      "tau_prime": 0,
+      "source_response_index": 3,
+      "source_isospin_indices": [
+        1,
+        0
+      ],
+      "coefficients": [
+        "0"
+      ],
+      "exact_zero": true,
+      "verification_status": "symbolic_source_reconstruction"
+    },
+    {
+      "channel": "Sigma_prime",
+      "tau": 1,
+      "tau_prime": 1,
+      "source_response_index": 3,
+      "source_isospin_indices": [
+        1,
+        1
+      ],
+      "coefficients": [
+        "0"
+      ],
+      "exact_zero": true,
+      "verification_status": "symbolic_source_reconstruction"
+    },
+    {
+      "channel": "Phi_double_prime",
+      "tau": 0,
+      "tau_prime": 0,
+      "source_response_index": 4,
+      "source_isospin_indices": [
+        0,
+        0
+      ],
+      "coefficients": [
+        "8.319922251073936606171054713035830454984",
+        "-14.52579140652364462641467104426927407637",
+        "9.062911423549083429706071231581862041636",
+        "-2.453904652383585690857946798400076519370",
+        "0.2900414106705336178123414778571884003642",
+        "-0.01261149485991941117698989663010206370280",
+        "0.0001784995058441878711306867500637758057081"
+      ],
+      "exact_zero": false,
+      "verification_status": "symbolic_source_reconstruction"
+    },
+    {
+      "channel": "Phi_double_prime",
+      "tau": 0,
+      "tau_prime": 1,
+      "source_response_index": 4,
+      "source_isospin_indices": [
+        0,
+        1
+      ],
+      "coefficients": [
+        "1.413685673745770909083076385201888645488",
+        "-1.808434998663358744267143375859289408602",
+        "0.5156126229791462164415827827285572876418",
+        "0.1243203899287612950305368393158248155925",
+        "-0.06371134638916849505081628379545113731736",
+        "0.006788049400472017314971134573454476203844",
+        "-0.0001636879320201699607957807499631753870083"
+      ],
+      "exact_zero": false,
+      "verification_status": "symbolic_source_reconstruction"
+    },
+    {
+      "channel": "Phi_double_prime",
+      "tau": 1,
+      "tau_prime": 0,
+      "source_response_index": 4,
+      "source_isospin_indices": [
+        1,
+        0
+      ],
+      "coefficients": [
+        "1.413685673745770909083076385201888645488",
+        "-1.808434998663358744267143375859289408602",
+        "0.5156126229791462164415827827285572876418",
+        "0.1243203899287612950305368393158248155925",
+        "-0.06371134638916849505081628379545113731736",
+        "0.006788049400472017314971134573454476203844",
+        "-0.0001636879320201699607957807499631753870083"
+      ],
+      "exact_zero": false,
+      "verification_status": "symbolic_source_reconstruction"
+    },
+    {
+      "channel": "Phi_double_prime",
+      "tau": 1,
+      "tau_prime": 1,
+      "source_response_index": 4,
+      "source_isospin_indices": [
+        1,
+        1
+      ],
+      "coefficients": [
+        "0.2402074350990559642490290704284015466663",
+        "-0.1951838194482066192562485747552433850957",
+        "-0.03412443593093612219771691797719391619320",
+        "0.04198253816013717407653427654878649306830",
+        "0.0007853197909441066788497919115945253901974",
+        "-0.001844207357466983762629003358053329263541",
+        "0.0001501053964397415403313219313519220220872"
+      ],
+      "exact_zero": false,
+      "verification_status": "symbolic_source_reconstruction"
+    },
+    {
+      "channel": "Phi_tilde_prime",
+      "tau": 0,
+      "tau_prime": 0,
+      "source_response_index": 5,
+      "source_isospin_indices": [
+        0,
+        0
+      ],
+      "coefficients": [
+        "0"
+      ],
+      "exact_zero": true,
+      "verification_status": "symbolic_source_reconstruction"
+    },
+    {
+      "channel": "Phi_tilde_prime",
+      "tau": 0,
+      "tau_prime": 1,
+      "source_response_index": 5,
+      "source_isospin_indices": [
+        0,
+        1
+      ],
+      "coefficients": [
+        "0"
+      ],
+      "exact_zero": true,
+      "verification_status": "symbolic_source_reconstruction"
+    },
+    {
+      "channel": "Phi_tilde_prime",
+      "tau": 1,
+      "tau_prime": 0,
+      "source_response_index": 5,
+      "source_isospin_indices": [
+        1,
+        0
+      ],
+      "coefficients": [
+        "0"
+      ],
+      "exact_zero": true,
+      "verification_status": "symbolic_source_reconstruction"
+    },
+    {
+      "channel": "Phi_tilde_prime",
+      "tau": 1,
+      "tau_prime": 1,
+      "source_response_index": 5,
+      "source_isospin_indices": [
+        1,
+        1
+      ],
+      "coefficients": [
+        "0"
+      ],
+      "exact_zero": true,
+      "verification_status": "symbolic_source_reconstruction"
+    },
+    {
+      "channel": "Delta",
+      "tau": 0,
+      "tau_prime": 0,
+      "source_response_index": 6,
+      "source_isospin_indices": [
+        0,
+        0
+      ],
+      "coefficients": [
+        "0"
+      ],
+      "exact_zero": true,
+      "verification_status": "symbolic_source_reconstruction"
+    },
+    {
+      "channel": "Delta",
+      "tau": 0,
+      "tau_prime": 1,
+      "source_response_index": 6,
+      "source_isospin_indices": [
+        0,
+        1
+      ],
+      "coefficients": [
+        "0"
+      ],
+      "exact_zero": true,
+      "verification_status": "symbolic_source_reconstruction"
+    },
+    {
+      "channel": "Delta",
+      "tau": 1,
+      "tau_prime": 0,
+      "source_response_index": 6,
+      "source_isospin_indices": [
+        1,
+        0
+      ],
+      "coefficients": [
+        "0"
+      ],
+      "exact_zero": true,
+      "verification_status": "symbolic_source_reconstruction"
+    },
+    {
+      "channel": "Delta",
+      "tau": 1,
+      "tau_prime": 1,
+      "source_response_index": 6,
+      "source_isospin_indices": [
+        1,
+        1
+      ],
+      "coefficients": [
+        "0"
+      ],
+      "exact_zero": true,
+      "verification_status": "symbolic_source_reconstruction"
+    },
+    {
+      "channel": "Phi_double_prime_M",
+      "tau": 0,
+      "tau_prime": 0,
+      "source_response_index": 7,
+      "source_isospin_indices": [
+        0,
+        0
+      ],
+      "coefficients": [
+        "-56.94506330960975206324547911177031080941",
+        "131.8118748838052405715508261034174724688",
+        "-111.5342559446445064895163866889516455764",
+        "43.51257308235118884844293099688131794551",
+        "-8.147265735285706011640274136389779802497",
+        "0.6736913273228658606778778270000505654932",
+        "-0.01774213662268886900838075912913911703719",
+        "0.00008924975292209393556534337503188790285404"
+      ],
+      "exact_zero": false,
+      "verification_status": "symbolic_source_reconstruction"
+    },
+    {
+      "channel": "Phi_double_prime_M",
+      "tau": 0,
+      "tau_prime": 1,
+      "source_response_index": 7,
+      "source_isospin_indices": [
+        1,
+        0
+      ],
+      "coefficients": [
+        "4.873020872333671630036183980838602376671",
+        "-14.69569899886189839849854499558528352312",
+        "15.69015258549979205671307577712686438975",
+        "-7.682909465124931307837362584875673531101",
+        "1.804221573179309108286856038594110448909",
+        "-0.1907915910015456428868011209568348007458",
+        "0.007097894993805334424463431369581252035897",
+        "-0.00008184396601008498039789037498158769350417"
+      ],
+      "exact_zero": false,
+      "verification_status": "symbolic_source_reconstruction"
+    },
+    {
+      "channel": "Phi_double_prime_M",
+      "tau": 1,
+      "tau_prime": 0,
+      "source_response_index": 7,
+      "source_isospin_indices": [
+        0,
+        1
+      ],
+      "coefficients": [
+        "-9.675862076830102452522701599914083596973",
+        "17.88147123820468003491176916100192706118",
+        "-9.372104263613928842786847893870328361174",
+        "0.2597287220449935100438963122581994621918",
+        "0.9250434236754416008739717168619478769483",
+        "-0.2105999205571593336310289221936565242375",
+        "0.01388144251062325204477080767494578577937",
+        "-0.00008184396601008498039789037498158769350417"
+      ],
+      "exact_zero": false,
+      "verification_status": "symbolic_source_reconstruction"
+    },
+    {
+      "channel": "Phi_double_prime_M",
+      "tau": 1,
+      "tau_prime": 1,
+      "source_response_index": 7,
+      "source_isospin_indices": [
+        1,
+        1
+      ],
+      "coefficients": [
+        "0.8280029052186164642199082466527878682122",
+        "-2.110625871251203981572070640718945745390",
+        "1.575390114859491364128778028354490358090",
+        "-0.2600106596577147500668780146125012716382",
+        "-0.1294084102842862664824658495628748861314",
+        "0.04701816532866028888290830491332910823215",
+        "-0.004318633355149085276261958677526519500480",
+        "0.00007505269821987077016566096567596101104358"
+      ],
+      "exact_zero": false,
+      "verification_status": "symbolic_source_reconstruction"
+    },
+    {
+      "channel": "Delta_Sigma_prime",
+      "tau": 0,
+      "tau_prime": 0,
+      "source_response_index": 8,
+      "source_isospin_indices": [
+        0,
+        0
+      ],
+      "coefficients": [
+        "0"
+      ],
+      "exact_zero": true,
+      "verification_status": "symbolic_source_reconstruction"
+    },
+    {
+      "channel": "Delta_Sigma_prime",
+      "tau": 0,
+      "tau_prime": 1,
+      "source_response_index": 8,
+      "source_isospin_indices": [
+        1,
+        0
+      ],
+      "coefficients": [
+        "0"
+      ],
+      "exact_zero": true,
+      "verification_status": "symbolic_source_reconstruction"
+    },
+    {
+      "channel": "Delta_Sigma_prime",
+      "tau": 1,
+      "tau_prime": 0,
+      "source_response_index": 8,
+      "source_isospin_indices": [
+        0,
+        1
+      ],
+      "coefficients": [
+        "0"
+      ],
+      "exact_zero": true,
+      "verification_status": "symbolic_source_reconstruction"
+    },
+    {
+      "channel": "Delta_Sigma_prime",
+      "tau": 1,
+      "tau_prime": 1,
+      "source_response_index": 8,
+      "source_isospin_indices": [
+        1,
+        1
+      ],
+      "coefficients": [
+        "0"
+      ],
+      "exact_zero": true,
+      "verification_status": "symbolic_source_reconstruction"
+    }
+  ],
+  "source_pn_polynomials": [
+    {
+      "channel": "M",
+      "nucleon": 0,
+      "nucleon_prime": 0,
+      "source_operator_order": [
+        "M",
+        "M"
+      ],
+      "coefficients": [
+        "1023.858239848753896983830426243703857858",
+        "-2817.997387129349789830895373277772101487",
+        "2913.012821335187753438432557725194190879",
+        "-1428.529554528528940300079518761889706612",
+        "353.0103871951599907954774983928720870952",
+        "-42.01423863769158967666939637268993251109",
+        "1.927166778981209106434279060560490767927",
+        "-0.002706581406024358677331401323563592024125",
+        "0.0000009652843792604110427239678940359212468056"
+      ]
+    },
+    {
+      "channel": "M",
+      "nucleon": 0,
+      "nucleon_prime": 1,
+      "source_operator_order": [
+        "M",
+        "M"
+      ],
+      "coefficients": [
+        "1215.488233202814646794911001641453183894",
+        "-3492.331858026703542118255529189972898057",
+        "3796.445269874605486007166512796377949007",
+        "-1980.472859999283564182407297627188029083",
+        "528.6048608714562912479788894253757650058",
+        "-69.75099072655358575540805271788683891729",
+        "3.802044715339583281207864982621152532170",
+        "-0.03371457142154313471858407457566860459400",
+        "0.00002230068137755836302775078285282366915020"
+      ]
+    },
+    {
+      "channel": "M",
+      "nucleon": 1,
+      "nucleon_prime": 0,
+      "source_operator_order": [
+        "M",
+        "M"
+      ],
+      "coefficients": [
+        "1215.488233202814646794911001641453183894",
+        "-3492.331858026703542118255529189972898057",
+        "3796.445269874605486007166512796377949007",
+        "-1980.472859999283564182407297627188029083",
+        "528.6048608714562912479788894253757650058",
+        "-69.75099072655358575540805271788683891729",
+        "3.802044715339583281207864982621152532170",
+        "-0.03371457142154313471858407457566860459400",
+        "0.00002230068137755836302775078285282366915020"
+      ]
+    },
+    {
+      "channel": "M",
+      "nucleon": 1,
+      "nucleon_prime": 1,
+      "source_operator_order": [
+        "M",
+        "M"
+      ],
+      "coefficients": [
+        "1442.984573013492293367104098106639221962",
+        "-4320.373300873194604197784992006528763379",
+        "4929.605956909341503499139282426839370954",
+        "-2728.024934465053692198919315135999496231",
+        "783.5241002313776460548890728679896048612",
+        "-113.8956716706767750184203218770210405287",
+        "7.231096925855120814590784915499947245445",
+        "-0.1131983604394842159546989479870249244504",
+        "0.0005152060890951318432134758665370910268869"
+      ]
+    },
+    {
+      "channel": "Sigma_double_prime",
+      "nucleon": 0,
+      "nucleon_prime": 0,
+      "source_operator_order": [
+        "Sigma_double_prime",
+        "Sigma_double_prime"
+      ],
+      "coefficients": [
+        "0"
+      ]
+    },
+    {
+      "channel": "Sigma_double_prime",
+      "nucleon": 0,
+      "nucleon_prime": 1,
+      "source_operator_order": [
+        "Sigma_double_prime",
+        "Sigma_double_prime"
+      ],
+      "coefficients": [
+        "0"
+      ]
+    },
+    {
+      "channel": "Sigma_double_prime",
+      "nucleon": 1,
+      "nucleon_prime": 0,
+      "source_operator_order": [
+        "Sigma_double_prime",
+        "Sigma_double_prime"
+      ],
+      "coefficients": [
+        "0"
+      ]
+    },
+    {
+      "channel": "Sigma_double_prime",
+      "nucleon": 1,
+      "nucleon_prime": 1,
+      "source_operator_order": [
+        "Sigma_double_prime",
+        "Sigma_double_prime"
+      ],
+      "coefficients": [
+        "0"
+      ]
+    },
+    {
+      "channel": "Sigma_prime",
+      "nucleon": 0,
+      "nucleon_prime": 0,
+      "source_operator_order": [
+        "Sigma_prime",
+        "Sigma_prime"
+      ],
+      "coefficients": [
+        "0"
+      ]
+    },
+    {
+      "channel": "Sigma_prime",
+      "nucleon": 0,
+      "nucleon_prime": 1,
+      "source_operator_order": [
+        "Sigma_prime",
+        "Sigma_prime"
+      ],
+      "coefficients": [
+        "0"
+      ]
+    },
+    {
+      "channel": "Sigma_prime",
+      "nucleon": 1,
+      "nucleon_prime": 0,
+      "source_operator_order": [
+        "Sigma_prime",
+        "Sigma_prime"
+      ],
+      "coefficients": [
+        "0"
+      ]
+    },
+    {
+      "channel": "Sigma_prime",
+      "nucleon": 1,
+      "nucleon_prime": 1,
+      "source_operator_order": [
+        "Sigma_prime",
+        "Sigma_prime"
+      ],
+      "coefficients": [
+        "0"
+      ]
+    },
+    {
+      "channel": "Phi_double_prime",
+      "nucleon": 0,
+      "nucleon_prime": 0,
+      "source_operator_order": [
+        "Phi_double_prime",
+        "Phi_double_prime"
+      ],
+      "coefficients": [
+        "35.77488959010667801449007256267179988416",
+        "-57.61003983618146508147056477935047632953",
+        "31.60446052802719019652608500613633166783",
+        "-6.796148747691918008828300820234330000352",
+        "0.5133489243522646696862734472548203442621",
+        "-0.002763355631167802694405253084586992948289",
+        "0.000003861137517041644170895871576143684987222"
+      ]
+    },
+    {
+      "channel": "Phi_double_prime",
+      "nucleon": 0,
+      "nucleon_prime": 1,
+      "source_operator_order": [
+        "Phi_double_prime",
+        "Phi_double_prime"
+      ],
+      "coefficients": [
+        "25.38317270896729322438258513655195728662",
+        "-45.02093151703434925796441174834112233613",
+        "28.57918102558534006453081018918863629070",
+        "-7.841060862001028216694488054628355865660",
+        "0.9087248101134200024177569652042568357947",
+        "-0.03382643131679373881250173341853901304329",
+        "0.00008920272551023345211100313141129467660080"
+      ]
+    },
+    {
+      "channel": "Phi_double_prime",
+      "nucleon": 1,
+      "nucleon_prime": 0,
+      "source_operator_order": [
+        "Phi_double_prime",
+        "Phi_double_prime"
+      ],
+      "coefficients": [
+        "25.38317270896729322438258513655195728662",
+        "-45.02093151703434925796441174834112233613",
+        "28.57918102558534006453081018918863629070",
+        "-7.841060862001028216694488054628355865660",
+        "0.9087248101134200024177569652042568357947",
+        "-0.03382643131679373881250173341853901304329",
+        "0.00008920272551023345211100313141129467660080"
+      ]
+    },
+    {
+      "channel": "Phi_double_prime",
+      "nucleon": 1,
+      "nucleon_prime": 1,
+      "source_operator_order": [
+        "Phi_double_prime",
+        "Phi_double_prime"
+      ],
+      "coefficients": [
+        "18.00999148160727349655692906404032195975",
+        "-34.88457541099956353865531673592338368104",
+        "25.12508121422939193858723342318212456906",
+        "-8.358404842458378021795191477725688323235",
+        "1.313969315418370046263850353234569986497",
+        "-0.08806450014607776256460885006110914447432",
+        "0.002060824356380527372853903466148364107548"
+      ]
+    },
+    {
+      "channel": "Phi_tilde_prime",
+      "nucleon": 0,
+      "nucleon_prime": 0,
+      "source_operator_order": [
+        "Phi_tilde_prime",
+        "Phi_tilde_prime"
+      ],
+      "coefficients": [
+        "0"
+      ]
+    },
+    {
+      "channel": "Phi_tilde_prime",
+      "nucleon": 0,
+      "nucleon_prime": 1,
+      "source_operator_order": [
+        "Phi_tilde_prime",
+        "Phi_tilde_prime"
+      ],
+      "coefficients": [
+        "0"
+      ]
+    },
+    {
+      "channel": "Phi_tilde_prime",
+      "nucleon": 1,
+      "nucleon_prime": 0,
+      "source_operator_order": [
+        "Phi_tilde_prime",
+        "Phi_tilde_prime"
+      ],
+      "coefficients": [
+        "0"
+      ]
+    },
+    {
+      "channel": "Phi_tilde_prime",
+      "nucleon": 1,
+      "nucleon_prime": 1,
+      "source_operator_order": [
+        "Phi_tilde_prime",
+        "Phi_tilde_prime"
+      ],
+      "coefficients": [
+        "0"
+      ]
+    },
+    {
+      "channel": "Delta",
+      "nucleon": 0,
+      "nucleon_prime": 0,
+      "source_operator_order": [
+        "Delta",
+        "Delta"
+      ],
+      "coefficients": [
+        "0"
+      ]
+    },
+    {
+      "channel": "Delta",
+      "nucleon": 0,
+      "nucleon_prime": 1,
+      "source_operator_order": [
+        "Delta",
+        "Delta"
+      ],
+      "coefficients": [
+        "0"
+      ]
+    },
+    {
+      "channel": "Delta",
+      "nucleon": 1,
+      "nucleon_prime": 0,
+      "source_operator_order": [
+        "Delta",
+        "Delta"
+      ],
+      "coefficients": [
+        "0"
+      ]
+    },
+    {
+      "channel": "Delta",
+      "nucleon": 1,
+      "nucleon_prime": 1,
+      "source_operator_order": [
+        "Delta",
+        "Delta"
+      ],
+      "coefficients": [
+        "0"
+      ]
+    },
+    {
+      "channel": "Phi_double_prime_M",
+      "nucleon": 0,
+      "nucleon_prime": 0,
+      "source_operator_order": [
+        "M",
+        "Phi_double_prime"
+      ],
+      "coefficients": [
+        "-191.3855153518942042296032750997005108316",
+        "417.4768897223897730679198730673661787170",
+        "-325.5972308948563985048776501843514154827",
+        "112.5613222673386125741924265511962913064",
+        "-17.42769982806061170906899430206648250790",
+        "1.003167023560331494442680631177832401353",
+        "-0.003397420313816309350932714594710340261197",
+        "0.000001930568758520822085447935788071842493611"
+      ]
+    },
+    {
+      "channel": "Phi_double_prime_M",
+      "nucleon": 0,
+      "nucleon_prime": 1,
+      "source_operator_order": [
+        "M",
+        "Phi_double_prime"
+      ],
+      "coefficients": [
+        "-135.7927766048307680985019970217993659041",
+        "318.3857458309464384194148749090543858809",
+        "-276.6090311111233201623547938877224636234",
+        "112.5630937336044039579742268591668113881",
+        "-22.42682205407755243884569669805811521595",
+        "2.030981504534684191178348361116461827953",
+        "-0.06348232229485402381463566739645911547541",
+        "0.00004460136275511672605550156570564733830040"
+      ]
+    },
+    {
+      "channel": "Phi_double_prime_M",
+      "nucleon": 1,
+      "nucleon_prime": 0,
+      "source_operator_order": [
+        "M",
+        "Phi_double_prime"
+      ],
+      "coefficients": [
+        "-227.2061041868922039827420900605028881559",
+        "523.0741432139712900440517346305086174355",
+        "-434.0798351102356097015205094071299995335",
+        "162.4681612914739818955064968496841666534",
+        "-27.95086128543359060755613767206724737720",
+        "1.906522099311081102007506651380788479828",
+        "-0.02086003620662911502878334846414760023423",
+        "0.00004460136275511672605550156570564733830040"
+      ]
+    },
+    {
+      "channel": "Phi_double_prime_M",
+      "nucleon": 1,
+      "nucleon_prime": 1,
+      "source_operator_order": [
+        "M",
+        "Phi_double_prime"
+      ],
+      "coefficients": [
+        "-161.2083740630855224206669476155358259752",
+        "397.4600923961305985407489352062670968533",
+        "-365.2946992809802968208019253538909622100",
+        "159.2025424447969225489916291786589033710",
+        "-34.57617755569792166339678610284487857104",
+        "3.525184271412591758275833729535061250151",
+        "-0.1352144854760036565958511605023022105690",
+        "0.001030412178190263686426951733074182053774"
+      ]
+    },
+    {
+      "channel": "Delta_Sigma_prime",
+      "nucleon": 0,
+      "nucleon_prime": 0,
+      "source_operator_order": [
+        "Sigma_prime",
+        "Delta"
+      ],
+      "coefficients": [
+        "0"
+      ]
+    },
+    {
+      "channel": "Delta_Sigma_prime",
+      "nucleon": 0,
+      "nucleon_prime": 1,
+      "source_operator_order": [
+        "Sigma_prime",
+        "Delta"
+      ],
+      "coefficients": [
+        "0"
+      ]
+    },
+    {
+      "channel": "Delta_Sigma_prime",
+      "nucleon": 1,
+      "nucleon_prime": 0,
+      "source_operator_order": [
+        "Sigma_prime",
+        "Delta"
+      ],
+      "coefficients": [
+        "0"
+      ]
+    },
+    {
+      "channel": "Delta_Sigma_prime",
+      "nucleon": 1,
+      "nucleon_prime": 1,
+      "source_operator_order": [
+        "Sigma_prime",
+        "Delta"
+      ],
+      "coefficients": [
+        "0"
+      ]
+    }
+  ],
+  "density_rows": [
+    {
+      "row": 1,
+      "source_line": 373,
+      "psi_decimal": "5.291502",
+      "quantum": [
+        0,
+        0,
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    {
+      "row": 2,
+      "source_line": 374,
+      "psi_decimal": "5.291502",
+      "quantum": [
+        0,
+        0,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "row": 3,
+      "source_line": 375,
+      "psi_decimal": "7.483314",
+      "quantum": [
+        0,
+        0,
+        1,
+        3,
+        1,
+        3
+      ]
+    },
+    {
+      "row": 4,
+      "source_line": 376,
+      "psi_decimal": "5.291502",
+      "quantum": [
+        0,
+        0,
+        2,
+        1,
+        2,
+        1
+      ]
+    },
+    {
+      "row": 5,
+      "source_line": 377,
+      "psi_decimal": "7.483314",
+      "quantum": [
+        0,
+        0,
+        2,
+        3,
+        2,
+        3
+      ]
+    },
+    {
+      "row": 6,
+      "source_line": 378,
+      "psi_decimal": "9.165151",
+      "quantum": [
+        0,
+        0,
+        2,
+        5,
+        2,
+        5
+      ]
+    },
+    {
+      "row": 7,
+      "source_line": 379,
+      "psi_decimal": "2.5701432",
+      "quantum": [
+        0,
+        0,
+        3,
+        1,
+        3,
+        1
+      ]
+    },
+    {
+      "row": 8,
+      "source_line": 380,
+      "psi_decimal": "4.4035658",
+      "quantum": [
+        0,
+        0,
+        3,
+        3,
+        3,
+        3
+      ]
+    },
+    {
+      "row": 9,
+      "source_line": 381,
+      "psi_decimal": "4.5331907",
+      "quantum": [
+        0,
+        0,
+        3,
+        5,
+        3,
+        5
+      ]
+    },
+    {
+      "row": 10,
+      "source_line": 382,
+      "psi_decimal": "10.58300",
+      "quantum": [
+        0,
+        0,
+        3,
+        7,
+        3,
+        7
+      ]
+    },
+    {
+      "row": 11,
+      "source_line": 383,
+      "psi_decimal": "0.8274453",
+      "quantum": [
+        0,
+        0,
+        4,
+        9,
+        4,
+        9
+      ]
+    },
+    {
+      "row": 12,
+      "source_line": 384,
+      "psi_decimal": "0.3360468",
+      "quantum": [
+        0,
+        1,
+        3,
+        1,
+        3,
+        1
+      ]
+    },
+    {
+      "row": 13,
+      "source_line": 385,
+      "psi_decimal": "0.9629148",
+      "quantum": [
+        0,
+        1,
+        3,
+        3,
+        3,
+        3
+      ]
+    },
+    {
+      "row": 14,
+      "source_line": 386,
+      "psi_decimal": "1.4160823",
+      "quantum": [
+        0,
+        1,
+        3,
+        5,
+        3,
+        5
+      ]
+    },
+    {
+      "row": 15,
+      "source_line": 387,
+      "psi_decimal": "0.5058569",
+      "quantum": [
+        0,
+        1,
+        4,
+        9,
+        4,
+        9
+      ]
+    }
+  ]
+}

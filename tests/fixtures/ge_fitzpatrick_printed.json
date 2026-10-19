@@ -1,0 +1,977 @@
+{
+  "reference": "Fitzpatrick et al., JCAP 02 (2013) 004, arXiv:1203.3542v3, Appendix A.3, Eqs. (78)-(81) and Ge73 table, PDF pages 37-39 (zero based)",
+  "url": "https://arxiv.org/pdf/1203.3542",
+  "basis": "p/n F in SOURCE operator order, exp(-2y) omitted",
+  "precision": "two significant figures; omitted high-order terms are not zeros; compare coefficients individually, not cancellation-sensitive functions",
+  "records": [
+    {
+      "A": 70,
+      "channel": "M",
+      "nucleon": 0,
+      "nucleon_prime": 0,
+      "coefficients": [
+        "1000",
+        "-2800",
+        "2900",
+        "-1400",
+        "350",
+        "-42",
+        "1.9",
+        "-.0027"
+      ]
+    },
+    {
+      "A": 70,
+      "channel": "M",
+      "nucleon": 0,
+      "nucleon_prime": 1,
+      "coefficients": [
+        "1200",
+        "-3500",
+        "3800",
+        "-2000",
+        "530",
+        "-70",
+        "3.8",
+        "-.034"
+      ]
+    },
+    {
+      "A": 70,
+      "channel": "M",
+      "nucleon": 1,
+      "nucleon_prime": 1,
+      "coefficients": [
+        "1400",
+        "-4300",
+        "4900",
+        "-2700",
+        "780",
+        "-110",
+        "7.2",
+        "-.11",
+        ".00052"
+      ]
+    },
+    {
+      "A": 72,
+      "channel": "M",
+      "nucleon": 0,
+      "nucleon_prime": 0,
+      "coefficients": [
+        "1000",
+        "-2800",
+        "3000",
+        "-1500",
+        "400",
+        "-51",
+        "2.6",
+        "-.0069"
+      ]
+    },
+    {
+      "A": 72,
+      "channel": "M",
+      "nucleon": 0,
+      "nucleon_prime": 1,
+      "coefficients": [
+        "1300",
+        "-3700",
+        "4100",
+        "-2200",
+        "600",
+        "-82",
+        "4.5",
+        "-.017"
+      ]
+    },
+    {
+      "A": 72,
+      "channel": "M",
+      "nucleon": 1,
+      "nucleon_prime": 1,
+      "coefficients": [
+        "1600",
+        "-4800",
+        "5600",
+        "-3100",
+        "910",
+        "-130",
+        "7.8",
+        "-.039"
+      ]
+    },
+    {
+      "A": 73,
+      "channel": "M",
+      "nucleon": 0,
+      "nucleon_prime": 0,
+      "coefficients": [
+        "1000",
+        "-2800",
+        "2900",
+        "-1500",
+        "380",
+        "-47",
+        "2.3",
+        "-.0058"
+      ]
+    },
+    {
+      "A": 73,
+      "channel": "M",
+      "nucleon": 0,
+      "nucleon_prime": 1,
+      "coefficients": [
+        "1300",
+        "-3800",
+        "4200",
+        "-2300",
+        "630",
+        "-88",
+        "5.1",
+        "-.050"
+      ]
+    },
+    {
+      "A": 73,
+      "channel": "M",
+      "nucleon": 1,
+      "nucleon_prime": 1,
+      "coefficients": [
+        "1700",
+        "-5200",
+        "6100",
+        "-3500",
+        "1100",
+        "-160",
+        "11",
+        "-.17",
+        ".0012"
+      ]
+    },
+    {
+      "A": 74,
+      "channel": "M",
+      "nucleon": 0,
+      "nucleon_prime": 0,
+      "coefficients": [
+        "1000",
+        "-2800",
+        "2900",
+        "-1400",
+        "350",
+        "-41",
+        "1.9",
+        "-.0033"
+      ]
+    },
+    {
+      "A": 74,
+      "channel": "M",
+      "nucleon": 0,
+      "nucleon_prime": 1,
+      "coefficients": [
+        "1300",
+        "-4000",
+        "4400",
+        "-2400",
+        "660",
+        "-91",
+        "5.4",
+        "-.070"
+      ]
+    },
+    {
+      "A": 74,
+      "channel": "M",
+      "nucleon": 1,
+      "nucleon_prime": 1,
+      "coefficients": [
+        "1800",
+        "-5500",
+        "6700",
+        "-3900",
+        "1200",
+        "-190",
+        "14",
+        "-.33",
+        ".0023"
+      ]
+    },
+    {
+      "A": 76,
+      "channel": "M",
+      "nucleon": 0,
+      "nucleon_prime": 0,
+      "coefficients": [
+        "1000",
+        "-2800",
+        "2900",
+        "-1400",
+        "340",
+        "-40",
+        "1.8",
+        "-.0024"
+      ]
+    },
+    {
+      "A": 76,
+      "channel": "M",
+      "nucleon": 0,
+      "nucleon_prime": 1,
+      "coefficients": [
+        "1400",
+        "-4200",
+        "4800",
+        "-2600",
+        "730",
+        "-100",
+        "6.5",
+        "-.11"
+      ]
+    },
+    {
+      "A": 76,
+      "channel": "M",
+      "nucleon": 1,
+      "nucleon_prime": 1,
+      "coefficients": [
+        "1900",
+        "-6300",
+        "7800",
+        "-4700",
+        "1500",
+        "-260",
+        "21",
+        "-.66",
+        ".0069"
+      ]
+    },
+    {
+      "A": 73,
+      "channel": "Sigma_prime",
+      "nucleon": 0,
+      "nucleon_prime": 0,
+      "coefficients": [
+        ".00020",
+        "-.00046",
+        ".0015",
+        "-.0023",
+        ".0021",
+        "-.00076",
+        ".00010"
+      ]
+    },
+    {
+      "A": 73,
+      "channel": "Sigma_prime",
+      "nucleon": 0,
+      "nucleon_prime": 1,
+      "coefficients": [
+        ".012",
+        "-.053",
+        ".072",
+        "-.067",
+        ".038",
+        "-.012",
+        ".0018",
+        "-.00014"
+      ]
+    },
+    {
+      "A": 73,
+      "channel": "Sigma_prime",
+      "nucleon": 1,
+      "nucleon_prime": 1,
+      "coefficients": [
+        ".74",
+        "-4.7",
+        "12",
+        "-13",
+        "6.9",
+        "-2.1",
+        ".35",
+        "-.031",
+        ".0019"
+      ]
+    },
+    {
+      "A": 73,
+      "channel": "Sigma_double_prime",
+      "nucleon": 0,
+      "nucleon_prime": 0,
+      "coefficients": [
+        ".00010",
+        "-.00096",
+        ".0034",
+        "-.0036",
+        ".0020",
+        "-.00046"
+      ]
+    },
+    {
+      "A": 73,
+      "channel": "Sigma_double_prime",
+      "nucleon": 0,
+      "nucleon_prime": 1,
+      "coefficients": [
+        ".0061",
+        "-.039",
+        ".058",
+        "-.054",
+        ".026",
+        "-.0065",
+        ".00082"
+      ]
+    },
+    {
+      "A": 73,
+      "channel": "Sigma_double_prime",
+      "nucleon": 1,
+      "nucleon_prime": 1,
+      "coefficients": [
+        ".37",
+        "-1.2",
+        "2.3",
+        "-2.0",
+        "1.0",
+        "-.30",
+        ".057",
+        "-.0060",
+        ".00095"
+      ]
+    },
+    {
+      "A": 73,
+      "channel": "Delta",
+      "nucleon": 0,
+      "nucleon_prime": 0,
+      "coefficients": [
+        ".0069",
+        "-.012",
+        ".0089",
+        "-.0031",
+        ".00048"
+      ]
+    },
+    {
+      "A": 73,
+      "channel": "Delta",
+      "nucleon": 0,
+      "nucleon_prime": 1,
+      "coefficients": [
+        ".14",
+        "-.30",
+        ".25",
+        "-.099",
+        ".018",
+        "-.0013"
+      ]
+    },
+    {
+      "A": 73,
+      "channel": "Delta",
+      "nucleon": 1,
+      "nucleon_prime": 1,
+      "coefficients": [
+        "3.0",
+        "-7.2",
+        "6.9",
+        "-3.1",
+        ".72",
+        "-.080",
+        ".0036"
+      ]
+    },
+    {
+      "A": 73,
+      "channel": "Phi_double_prime",
+      "nucleon": 0,
+      "nucleon_prime": 0,
+      "coefficients": [
+        "51",
+        "-83",
+        "47",
+        "-11",
+        ".97",
+        "-.0073"
+      ]
+    },
+    {
+      "A": 73,
+      "channel": "Phi_double_prime",
+      "nucleon": 0,
+      "nucleon_prime": 1,
+      "coefficients": [
+        "18",
+        "-34",
+        "24",
+        "-7.2",
+        ".99",
+        "-.049",
+        ".00021"
+      ]
+    },
+    {
+      "A": 73,
+      "channel": "Phi_double_prime",
+      "nucleon": 1,
+      "nucleon_prime": 1,
+      "coefficients": [
+        "6.6",
+        "-15",
+        "13",
+        "-5.5",
+        "1.1",
+        "-.12",
+        ".0049"
+      ]
+    },
+    {
+      "A": 73,
+      "channel": "Phi_double_prime_M",
+      "nucleon": 0,
+      "nucleon_prime": 0,
+      "coefficients": [
+        "-230",
+        "500",
+        "-400",
+        "140",
+        "-23",
+        "1.5",
+        "-.0076"
+      ]
+    },
+    {
+      "A": 73,
+      "channel": "Phi_double_prime_M",
+      "nucleon": 0,
+      "nucleon_prime": 1,
+      "coefficients": [
+        "-80",
+        "200",
+        "-190",
+        "85",
+        "-19",
+        "2.1",
+        "-.089",
+        ".00011"
+      ]
+    },
+    {
+      "A": 73,
+      "channel": "Phi_double_prime_M",
+      "nucleon": 1,
+      "nucleon_prime": 0,
+      "coefficients": [
+        "-290",
+        "690",
+        "-590",
+        "230",
+        "-42",
+        "3.1",
+        "-.035",
+        ".00011"
+      ]
+    },
+    {
+      "A": 73,
+      "channel": "Phi_double_prime_M",
+      "nucleon": 1,
+      "nucleon_prime": 1,
+      "coefficients": [
+        "-100",
+        "270",
+        "-280",
+        "130",
+        "-33",
+        "4.0",
+        "-.20",
+        ".0025"
+      ]
+    },
+    {
+      "A": 73,
+      "channel": "Delta_Sigma_prime",
+      "nucleon": 0,
+      "nucleon_prime": 0,
+      "coefficients": [
+        "-.0012",
+        ".0024",
+        "-.0033",
+        ".0023",
+        "-.00088",
+        ".00015"
+      ]
+    },
+    {
+      "A": 73,
+      "channel": "Delta_Sigma_prime",
+      "nucleon": 0,
+      "nucleon_prime": 1,
+      "coefficients": [
+        "-.025",
+        ".058",
+        "-.074",
+        ".053",
+        "-.020",
+        ".0036",
+        "-.00029"
+      ]
+    },
+    {
+      "A": 73,
+      "channel": "Delta_Sigma_prime",
+      "nucleon": 1,
+      "nucleon_prime": 0,
+      "coefficients": [
+        "-.071",
+        ".29",
+        "-.38",
+        ".24",
+        "-.075",
+        ".011",
+        "-.00066"
+      ]
+    },
+    {
+      "A": 73,
+      "channel": "Delta_Sigma_prime",
+      "nucleon": 1,
+      "nucleon_prime": 1,
+      "coefficients": [
+        "-1.5",
+        "6.5",
+        "-10",
+        "7.1",
+        "-2.6",
+        ".49",
+        "-.048",
+        ".0019"
+      ]
+    },
+    {
+      "A": 70,
+      "channel": "Phi_double_prime",
+      "nucleon": 0,
+      "nucleon_prime": 0,
+      "coefficients": [
+        "36",
+        "-58",
+        "32",
+        "-6.8",
+        ".51",
+        "-.0028"
+      ]
+    },
+    {
+      "A": 70,
+      "channel": "Phi_double_prime",
+      "nucleon": 0,
+      "nucleon_prime": 1,
+      "coefficients": [
+        "25",
+        "-45",
+        "29",
+        "-7.8",
+        ".91",
+        "-.034"
+      ]
+    },
+    {
+      "A": 70,
+      "channel": "Phi_double_prime",
+      "nucleon": 1,
+      "nucleon_prime": 1,
+      "coefficients": [
+        "18",
+        "-35",
+        "25",
+        "-8.4",
+        "1.3",
+        "-.088",
+        ".0021"
+      ]
+    },
+    {
+      "A": 70,
+      "channel": "Phi_double_prime_M",
+      "nucleon": 0,
+      "nucleon_prime": 0,
+      "coefficients": [
+        "-190",
+        "420",
+        "-330",
+        "110",
+        "-17",
+        "1.0",
+        "-.0034"
+      ]
+    },
+    {
+      "A": 70,
+      "channel": "Phi_double_prime_M",
+      "nucleon": 0,
+      "nucleon_prime": 1,
+      "coefficients": [
+        "-140",
+        "320",
+        "-280",
+        "110",
+        "-22",
+        "2.0",
+        "-.063"
+      ]
+    },
+    {
+      "A": 70,
+      "channel": "Phi_double_prime_M",
+      "nucleon": 1,
+      "nucleon_prime": 0,
+      "coefficients": [
+        "-230",
+        "520",
+        "-430",
+        "160",
+        "-28",
+        "1.9",
+        "-.021"
+      ]
+    },
+    {
+      "A": 70,
+      "channel": "Phi_double_prime_M",
+      "nucleon": 1,
+      "nucleon_prime": 1,
+      "coefficients": [
+        "-160",
+        "400",
+        "-370",
+        "160",
+        "-35",
+        "3.5",
+        "-.14",
+        ".0010"
+      ]
+    },
+    {
+      "A": 72,
+      "channel": "Phi_double_prime",
+      "nucleon": 0,
+      "nucleon_prime": 0,
+      "coefficients": [
+        "68",
+        "-110",
+        "64",
+        "-16",
+        "1.4",
+        "-.010"
+      ]
+    },
+    {
+      "A": 72,
+      "channel": "Phi_double_prime",
+      "nucleon": 0,
+      "nucleon_prime": 1,
+      "coefficients": [
+        "6.9",
+        "-13",
+        "8.8",
+        "-2.7",
+        ".36",
+        "-.018"
+      ]
+    },
+    {
+      "A": 72,
+      "channel": "Phi_double_prime",
+      "nucleon": 1,
+      "nucleon_prime": 1,
+      "coefficients": [
+        ".71",
+        "-1.5",
+        "1.2",
+        "-.42",
+        ".075",
+        "-.0063",
+        ".00020"
+      ]
+    },
+    {
+      "A": 72,
+      "channel": "Phi_double_prime_M",
+      "nucleon": 0,
+      "nucleon_prime": 0,
+      "coefficients": [
+        "-260",
+        "580",
+        "-460",
+        "170",
+        "-30",
+        "2.0",
+        "-.0094"
+      ]
+    },
+    {
+      "A": 72,
+      "channel": "Phi_double_prime_M",
+      "nucleon": 0,
+      "nucleon_prime": 1,
+      "coefficients": [
+        "-27",
+        "66",
+        "-60",
+        "26",
+        "-5.6",
+        ".58",
+        "-.023"
+      ]
+    },
+    {
+      "A": 72,
+      "channel": "Phi_double_prime_M",
+      "nucleon": 1,
+      "nucleon_prime": 0,
+      "coefficients": [
+        "-330",
+        "760",
+        "-650",
+        "250",
+        "-47",
+        "3.4",
+        "-.020"
+      ]
+    },
+    {
+      "A": 72,
+      "channel": "Phi_double_prime_M",
+      "nucleon": 1,
+      "nucleon_prime": 1,
+      "coefficients": [
+        "-34",
+        "87",
+        "-83",
+        "38",
+        "-8.7",
+        ".96",
+        "-.040",
+        ".00010"
+      ]
+    },
+    {
+      "A": 74,
+      "channel": "Phi_double_prime",
+      "nucleon": 0,
+      "nucleon_prime": 0,
+      "coefficients": [
+        "36",
+        "-57",
+        "32",
+        "-7.0",
+        ".55",
+        "-.0035"
+      ]
+    },
+    {
+      "A": 74,
+      "channel": "Phi_double_prime",
+      "nucleon": 0,
+      "nucleon_prime": 1,
+      "coefficients": [
+        "26",
+        "-52",
+        "36",
+        "-11",
+        "1.5",
+        "-.073",
+        ".00023"
+      ]
+    },
+    {
+      "A": 74,
+      "channel": "Phi_double_prime",
+      "nucleon": 1,
+      "nucleon_prime": 1,
+      "coefficients": [
+        "20",
+        "-45",
+        "38",
+        "-15",
+        "2.9",
+        "-.27",
+        ".0093"
+      ]
+    },
+    {
+      "A": 74,
+      "channel": "Phi_double_prime_M",
+      "nucleon": 0,
+      "nucleon_prime": 0,
+      "coefficients": [
+        "-190",
+        "420",
+        "-330",
+        "110",
+        "-18",
+        "1.0",
+        "-.0042"
+      ]
+    },
+    {
+      "A": 74,
+      "channel": "Phi_double_prime_M",
+      "nucleon": 0,
+      "nucleon_prime": 1,
+      "coefficients": [
+        "-140",
+        "360",
+        "-330",
+        "150",
+        "-32",
+        "3.4",
+        "-.13",
+        ".00012"
+      ]
+    },
+    {
+      "A": 74,
+      "channel": "Phi_double_prime_M",
+      "nucleon": 1,
+      "nucleon_prime": 0,
+      "coefficients": [
+        "-250",
+        "600",
+        "-510",
+        "200",
+        "-37",
+        "2.8",
+        "-.043",
+        ".00012"
+      ]
+    },
+    {
+      "A": 74,
+      "channel": "Phi_double_prime_M",
+      "nucleon": 1,
+      "nucleon_prime": 1,
+      "coefficients": [
+        "-190",
+        "500",
+        "-510",
+        "250",
+        "-62",
+        "7.6",
+        "-.39",
+        ".0047"
+      ]
+    },
+    {
+      "A": 76,
+      "channel": "Phi_double_prime",
+      "nucleon": 0,
+      "nucleon_prime": 0,
+      "coefficients": [
+        "31",
+        "-49",
+        "27",
+        "-5.8",
+        ".44",
+        "-.0024"
+      ]
+    },
+    {
+      "A": 76,
+      "channel": "Phi_double_prime",
+      "nucleon": 0,
+      "nucleon_prime": 1,
+      "coefficients": [
+        "39",
+        "-78",
+        "54",
+        "-17",
+        "2.3",
+        "-.11",
+        ".00031"
+      ]
+    },
+    {
+      "A": 76,
+      "channel": "Phi_double_prime",
+      "nucleon": 1,
+      "nucleon_prime": 1,
+      "coefficients": [
+        "50",
+        "-120",
+        "100",
+        "-41",
+        "8.1",
+        "-.77",
+        ".027"
+      ]
+    },
+    {
+      "A": 76,
+      "channel": "Phi_double_prime_M",
+      "nucleon": 0,
+      "nucleon_prime": 0,
+      "coefficients": [
+        "-180",
+        "390",
+        "-300",
+        "100",
+        "-16",
+        ".89",
+        "-.0030"
+      ]
+    },
+    {
+      "A": 76,
+      "channel": "Phi_double_prime_M",
+      "nucleon": 0,
+      "nucleon_prime": 1,
+      "coefficients": [
+        "-230",
+        "580",
+        "-550",
+        "240",
+        "-53",
+        "5.5",
+        "-.22",
+        ".00015"
+      ]
+    },
+    {
+      "A": 76,
+      "channel": "Phi_double_prime_M",
+      "nucleon": 1,
+      "nucleon_prime": 0,
+      "coefficients": [
+        "-240",
+        "590",
+        "-520",
+        "210",
+        "-38",
+        "3.0",
+        "-.061",
+        ".00015"
+      ]
+    },
+    {
+      "A": 76,
+      "channel": "Phi_double_prime_M",
+      "nucleon": 1,
+      "nucleon_prime": 1,
+      "coefficients": [
+        "-310",
+        "870",
+        "-910",
+        "460",
+        "-120",
+        "15",
+        "-.85",
+        ".014"
+      ]
+    }
+  ]
+}

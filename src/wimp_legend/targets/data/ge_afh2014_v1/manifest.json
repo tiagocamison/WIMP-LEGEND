@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "dataset_version": "afh2014_ge_obdme_v1",
+  "supplement_sha256": "943a403e216633840887bbfcbec55c56e0c5813b86335b49868acb89e74a49b9",
+  "convention_id": "anand2014_prc89_065501_half_isospin_v1",
+  "regeneration": {
+    "sympy": "1.14.0",
+    "exact_decimal_arithmetic": true,
+    "scripts_sha256": {
+      "regenerate.py": "d727e6297535c7036477a539f06ae1461971ea6583ba8a14a6f1870493f435ab",
+      "afh_symbolic.py": "4e7043f86772431c26a32b323ccc2fc4ca3d5fd2cfa1830cb49d4322521d5786"
+    }
+  },
+  "isotopes": {
+    "70": {
+      "file": "ge70.json",
+      "sha256": "01c5a505d3dc6b2b0fe93e4a0195f2ff6dc95553af462f32d24211ac80ee12a5"
+    },
+    "72": {
+      "file": "ge72.json",
+      "sha256": "baba554841bd646a3034729214a3bee7c26f7a466262efc4b2a4f6362c8d6379"
+    },
+    "73": {
+      "file": "ge73.json",
+      "sha256": "7c97e13c266a751961bed8214512013e2d5941d1fbc8ada252de5248dc354256"
+    },
+    "74": {
+      "file": "ge74.json",
+      "sha256": "ddf30673b689a41ccce308c15d0e70a9fcf36820c68fed3e84ceb2eb232dee64"
+    },
+    "76": {
+      "file": "ge76.json",
+      "sha256": "d803be8ef578c06abb4519c36d1085fad9fabc4ab91bafe5bffbfe6a3169be20"
+    }
+  }
+}
