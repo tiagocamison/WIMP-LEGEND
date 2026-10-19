@@ -146,3 +146,29 @@ S = response.expected_counts(lambda E_nr_keV: 2., [0,.2,.6,1.2],
 
 All numbers in this example are synthetic choices, not experimental data.
 See `examples/generic_analysis.py` for the complete count-to-limit chain.
+
+## Explicit ER and point-line ports
+
+`DetectorResponse`, `KernelResponse`, and `MatrixResponse` declare
+`input_energy_domain=EnergyDomain.NR` (from `wimp_legend.energy`). The original
+continuum APIs and numerical policies are unchanged.
+
+`ElectronRecoilResponse(resolution, truth_efficiency=None,
+observed_efficiency=None, policy=..., observed_breakpoints=())` instead declares
+`EnergyDomain.ER`. Its truth input is keV_er and its mean reconstructed input is
+E_ee=E_er. It reuses the validated fold with an identity coordinate mapping;
+it accepts no NR quenching parameter or empirical ER energy nonlinearity.
+Its `bin_probabilities(E_er_keV, bins)` and `expected_counts(...)` have the same
+shape/count contracts as the corresponding NR interfaces. A callable Gaussian
+width is evaluated at the ER mean. Efficiencies retain their two separate
+truth/observed stages.
+
+`DetectorResponse`, `ElectronRecoilResponse`, and `KernelResponse` also expose
+`expected_line_counts(E_truth_keV, rate_per_kg_day, bins, exposure_kg_day)`.
+The energy argument is respectively named `E_nr_keV` or `E_er_keV` on the public
+method. The rate is an integrated line intensity in events/(kg day). This port
+uses the detector's bin probabilities at exactly the line energy, multiplies
+truth efficiency once and exposure once, and performs no truth quadrature.
+Kernel efficiency ownership is respected as for its continuum path.
+The matrix's within-bin approximation does not determine point-line migration;
+no line method is provided for `MatrixResponse`.

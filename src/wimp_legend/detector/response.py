@@ -5,6 +5,7 @@ import numpy as np
 from scipy.optimize import brentq
 
 from .._analysis import IntegrationPolicy, array, counts, edges, output, sample, scalar, text
+from ..energy import EnergyDomain
 from .quenching import ConstantQuenching, LindhardQuenching, QuenchingModel
 from .resolution import GaussianResolution, NoSmearing, ResolutionModel
 from .efficiency import Efficiency
@@ -56,6 +57,22 @@ def _fold(truth_spectrum, bins, exposure, interval, points, kernel, truth_effici
     return output(result)
 
 
+def _line_counts(energy, rate_per_kg_day, observed_bin_edges_keV, exposure_kg_day,
+                 kernel, truth_efficiency):
+    """Integrate a truth point measure exactly, without approximating a delta."""
+    energy = scalar(energy, 'truth line energy_keV')
+    rate = scalar(rate_per_kg_day, 'line rate_per_kg_day')
+    bins = edges(observed_bin_edges_keV)
+    exposure = scalar(exposure_kg_day, 'exposure_kg_day')
+    if exposure == 0 or rate == 0:
+        return np.zeros(len(bins)-1)
+    efficiency = 1 if truth_efficiency is None else sample(
+        truth_efficiency, energy, 'truth efficiency', probability=True)
+    probabilities = _probabilities(kernel(energy, bins), len(bins)-1)
+    with np.errstate(over='raise', invalid='raise'):
+        return output(exposure * (rate * efficiency) * probabilities)
+
+
 @dataclass(frozen=True)
 class DetectorResponse:
     quenching: QuenchingModel
@@ -64,6 +81,10 @@ class DetectorResponse:
     observed_efficiency: Efficiency | None = None
     policy: IntegrationPolicy = IntegrationPolicy()
     observed_breakpoints: tuple[float, ...] = ()
+
+    @property
+    def input_energy_domain(self):
+        return EnergyDomain.NR
 
     def __post_init__(self):
         if not callable(getattr(self.quenching, 'mean_energy_keV', None)):
@@ -123,6 +144,12 @@ class DetectorResponse:
                      lambda energy: self.bin_probabilities(energy, bins),
                      self.truth_efficiency, self.policy)
 
+    def expected_line_counts(self, E_nr_keV, rate_per_kg_day,
+                             observed_bin_edges_keV, exposure_kg_day):
+        """Line intensity in events/(kg day), before either efficiency stage."""
+        return _line_counts(E_nr_keV, rate_per_kg_day, observed_bin_edges_keV,
+                            exposure_kg_day, self.bin_probabilities, self.truth_efficiency)
+
 
 @dataclass(frozen=True)
 class KernelResponse:
@@ -136,6 +163,10 @@ class KernelResponse:
     includes_efficiency: bool
     truth_efficiency: Efficiency | None = None
     policy: IntegrationPolicy = IntegrationPolicy()
+
+    @property
+    def input_energy_domain(self):
+        return EnergyDomain.NR
 
     def __post_init__(self):
         if not callable(self.kernel) or type(self.includes_efficiency) is not bool:
@@ -154,6 +185,12 @@ class KernelResponse:
         return _fold(truth_spectrum, bins, exposure, interval, points,
                      lambda energy: self.kernel(energy, bins.copy()), self.truth_efficiency, self.policy)
 
+    def expected_line_counts(self, E_nr_keV, rate_per_kg_day,
+                             observed_bin_edges_keV, exposure_kg_day):
+        return _line_counts(E_nr_keV, rate_per_kg_day, observed_bin_edges_keV,
+            exposure_kg_day, lambda energy, bins: self.kernel(energy, bins.copy()),
+            self.truth_efficiency)
+
 
 @dataclass(frozen=True)
 class MatrixResponse:
@@ -170,6 +207,10 @@ class MatrixResponse:
     within_bin_averaging: str
     truth_efficiency: Efficiency | None = None
     policy: IntegrationPolicy = IntegrationPolicy()
+
+    @property
+    def input_energy_domain(self):
+        return EnergyDomain.NR
 
     def __post_init__(self):
         truth = edges(self.truth_bin_edges_keV, 'truth_bin_edges_keV', nonnegative=True)
