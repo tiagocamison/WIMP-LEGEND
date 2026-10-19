@@ -80,11 +80,17 @@ right edge. This convention matters for point-like truth inputs; it has measure
 zero for regular differential spectra. No half-event splitting is used at a
 zero-width boundary.
 
-An arbitrary observed efficiency is integrated inside the bin after changing
-to its conditional normal-probability coordinate. It is not sampled only at a
-bin center. Constant efficiencies use the exact probability scaling shortcut.
-Known observed-efficiency jumps should be supplied in `observed_breakpoints`.
-True efficiency is sampled at E_nr, observed efficiency at E_obs.
+An arbitrary observed efficiency is integrated after splitting the observed
+bin at its declared `observed_breakpoints` and at the Gaussian mean. Each
+segment has its own conditional normal-probability coordinate: CDF on the
+negative side of the mean, survival probability on the positive side. This
+preserves small accepted tail intervals inside a coarse bin and avoids inverse
+CDF evaluation at a rounded probability of one. If local probability
+interpolation underflows while the segment mass remains representable, a
+log-probability inverse is used. Nonfinite reconstructed coordinates fail
+explicitly; no clipping is performed. Constant efficiencies retain the exact
+probability scaling shortcut. True efficiency is sampled at E_nr, observed
+efficiency at E_obs; neither is sampled only at a bin center.
 
 ## Custom ports and ownership
 
@@ -120,11 +126,12 @@ Known breakpoints are copied, sorted/deduplicated, and filtered to each interval
 No guarantee is made that adaptive integration discovers arbitrary narrow
 features in user callbacks. Supply their breakpoints and verify convergence.
 
-For the two built-in monotone quenchers, deterministic bin crossings are split
-explicitly. Constant Gaussian widths also insert truth crossings at each
-observed edge and its +/-1,2,4,8 sigma positions. These are quadrature hints,
-**not Gaussian truncation**. Callable widths or custom kernels must supply
-additional truth breakpoints themselves. Repeated bin-by-bin folding is a
+For the two built-in monotone quenchers, both observed bin edges and declared
+observed-efficiency boundaries inside the observed window are mapped to truth
+crossings. Constant Gaussian widths also insert crossings at the +/-1,2,4,8
+sigma positions of each such boundary. These are quadrature hints,
+**not Gaussian truncation**. Callable widths, custom quenchers or custom kernels
+must supply additional truth breakpoints themselves. Repeated bin-by-bin folding is a
 transparent reference implementation, not an optimized response cache.
 Very extreme finite scales can still underflow intermediate integrands or fail;
 this layer is not arbitrary precision and does not extend the rate product fix.

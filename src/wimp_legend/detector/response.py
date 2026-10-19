@@ -93,8 +93,8 @@ class DetectorResponse:
                         truth_energy_range_keV, *, truth_breakpoints=()):
         bins, exposure, interval, points = _inputs(truth_spectrum, observed_bin_edges_keV,
             exposure_kg_day, truth_energy_range_keV, truth_breakpoints)
-        # Split known migration edges; add width-scale points for a constant
-        # Gaussian so quadrature can discover narrow migration windows.
+        # Split known bin/efficiency boundaries; add width-scale points for a
+        # constant Gaussian so quadrature can discover narrow acceptance windows.
         # These are breakpoints only: the Gaussian is never truncated.
         deterministic = isinstance(self.resolution, NoSmearing) or (
             isinstance(self.resolution, GaussianResolution) and
@@ -105,10 +105,13 @@ class DetectorResponse:
             mean_lo = float(self.quenching.mean_energy_keV(interval[0]))
             mean_hi = float(self.quenching.mean_energy_keV(interval[1]))
             crossings = []
-            candidates = bins
+            observed_points = np.asarray(self.observed_breakpoints)
+            observed_points = observed_points[(observed_points > bins[0]) &
+                                              (observed_points < bins[-1])]
+            candidates = np.unique(np.concatenate((bins, observed_points)))
             if constant_gaussian and self.resolution.sigma_keV > 0:
                 offsets = np.array([-8.,-4.,-2.,-1.,0.,1.,2.,4.,8.])
-                candidates = (bins[:,None]+offsets*self.resolution.sigma_keV).ravel()
+                candidates = np.unique((candidates[:,None]+offsets*self.resolution.sigma_keV).ravel())
             for edge in candidates[(candidates > mean_lo) & (candidates < mean_hi)]:
                 if isinstance(self.quenching, ConstantQuenching):
                     crossings.append(edge/self.quenching.q)

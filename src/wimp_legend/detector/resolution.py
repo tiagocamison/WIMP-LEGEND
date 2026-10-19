@@ -1,8 +1,9 @@
 """Conditional reconstructed-energy bin probabilities; no window renormalization."""
 from dataclasses import dataclass
+from math import fsum, log
 from typing import Callable, Protocol
 import numpy as np
-from scipy.special import ndtr, ndtri
+from scipy.special import log_ndtr, ndtr, ndtri, ndtri_exp
 from .._analysis import IntegrationPolicy, array, edges, elementwise, output, sample, scalar
 from .efficiency import ConstantEfficiency, Efficiency
 
@@ -24,6 +25,41 @@ def _deterministic(mean, bins, efficiency):
     return result
 
 
+def _weighted_bin_probability(mean, sigma, lower, upper, points, efficiency, policy):
+    # Split in observed energy before transforming: a tail boundary can round
+    # to one in the CDF coordinate of a bin that also contains the mean.
+    interior = points[(points > lower) & (points < upper)]
+    boundaries = np.unique(np.concatenate(([lower, upper], interior,
+                                          [mean] if lower < mean < upper else [])))
+    contributions = []
+    for left, right in zip(boundaries[:-1], boundaries[1:]):
+        with np.errstate(over='raise', invalid='raise', divide='raise'):
+            a, b = (np.array([left, right])-mean)/sigma
+        positive_tail = left >= mean
+        lo, hi = (ndtr(-b), ndtr(-a)) if positive_tail else (ndtr(a), ndtr(b))
+        probability = float(hi-lo)
+        if probability == 0:
+            continue
+
+        def weighted(u):
+            quantile = lo + u*probability
+            # Each segment uses probabilities <= 1/2, never a rounded CDF of
+            # one. A log inverse handles underflow of the local interpolation
+            # when the segment mass itself is still representable.
+            coordinate = (ndtri(quantile) if quantile > 0 else ndtri_exp(
+                np.logaddexp(log_ndtr(-b if positive_tail else a),
+                             log(u)+log(probability))))
+            if positive_tail:
+                coordinate = -coordinate
+            energy = mean+sigma*coordinate
+            if not np.isfinite(energy):
+                raise FloatingPointError('Gaussian efficiency coordinate is not finite')
+            return sample(efficiency, energy, 'observed efficiency', probability=True)
+
+        contributions.append(probability * policy.integrate(weighted, 0, 1))
+    return fsum(contributions)
+
+
 @dataclass(frozen=True)
 class NoSmearing:
     def bin_probabilities(self, E_ee_mean_keV, observed_bin_edges_keV, *,
@@ -41,9 +77,10 @@ class NoSmearing:
 class GaussianResolution:
     """sigma_keV is a constant or scalar callback of quenched E_ee_mean_keV.
 
-    Arbitrary observed efficiency is integrated in probability coordinates
-    inside each bin. Positive-tail bins use survival probabilities, avoiding
-    cancellation of CDF values close to one. sigma=0 uses NoSmearing semantics.
+    Arbitrary observed efficiency is integrated in local probability coordinates
+    after splitting each bin at the mean and declared efficiency breakpoints.
+    Positive-tail segments use survival probabilities, avoiding cancellation
+    of CDF values close to one. sigma=0 uses NoSmearing semantics.
     """
     sigma_keV: float | Callable
 
@@ -83,13 +120,6 @@ class GaussianResolution:
                 elif isinstance(observed_efficiency, ConstantEfficiency):
                     result[index+(j,)] = probability * observed_efficiency.epsilon
                 else:
-                    def weighted(u):
-                        quantile = lo + u*probability
-                        coordinate = -ndtri(quantile) if positive_tail else ndtri(quantile)
-                        return sample(observed_efficiency, mean+sigma*coordinate,
-                                      'observed efficiency', probability=True)
-                    p = points[(points > bins[j]) & (points < bins[j+1])]
-                    p = ndtr(-(p-mean)/sigma) if positive_tail else ndtr((p-mean)/sigma)
-                    p = (p-lo)/probability
-                    result[index+(j,)] = probability * policy.integrate(weighted, 0, 1, breakpoints=p)
+                    result[index+(j,)] = _weighted_bin_probability(
+                        mean, sigma, bins[j], bins[j+1], points, observed_efficiency, policy)
         return output(result)
