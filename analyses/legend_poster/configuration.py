@@ -46,6 +46,8 @@ def validate_config(config):
                 if lo!=0 or hi<=lo:raise ValueError('truth ranges must start at zero')
             responses(c,name)
         s=c['signal']
+        if s.get('si_rate_engine','generic') not in ('generic','factorized_shm'):
+            raise ValueError('si_rate_engine must be generic or factorized_shm')
         if s['convention_id']!=NREFT_CONVENTION_ID or s['coefficient_basis']!='proton_neutron' or s['coefficient_unit']!='GeV^-2':
             raise ValueError('unsupported Wilson convention; no automatic conversion')
         if not s['operators'] or any(type(op)!=int or op not in (1,8,11) for op in s['operators']):

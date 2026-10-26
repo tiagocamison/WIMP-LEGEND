@@ -265,7 +265,8 @@
     "coefficient_unit": "GeV^-2",
     "coefficient_ref_GeV_minus2": 1e-05,
     "convention_id": "anand2014_prc89_065501_half_isospin_v1",
-    "provenance": "O1 from physical SI adapter; single O8/O11 with cp=reference, cn=fn_over_fp*cp; dimensionful coefficients; limits |cp|=sqrt(mu)*|cp_ref|, no SI relabeling"
+    "provenance": "O1 from physical SI adapter; single O8/O11 with cp=reference, cn=fn_over_fp*cp; dimensionful coefficients; limits |cp|=sqrt(mu)*|cp_ref|, no SI relabeling",
+    "si_rate_engine": "generic"
   },
   "analysis": {
     "scenarios": [

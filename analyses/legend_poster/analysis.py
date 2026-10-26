@@ -133,7 +133,8 @@ def signal_model(config,isotope,mass,operator):
         epsrel=config['numerical']['rate_epsrel'],epsabs=0.)
     if operator==1:
         spectrum=SIO1Signal(sigma_p_ref_cm2=s['sigma_p_ref_cm2'],m_proton_GeV=s['m_proton_GeV'],
-                    fn_over_fp=s['fn_over_fp'],proton_sign=s['proton_sign'],**common)
+                    fn_over_fp=s['fn_over_fp'],proton_sign=s['proton_sign'],
+                    use_fast_si=s.get('si_rate_engine','generic')=='factorized_shm',halo=halo,**common)
     else:
         cp=s['proton_sign']*s['coefficient_ref_GeV_minus2']
         coefficients=WilsonCoefficients.from_proton_neutron({operator:(cp,s['fn_over_fp']*cp)})
@@ -149,7 +150,9 @@ def pure_signal_counts(config,isotope,mass,operator,preset,bins,cache):
     if endpoint>d['NR_energy_range_keV'][1]:raise ValueError('signal endpoint outside configured NR range')
     s=config['signal'];inputs=dict(isotope=config['target']['isotopes'][str(isotope.A)],
         mass_conversion=config['target']['mass_conversion'],signal={k:v for k,v in s.items() if k not in ('masses_GeV','operators')},
-        mass=mass,operator=operator,detector=d,bins=bins.tolist(),numerical=n)
+        mass=mass,operator=operator,detector={k:v for k,v in d.items() if k!='threshold_keV_obs'},
+        bins=bins.tolist(),numerical={k:v for k,v in n.items() if not k.startswith('background')})
+    if operator!=1:inputs['signal'].pop('si_rate_engine',None)
     def calculate(points):
         grid_inputs=dict(inputs,grid_points=points)
         truth_inputs={k:inputs[k] for k in ('isotope','mass_conversion','signal','mass','operator')}
@@ -244,7 +247,7 @@ def _execute_analysis(c,*,cache_dir=None,output_dir=None):
     run_id=digest(dict(numerical_id=numerical_id,config=c,git_commit=identity['git_commit'],plot_code=file_hash(Path(__file__).with_name('plotting.py'))))
     path=Path(output_dir or Path(__file__).parent/'runs')/run_id[:20];path.mkdir(parents=True,exist_ok=True)
     backgrounds={};signals={};diagnostics=[];rows=[];assumptions={};weights={}
-    pure={}
+    pure={};si_adapters={}
     for scenario in c['analysis']['scenarios']:
         record=c['background']['scenarios'][scenario];target_id=record['target']
         preset=record.get('detector',c['detector']['default']);d=c['detector']['presets'][preset]
@@ -278,7 +281,9 @@ def _execute_analysis(c,*,cache_dir=None,output_dir=None):
                             if operator==1:
                                 # Use the same public SI adapter conversion as the core.
                                 isotope=next(i for i,w in target(c,target_id) if w>0)
-                                adapter,_=signal_model(c,isotope,mass,operator)
+                                if mass not in si_adapters:
+                                    si_adapters[mass],_=signal_model(c,isotope,mass,operator)
+                                adapter=si_adapters[mass]
                                 limit=adapter.cross_section_limit_cm2(mu);unit='cm^2'
                             else:
                                 limit=sqrt(mu)*abs(c['signal']['coefficient_ref_GeV_minus2']);unit='GeV^-2'

@@ -16,6 +16,7 @@ from ._analysis import array, scalar
 from .constants import GEV_MINUS2_TO_CM2
 from .interactions import WilsonCoefficients
 from .kinematics import reduced_mass_GeV
+from .halo.shm import StandardHaloModel
 from .rates import NREFTRateConfig, differential_rate_per_kg_day_keV
 from .targets import NuclearResponseDataset
 
@@ -83,13 +84,15 @@ def si_wilson_coefficients(sigma_p_cm2, *, m_chi_GeV, m_proton_GeV,
 
 @dataclass(frozen=True, kw_only=True)
 class SIO1Signal:
-    """Callable reference dR/dE_nr in events/(kg day keV_nr), via generic NREFT.
+    """Callable reference dR/dE_nr in events/(kg day keV_nr), generic by default.
 
     All physics parameters are explicit. targets_per_kg belongs to this single
     supplied isotope; isotope fractions are not inferred. speed_pdf is in d beta,
     beta=v/c. j_chi and config.m_N_reference_GeV retain the generic rate contract;
     m_proton_GeV is independently used for SI normalization. Callbacks must be
     pure. Combine isotope callables explicitly for a mixed-target signal.
+    use_fast_si=True requires the same explicit halo/PDF/support/breakpoints
+    and enables the guarded SHM O1 factorization; custom PDFs stay generic.
     """
     sigma_p_ref_cm2: float
     m_chi_GeV: float
@@ -106,9 +109,19 @@ class SIO1Signal:
     breakpoints: tuple[float, ...] = ()
     epsrel: float = 1e-8
     epsabs: float = 0.
+    use_fast_si: bool = False
+    halo: StandardHaloModel | None = None
     coefficients: WilsonCoefficients = field(init=False)
 
     def __post_init__(self):
+        if type(self.use_fast_si)!=bool:
+            raise ValueError('use_fast_si must be bool')
+        if self.use_fast_si:
+            if (not isinstance(self.halo,StandardHaloModel)
+                    or self.speed_pdf!=self.halo.lab_speed_pdf
+                    or self.beta_max!=self.halo.max_lab_speed
+                    or tuple(self.breakpoints)!=self.halo.integration_breakpoints):
+                raise ValueError('fast SI requires the same explicit SHM PDF, support and breakpoints')
         for name in ('sigma_p_ref_cm2', 'm_chi_GeV', 'm_proton_GeV', 'beta_max', 'epsrel'):
             object.__setattr__(self, name, scalar(getattr(self, name), name, positive=True))
         for name in ('rho_chi_GeV_cm3', 'targets_per_kg', 'j_chi', 'epsabs'):
@@ -138,6 +151,12 @@ class SIO1Signal:
         return self.coefficients.convention_id
 
     def __call__(self, E_nr_keV):
+        if self.use_fast_si:
+            from .si_fast import differential_rate_shm_per_kg_day_keV
+            args=self._rate_arguments()
+            for name in ('speed_pdf','beta_max','breakpoints'):args.pop(name)
+            return differential_rate_shm_per_kg_day_keV(E_nr_keV,halo=self.halo,
+                                                       use_fast_si=True,**args)
         return differential_rate_per_kg_day_keV(E_nr_keV, **self._rate_arguments())
 
     def cross_section_limit_cm2(self, mu_upper):
