@@ -176,6 +176,32 @@ def test_si_option_does_not_invalidate_non_si_cache(config,tmp_path,monkeypatch)
     np.testing.assert_array_equal(a,b);assert cache.misses==misses
 
 
+def test_isospin_violating_and_pure_neutron_folded_limits(config):
+    from scipy.interpolate import PchipInterpolator
+    from wimp_legend.backgrounds import TruthBackground
+    from wimp_legend.energy import EnergyDomain
+    from analyses.legend_poster.models import responses
+    from analyses.legend_poster.analysis import fold_component
+    _,response=responses(config)
+    bins=np.array([.1,.2,.5,1.,2.,4.])
+    for cp,cn in [(1e-5,-.7e-5),(0.,1e-5),(1e-5,0.),(0.,0.)]:
+        args,h,end=arguments(config,73,10.,cp,cn)
+        grid=end*np.linspace(0,1,32)**2
+        counts=[]
+        for enabled in (False,True):
+            truth=differential_rate_shm_per_kg_day_keV(grid,halo=h,use_fast_si=enabled,**args)
+            source=TruthBackground(EnergyDomain.NR,response,PchipInterpolator(grid,truth),
+                (0.,end),spectrum_breakpoints_keV=tuple(grid))
+            counts.append(fold_component(source,bins,config['numerical']))
+        np.testing.assert_allclose(counts[1],counts[0],rtol=3e-9,atol=max(counts[0])*2e-13)
+        # A synthetic observed-flat background isolates rate/fold/statistical
+        # equivalence; it is not a new physical LEGEND background component.
+        background=.01*np.diff(bins)
+        a,_=count_limit(counts[0],background,bins,365.25,.1,config,'poisson_cls_counting')
+        b,_=count_limit(counts[1],background,bins,365.25,.1,config,'poisson_cls_counting')
+        assert b.limit.mu_upper==pytest.approx(a.limit.mu_upper,rel=3e-9)
+
+
 def test_folded_cache_ignores_exposure_background_and_threshold(config,tmp_path,monkeypatch):
     from wimp_legend.si import SIO1Signal
     c=resolve_profile(config,'smoke');c['signal']['si_rate_engine']='factorized_shm'
