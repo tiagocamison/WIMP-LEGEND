@@ -202,6 +202,15 @@ def test_isospin_violating_and_pure_neutron_folded_limits(config):
         assert b.limit.mu_upper==pytest.approx(a.limit.mu_upper,rel=3e-9)
 
 
+def test_fast_adapter_copies_breakpoint_iterator(config):
+    args,h,_=arguments(config,76,10.)
+    model,_=signal_model(config,args['dataset'].isotope,10.,1)
+    h=model.halo
+    fast=replace(model,use_fast_si=True,halo=h,breakpoints=iter(h.integration_breakpoints))
+    assert fast.breakpoints==h.integration_breakpoints
+    np.testing.assert_array_equal(fast([0.,1.]),replace(fast)([0.,1.]))
+
+
 def test_folded_cache_ignores_exposure_background_and_threshold(config,tmp_path,monkeypatch):
     from wimp_legend.si import SIO1Signal
     c=resolve_profile(config,'smoke');c['signal']['si_rate_engine']='factorized_shm'

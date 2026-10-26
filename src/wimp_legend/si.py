@@ -117,6 +117,7 @@ class SIO1Signal:
         if type(self.use_fast_si)!=bool:
             raise ValueError('use_fast_si must be bool')
         if self.use_fast_si:
+            object.__setattr__(self,'breakpoints',tuple(self.breakpoints))
             if (not isinstance(self.halo,StandardHaloModel)
                     or self.speed_pdf!=self.halo.lab_speed_pdf
                     or self.beta_max!=self.halo.max_lab_speed
