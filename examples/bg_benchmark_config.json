@@ -1,0 +1,161 @@
+{
+  "status": "BENCHMARK ONLY; not validated LEGEND-1000 prediction",
+  "legacy_notebook_sha256": "ca3e8376f6fad9dfafb836ffe1b74b60377b7ed9e2dcb313f90b8807216ad39f",
+  "plotting": {
+    "min_energy_keV": 0.03,
+    "max_energy_keV": 15.0,
+    "bin_width_keV": 0.05,
+    "threshold_keV": 0.1,
+    "exposure_kg_day": 365.25,
+    "noise_sigma_keV": 0.05,
+    "fano_factor": 0.11,
+    "pair_energy_keV": 0.00296,
+    "constant_detection_efficiency": 0.9,
+    "lindhard_k": 0.157,
+    "quadrature_order": 6,
+    "truth_step_keV": 0.05,
+    "gaussian_tail_sigma": 12.0
+  },
+  "calibration": {
+    "legacy_Ar39_integrated_rate_per_kg_year": 86583.70384812194,
+    "lar_transfer_probability": 0.00014230663956447948,
+    "procedure": "normalization from legacy allowed/no-Coulomb shape at100keV and2e4/(5*16.7); explicit approximate trapezoidal integral, then divide physical AAr decay rate at assumedAr/Gemass20. Keep physical activity separate; not a physical transfer estimate."
+  },
+  "scenarios": {
+    "natural_AAr": {
+      "lar_transfer_probability": 0.00014230663956447948,
+      "argon_mass_per_kg_Ge": 20.0,
+      "cooldown_day": 0.0,
+      "run_duration_day": 365.25,
+      "ga68_initialization": "secular_equilibrium",
+      "ga68_initial_activity_per_kg_day": null,
+      "zn65_gamma_escape_probability": 0.0,
+      "ga68_gamma_escape_probability": 0.0,
+      "annihilation_escape_probability": 0.0,
+      "solar_flux_components": [
+        "pp",
+        "B8"
+      ],
+      "solar_sin2_theta12": 0.307,
+      "solar_sin2_theta13": 0.022,
+      "solar_delta_m21_eV2": 7.53e-05,
+      "solar_rho_Ye_g_cm3": 65.0,
+      "label": "natural_AAr",
+      "activities_per_kg_day": [
+        [
+          "H3",
+          0.2108145106091718
+        ],
+        [
+          "Ge68",
+          1.6427104722792607
+        ],
+        [
+          "Zn65",
+          0.16427104722792607
+        ],
+        [
+          "Fe55",
+          0.03285420944558522
+        ]
+      ],
+      "flat_rate_per_kg_day_keV_obs": 0.0002737850787132101,
+      "ar39_activity_Bq_per_kg_Ar": 0.964,
+      "lar_veto_survival_probability": 1.0,
+      "nu_target_A": 72.63,
+      "nu_target_mass_GeV": 67.65441665876459,
+      "nu_targets_per_kg": 8.291533471017487e+24,
+      "provenance": "EXPLICIT NOTEBOOK-DERIVED BENCHMARK. Intrinsic activities77/600/60/12 decays per kg Ge year, enrichment divisors14/2.5/1.33 and observed flat0.1(+15%) are illustrative, not measured LEGEND. Physical AAr0.964 Bq/kg (DEAP EPJC83,642(2023)); UAr0.00073 Bq/kg (DarkSide PRD93,081101(2016)); not certified LEGEND argon. Argon mass ratio20 kgAr/kgGe is arbitrary; transfer fitted to notebook integrated AAr normalization, not geometry prediction. Effective A surrogate72.63/76 and mass=A*0.93149410242 GeV approximate target; neutrino mixing rounded PDG-like values and rhoYe65 are fixed-density benchmark assumptions."
+    },
+    "enriched_UAr": {
+      "lar_transfer_probability": 0.00014230663956447948,
+      "argon_mass_per_kg_Ge": 20.0,
+      "cooldown_day": 0.0,
+      "run_duration_day": 365.25,
+      "ga68_initialization": "secular_equilibrium",
+      "ga68_initial_activity_per_kg_day": null,
+      "zn65_gamma_escape_probability": 0.0,
+      "ga68_gamma_escape_probability": 0.0,
+      "annihilation_escape_probability": 0.0,
+      "solar_flux_components": [
+        "pp",
+        "B8"
+      ],
+      "solar_sin2_theta12": 0.307,
+      "solar_sin2_theta13": 0.022,
+      "solar_delta_m21_eV2": 7.53e-05,
+      "solar_rho_Ye_g_cm3": 65.0,
+      "label": "enriched_UAr",
+      "activities_per_kg_day": [
+        [
+          "H3",
+          0.2108145106091718
+        ],
+        [
+          "Ge68",
+          0.11733646230566147
+        ],
+        [
+          "Zn65",
+          0.06570841889117043
+        ],
+        [
+          "Fe55",
+          0.024702413116981365
+        ]
+      ],
+      "flat_rate_per_kg_day_keV_obs": 0.0003148528405201916,
+      "ar39_activity_Bq_per_kg_Ar": 0.00073,
+      "lar_veto_survival_probability": 1.0,
+      "nu_target_A": 76.0,
+      "nu_target_mass_GeV": 70.79355178392,
+      "nu_targets_per_kg": 7.92386942105263e+24,
+      "provenance": "EXPLICIT NOTEBOOK-DERIVED BENCHMARK. Intrinsic activities77/600/60/12 decays per kg Ge year, enrichment divisors14/2.5/1.33 and observed flat0.1(+15%) are illustrative, not measured LEGEND. Physical AAr0.964 Bq/kg (DEAP EPJC83,642(2023)); UAr0.00073 Bq/kg (DarkSide PRD93,081101(2016)); not certified LEGEND argon. Argon mass ratio20 kgAr/kgGe is arbitrary; transfer fitted to notebook integrated AAr normalization, not geometry prediction. Effective A surrogate72.63/76 and mass=A*0.93149410242 GeV approximate target; neutrino mixing rounded PDG-like values and rhoYe65 are fixed-density benchmark assumptions."
+    },
+    "legend_poster": {
+      "lar_transfer_probability": 0.00014230663956447948,
+      "argon_mass_per_kg_Ge": 20.0,
+      "cooldown_day": 365.25,
+      "run_duration_day": 365.25,
+      "ga68_initialization": "secular_equilibrium",
+      "ga68_initial_activity_per_kg_day": null,
+      "zn65_gamma_escape_probability": 0.0,
+      "ga68_gamma_escape_probability": 0.0,
+      "annihilation_escape_probability": 0.0,
+      "solar_flux_components": [
+        "pp",
+        "B8"
+      ],
+      "solar_sin2_theta12": 0.307,
+      "solar_sin2_theta13": 0.022,
+      "solar_delta_m21_eV2": 7.53e-05,
+      "solar_rho_Ye_g_cm3": 65.0,
+      "label": "legend_poster",
+      "activities_per_kg_day": [
+        [
+          "H3",
+          0.2108145106091718
+        ],
+        [
+          "Ge68",
+          0.11733646230566147
+        ],
+        [
+          "Zn65",
+          0.06570841889117043
+        ],
+        [
+          "Fe55",
+          0.024702413116981365
+        ]
+      ],
+      "flat_rate_per_kg_day_keV_obs": 0.0003148528405201916,
+      "ar39_activity_Bq_per_kg_Ar": 0.00073,
+      "lar_veto_survival_probability": 0.01,
+      "nu_target_A": 76.0,
+      "nu_target_mass_GeV": 70.79355178392,
+      "nu_targets_per_kg": 7.92386942105263e+24,
+      "provenance": "EXPLICIT NOTEBOOK-DERIVED BENCHMARK. Intrinsic activities77/600/60/12 decays per kg Ge year, enrichment divisors14/2.5/1.33 and observed flat0.1(+15%) are illustrative, not measured LEGEND. Physical AAr0.964 Bq/kg (DEAP EPJC83,642(2023)); UAr0.00073 Bq/kg (DarkSide PRD93,081101(2016)); not certified LEGEND argon. Argon mass ratio20 kgAr/kgGe is arbitrary; transfer fitted to notebook integrated AAr normalization, not geometry prediction. Effective A surrogate72.63/76 and mass=A*0.93149410242 GeV approximate target; neutrino mixing rounded PDG-like values and rhoYe65 are fixed-density benchmark assumptions."
+    }
+  }
+}

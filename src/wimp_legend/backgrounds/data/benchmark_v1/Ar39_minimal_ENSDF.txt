@@ -1,0 +1,7 @@
+ 39K     39AR B- DECAY (268 Y)                                                  
+ 39K   C BG-BENCHMARK-001 minimal input transcribed from ENSDF NDS149(2018), NNDC 
+ 39AR  P 0           7/2-              268 Y     8              565       5     
+ 39K   N                       1.0       1.0                                    
+ 39K   L 0           3/2+                                                       
+ 39K   B 565       5 100                 10.10   2                           1U 
+

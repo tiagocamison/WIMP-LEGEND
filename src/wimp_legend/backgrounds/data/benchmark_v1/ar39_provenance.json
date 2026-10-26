@@ -1,0 +1,18 @@
+{
+  "tool": "IAEA-NSDDNetwork/BetaShape 2.4 (06/2024)",
+  "tool_reference": "X. Mougeot, Appl.Radiat.Isot.201(2023)111018, DOI:10.1016/j.apradiso.2023.111018",
+  "repository_commit": "22b8691dd3ea34e6b69fcb93167ab872673ffd5b",
+  "archive_sha256": "fa0a90094084b417c3852bcc93adcadba097d6d05187516c9aae1241595ad30e",
+  "download": "https://github.com/IAEA-NSDDNetwork/BetaShape",
+  "input_kind": "minimal ENSDF transcription, not original downloaded evaluator file",
+  "input_sha256": "c4dd9d5793b4d53c262e4fbf7e4be0e50b23d4bc38d2aebb2ecdecf63634251d",
+  "nuclear_reference": "ENSDF 39K, Jun Chen, NDS149,1(2018); dataset 39Ar beta- decay (268Y), Q=565(5)keV, branch1, 7/2- -> 3/2+, 1U",
+  "source_url": "https://www.nndc.bnl.gov/nudat3/getdecaydataset.jsp?dsid=39ar+bM+decay+%28268+y%29&nucleus=39K",
+  "command": "betashape Ar39.txt -csv myEstep=0.1",
+  "corrections": "default numerical screening, exchange, overlap and radiative; 1st-forbidden-unique shape; no experimental shape factor",
+  "original_output_sha256": "7388a003d2bb013c938ad1fb69c71cdf2fc2dfbd776c47ea1356bd63b30797d6",
+  "interpolation": "BetaShape requested 0.1keV output; original default calculation grid1keV; runtime linear interpolation, full-support renormalization",
+  "uncertainty": "endpoint 5keV source uncertainty; BetaShape point errors retained in source_ar39.bs, not propagated in benchmark",
+  "mean_energy_reference_keV": 218.0,
+  "normalization": "runtime explicit full-support trapezoidal normalization; not analysis-window normalization"
+}

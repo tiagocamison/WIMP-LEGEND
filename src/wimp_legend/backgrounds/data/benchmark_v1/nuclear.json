@@ -1,0 +1,267 @@
+{
+  "version": "DDEP_benchmark_snapshot_v1",
+  "status": "source-audited benchmark inputs; not validated LEGEND data",
+  "atomic_binding_source": "LBNL X-Ray Data Booklet Table1-1, https://xdb.lbl.gov/Section1/Table_1-1a.htm, energies eV/1000",
+  "shell_model": "K/L/M+ groups: L represented by L1; M and higher by M1. Outer probability=1-PK-PL, includes N tail. Fully contained atomic cascade energy, not characteristic photon energy.",
+  "decays": {
+    "Ge68": {
+      "half_life_day": 270.95,
+      "daughter": "Ga",
+      "vacancy_energies_keV": [
+        10.367,
+        1.299,
+        0.1595
+      ],
+      "ec_branches": [
+        {
+          "fraction": 1.0,
+          "excitation_keV": 0,
+          "PK": 0.8639,
+          "PL": 0.115,
+          "PMplus": 0.021099999999999994,
+          "reported_PM": 0.0196,
+          "higher_shell_residual": 0.0014999999999999944,
+          "outer_group_policy": "M+ combines reported M and residual higher-shell capture; represented at M1 energy, not a resolved subshell spectrum"
+        }
+      ],
+      "beta_plus_branches": [],
+      "source": "https://www.lnhb.fr/nuclides/Ge-68_tables.pdf",
+      "locator": "DDEP Nuclear Data Tables sections2.1/2.2; conditional shell PK/PL; Table1-1 daughter K,L1,M1 binding energies",
+      "evaluation": "2012-02-27",
+      "fraction_policy": "reported central fractions explicitly normalized as a complete decay branch set; raw central values retained here"
+    },
+    "Fe55": {
+      "half_life_day": 1006.680135,
+      "daughter": "Mn",
+      "vacancy_energies_keV": [
+        6.539,
+        0.7691,
+        0.0823
+      ],
+      "ec_branches": [
+        {
+          "fraction": 1.0,
+          "excitation_keV": 0,
+          "PK": 0.88044,
+          "PL": 0.10238,
+          "PMplus": 0.01718,
+          "reported_PM": 0.01606,
+          "higher_shell_residual": 0.0011199999999999995,
+          "outer_group_policy": "M+ combines reported M and residual higher-shell capture; represented at M1 energy, not a resolved subshell spectrum"
+        }
+      ],
+      "beta_plus_branches": [],
+      "source": "https://www.lnhb.fr/nuclides/Fe-55_tables.pdf",
+      "locator": "DDEP Nuclear Data Tables sections2.1/2.2; conditional shell PK/PL; Table1-1 daughter K,L1,M1 binding energies",
+      "evaluation": "LNHB current table, ground state only; 1.3e-9 excited branch and inner bremsstrahlung omitted",
+      "fraction_policy": "reported central fractions explicitly normalized as a complete decay branch set; raw central values retained here"
+    },
+    "Zn65": {
+      "half_life_day": 244.01,
+      "daughter": "Cu",
+      "vacancy_energies_keV": [
+        8.979,
+        1.0967,
+        0.1225
+      ],
+      "ec_branches": [
+        {
+          "fraction": 0.4835,
+          "excitation_keV": 0,
+          "PK": 0.8853,
+          "PL": 0.0977,
+          "PMplus": 0.01700000000000003,
+          "reported_PMplus": 0.01700000000000003,
+          "outer_group_policy": "DDEP supplies M+ combined; represented at Cu M1 energy"
+        },
+        {
+          "fraction": 0.5023,
+          "excitation_keV": 1115.549,
+          "PK": 0.8794,
+          "PL": 0.1027,
+          "PMplus": 0.01790000000000004,
+          "reported_PMplus": 0.01790000000000004,
+          "outer_group_policy": "DDEP supplies M+ combined; represented at Cu M1 energy"
+        }
+      ],
+      "beta_plus_branches": [
+        {
+          "fraction": 0.01421,
+          "endpoint_keV": 329.9,
+          "excitation_keV": 0
+        }
+      ],
+      "source": "https://www.lnhb.fr/nuclides/Zn-65_tables.pdf",
+      "locator": "DDEP Nuclear Data Tables sections2.1/2.2; conditional shell PK/PL; Table1-1 daughter K,L1,M1 binding energies",
+      "evaluation": "2006-09-11",
+      "fraction_policy": "reported central fractions explicitly normalized as a complete decay branch set; raw central values retained here"
+    },
+    "Ga68": {
+      "half_life_day": 0.04710416666666666,
+      "daughter": "Zn",
+      "vacancy_energies_keV": [
+        9.659,
+        1.1962,
+        0.1398
+      ],
+      "ec_branches": [
+        {
+          "fraction": 0.0894,
+          "excitation_keV": 0,
+          "PK": 0.8847,
+          "PL": 0.098,
+          "PMplus": 0.017299999999999954,
+          "reported_PM": 0.0162,
+          "higher_shell_residual": 0.0010999999999999552,
+          "outer_group_policy": "M+ combines reported M and residual higher-shell capture; represented at M1 energy, not a resolved subshell spectrum"
+        },
+        {
+          "fraction": 0.018,
+          "excitation_keV": 1077.35,
+          "PK": 0.8844,
+          "PL": 0.0983,
+          "PMplus": 0.017300000000000038,
+          "reported_PM": 0.0162,
+          "higher_shell_residual": 0.0011000000000000384,
+          "outer_group_policy": "M+ combines reported M and residual higher-shell capture; represented at M1 energy, not a resolved subshell spectrum"
+        },
+        {
+          "fraction": 0.000335,
+          "excitation_keV": 1655.9,
+          "PK": 0.8839,
+          "PL": 0.0986,
+          "PMplus": 0.017499999999999988,
+          "reported_PM": 0.0163,
+          "higher_shell_residual": 0.0011999999999999893,
+          "outer_group_policy": "M+ combines reported M and residual higher-shell capture; represented at M1 energy, not a resolved subshell spectrum"
+        },
+        {
+          "fraction": 0.00234,
+          "excitation_keV": 1883.2,
+          "PK": 0.8836,
+          "PL": 0.0989,
+          "PMplus": 0.017499999999999946,
+          "reported_PM": 0.0164,
+          "higher_shell_residual": 0.0010999999999999448,
+          "outer_group_policy": "M+ combines reported M and residual higher-shell capture; represented at M1 energy, not a resolved subshell spectrum"
+        },
+        {
+          "fraction": 0.00096,
+          "excitation_keV": 2338.4,
+          "PK": 0.8823,
+          "PL": 0.1,
+          "PMplus": 0.01770000000000002,
+          "reported_PM": 0.0166,
+          "higher_shell_residual": 0.001100000000000021,
+          "outer_group_policy": "M+ combines reported M and residual higher-shell capture; represented at M1 energy, not a resolved subshell spectrum"
+        },
+        {
+          "fraction": 0.000104,
+          "excitation_keV": 2821.8,
+          "PK": 0.8653,
+          "PL": 0.1141,
+          "PMplus": 0.02060000000000005,
+          "reported_PM": 0.0192,
+          "higher_shell_residual": 0.0014000000000000505,
+          "outer_group_policy": "M+ combines reported M and residual higher-shell capture; represented at M1 energy, not a resolved subshell spectrum"
+        }
+      ],
+      "beta_plus_branches": [
+        {
+          "fraction": 0.8768,
+          "endpoint_keV": 1899.1,
+          "excitation_keV": 0
+        },
+        {
+          "fraction": 0.012,
+          "endpoint_keV": 821.7,
+          "excitation_keV": 1077.35
+        },
+        {
+          "fraction": 2.6e-06,
+          "endpoint_keV": 243.2,
+          "excitation_keV": 1655.9
+        }
+      ],
+      "source": "https://www.lnhb.fr/nuclides/Ga-68_tables.pdf",
+      "locator": "DDEP Nuclear Data Tables sections2.1/2.2; conditional shell PK/PL; Table1-1 daughter K,L1,M1 binding energies",
+      "evaluation": "2012-07-04",
+      "fraction_policy": "reported central fractions explicitly normalized as a complete decay branch set; raw central values retained here"
+    },
+    "H3": {
+      "endpoint_keV": 18.564,
+      "half_life_day": 4496.958,
+      "transition": "allowed beta-",
+      "source": "https://www.lnhb.fr/nuclides/H-3_tables.pdf",
+      "locator": "DDEP 2006 section2 half-life and section3 electron-emission endpoint, allowed Coulomb approximation; molecular/chemical corrections omitted"
+    },
+    "Ar39": {
+      "endpoint_keV": 565.0,
+      "half_life_day": 97887.0,
+      "transition": "first-forbidden unique",
+      "source": "ENSDF NDS149(2018) 39K, 39Ar beta- decay",
+      "locator": "parent and ground-state beta records; see ar39_provenance.json"
+    }
+  },
+  "weak_inputs": {
+    "G_F_GeV_minus2": 1.1663787e-05,
+    "m_e_GeV": 0.00051099895,
+    "sin2_theta_W": 0.23863,
+    "avogadro_per_mol": 6.02214076e+23,
+    "source": "PDG 2023 electroweak review, https://pdgweb.lbl.gov/2023/reviews/rpp2023-rev-standard-model.pdf, low-Q MSbar weak angle0.23863; GF PDG physical constants and me CODATA; exact SI Avogadro. Constant-angle tree-level benchmark, not complete radiative corrections."
+  },
+  "ge_electron_shells_keV_occupancy": [
+    [
+      0,
+      4
+    ],
+    [
+      0.0292,
+      6
+    ],
+    [
+      0.0298,
+      4
+    ],
+    [
+      0.1208,
+      4
+    ],
+    [
+      0.1249,
+      2
+    ],
+    [
+      0.1801,
+      2
+    ],
+    [
+      1.217,
+      4
+    ],
+    [
+      1.2481,
+      2
+    ],
+    [
+      1.4146,
+      2
+    ],
+    [
+      11.103,
+      2
+    ]
+  ],
+  "electron_shell_model": "stepping approximation, Ge K/L/M LBNL Table1-1; four valence electrons approximated free, no many-body ionization calculation",
+  "evaluation_crosschecks": {
+    "Ge68_ENSDF_2012": {
+      "PK": 0.8645,
+      "PL": 0.1143,
+      "PMplus": 0.02118,
+      "url": "https://www.nndc.bnl.gov/nudat3/getdecaydataset.jsp?dsid=68ge+ec+decay&nucleus=68GA",
+      "policy": "independently inspected, not mixed into chosen DDEP snapshot; differing theoretical subshell evaluation within quoted errors"
+    },
+    "Zn65_ENSDF_2025": "Newer ENSDF candidates in supplied starter use EC/beta+ branch-dependent denominators; not combined with this internally consistent older DDEP snapshot. Source/evaluation differences remain model uncertainty, not a detector activity measurement."
+  },
+  "input_classification": "Nuclear/atomic parameters from cited evaluations; probabilities completed/grouped explicitly. Branch fractions explicitly rounded-source-normalized in factory. Activities/transport/mixing effective-density parameters are external benchmark configuration, not nuclear data."
+}
