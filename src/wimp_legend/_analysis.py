@@ -4,6 +4,7 @@ No physics models live here. Arrays crossing these interfaces are copied;
 configuration containers use tuples. User callbacks must remain pure.
 """
 from dataclasses import dataclass
+from math import fsum
 from numbers import Integral, Real
 import warnings
 
@@ -78,6 +79,9 @@ class IntegrationPolicy:
 
     Known discontinuities/narrow features must be supplied as breakpoints.
     IntegrationWarning is an error; no warning suppression or renormalization.
+    When breakpoints exceed one QUADPACK workspace, contiguous batches retain
+    the relative tolerance and share the absolute budget by interval length.
+    ``limit`` remains the workspace limit per call, with room for refinement.
     """
     epsrel: float = 1e-8
     epsabs: float = 0.0
@@ -103,6 +107,27 @@ class IntegrationPolicy:
         points = np.unique(points[(points > lower) & (points < upper)])
         with warnings.catch_warnings(), np.errstate(over='raise', invalid='raise', divide='raise'):
             warnings.simplefilter('error', IntegrationWarning)
-            result = quad(callback, float(lower), float(upper), points=points,
-                          epsrel=self.epsrel, epsabs=self.epsabs, limit=self.limit)[0]
+            if len(points) < self.limit:
+                result = quad(callback, float(lower), float(upper), points=points,
+                              epsrel=self.epsrel, epsabs=self.epsabs, limit=self.limit)[0]
+            else:
+                # Do not drop known features or loosen tolerances to fit the
+                # workspace. Half its capacity is reserved for adaptive splits.
+                bounds = np.concatenate(([lower], points, [upper]))
+                stride = max(1, self.limit // 2)
+                pieces = []
+                errors = []
+                for start in range(0, len(bounds)-1, stride):
+                    stop = min(start+stride, len(bounds)-1)
+                    lo, hi = bounds[start], bounds[stop]
+                    value, error = quad(callback, lo, hi,
+                        points=bounds[start+1:stop], epsrel=self.epsrel,
+                        epsabs=self.epsabs*((hi-lo)/(upper-lower)),
+                        limit=self.limit)
+                    pieces.append(value)
+                    errors.append(error)
+                result = fsum(pieces)
+                if fsum(errors) > max(self.epsabs, self.epsrel*abs(result)):
+                    warnings.warn('Batched quadrature exceeds the global error budget',
+                                  IntegrationWarning)
         return output(result)

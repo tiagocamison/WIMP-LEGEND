@@ -1,0 +1,35 @@
+Input file:  Ar39.txt
+Output file: Ar39.new
+
+Input file: 7 lines
+Output file: 9 lines
+Added new lines: 2
+--> Output file is consistent.
+
+
+####################################################  B- DECAYS  ####################################################
+
+---------------------------------------------------------------------------------------------------------------------  1
+
+ 39AR  P 0           7/2-              268 Y     8              565       5     - PARENT
+ 39K   N                       1.0       1.0                                    - NORMALIZATION
+ 39K   L 0           3/2+                                                       - LEVEL
+
+***** BR and NB from N record *****
+
+From calculated spectrum: '1U' transition assumed.
+Emean 218 (2) keV   |   log ft 10.104 (24)
+
+*    log ft
+ 39K   B 565       5 100                 10.10   2                           1U - OLD CARD
+ 39K   B 565       5 100                 10.104  24                          1U - NEW CARD
+
+*    Mean energy
+ 39K S B EAV=218 2                                                              - NEW CARD
+
+---------------------------------------------------------------------------------------------------------------------  
+
+-------- Total: 1
+-------- Added lines: 2
+
+
