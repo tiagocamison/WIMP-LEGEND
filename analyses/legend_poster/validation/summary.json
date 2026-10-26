@@ -1,0 +1,114 @@
+{
+  "status": "PROVISIONAL BENCHMARK; not a validated LEGEND prediction",
+  "implementation_commit": "a819570f0f0669ab7b286c3dc77fd36a05cf77c4",
+  "implementation_tree": "07f365fc70426c6b938269864e4d34172fb3dc49",
+  "run_id": "744964164fbeb13907bd99936a9ec4796a36dc93f7261715ccee97c110db2924",
+  "limits": 252,
+  "successful_limits": 252,
+  "convergence_checks": 132,
+  "observed_bins": 457,
+  "warm_cache": {
+    "hits": 458,
+    "misses": 0
+  },
+  "convergence": {
+    "signal": {
+      "checks": 105,
+      "max_total_relative": 9.834080468537064e-06,
+      "max_significant_bin_relative": 0.02786773142963036
+    },
+    "background": {
+      "checks": 27,
+      "max_total_relative": 1.833684420595848e-15,
+      "max_significant_bin_relative": 6.696434798002238e-13
+    }
+  },
+  "focused_environment": {
+    "python": "3.12.14",
+    "numpy": "2.3.5",
+    "scipy": "1.17.0",
+    "matplotlib": "3.10.8",
+    "pytest": "9.1.1",
+    "nbformat": "5.11.1",
+    "nbclient": "0.11.0",
+    "ipykernel": "7.4.0",
+    "threadpoolctl": "3.6.0"
+  },
+  "tests": {
+    "existing": 889,
+    "focused": 37,
+    "distinct_total": 926,
+    "collection_note": "Two non-overlapping successful runs, not one 926-test invocation."
+  },
+  "legend_poster_SI_100_kg_year": [
+    {
+      "mass_GeV": 2.0,
+      "limit_value": 5.142108396769789e-44,
+      "limit_unit": "cm^2",
+      "background_events": 80.2533816106543,
+      "reference_signal_events": 309.584602562021,
+      "roi_lower_keV": 0.1,
+      "roi_upper_keV": 0.17
+    },
+    {
+      "mass_GeV": 3.0,
+      "limit_value": 1.9469667818250686e-44,
+      "limit_unit": "cm^2",
+      "background_events": 112.32218433303514,
+      "reference_signal_events": 953.6229796838412,
+      "roi_lower_keV": 0.1,
+      "roi_upper_keV": 0.21
+    },
+    {
+      "mass_GeV": 5.0,
+      "limit_value": 7.148453157720197e-45,
+      "limit_unit": "cm^2",
+      "background_events": 242.20222098893973,
+      "reference_signal_events": 3749.5618597730877,
+      "roi_lower_keV": 0.1,
+      "roi_upper_keV": 0.42
+    },
+    {
+      "mass_GeV": 10.0,
+      "limit_value": 5.389795665685684e-45,
+      "limit_unit": "cm^2",
+      "background_events": 1039.3613656782147,
+      "reference_signal_events": 10041.973979456376,
+      "roi_lower_keV": 0.1,
+      "roi_upper_keV": 1.39
+    },
+    {
+      "mass_GeV": 20.0,
+      "limit_value": 5.893037696296411e-45,
+      "limit_unit": "cm^2",
+      "background_events": 3117.9829630274276,
+      "reference_signal_events": 15811.06214648231,
+      "roi_lower_keV": 0.1,
+      "roi_upper_keV": 4.55
+    },
+    {
+      "mass_GeV": 50.0,
+      "limit_value": 9.133554166870369e-45,
+      "limit_unit": "cm^2",
+      "background_events": 7747.878628968412,
+      "reference_signal_events": 16004.036605638003,
+      "roi_lower_keV": 0.1,
+      "roi_upper_keV": 11.35
+    },
+    {
+      "mass_GeV": 100.0,
+      "limit_value": 1.4145858053119163e-44,
+      "limit_unit": "cm^2",
+      "background_events": 8037.1945882970995,
+      "reference_signal_events": 10508.8268523401,
+      "roi_lower_keV": 0.1,
+      "roi_upper_keV": 12.75
+    }
+  ],
+  "integrated_background_events_per_kg_year": {
+    "natural_AAr__Total": 2934.3724256011346,
+    "enriched_UAr__Total": 113.49959297972765,
+    "enriched_UAr__historical__Total": 153.5595055585428,
+    "legend_poster__Total": 85.66293716408393
+  }
+}

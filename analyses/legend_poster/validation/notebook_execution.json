@@ -1,0 +1,29 @@
+{
+  "method": "Each actual notebook executed in its own fresh IPython subprocess; all cell errors fail the test; no ZMQ/Jupyter transport claim.",
+  "source_tree": "07f365fc70426c6b938269864e4d34172fb3dc49",
+  "records": [
+    {
+      "notebook": "notebooks/poster_setup.ipynb",
+      "source_sha256": "02ab5b82fd14777a5ea073f086de9a0224bf2f2926054f95114673afb6e7e187",
+      "executed_notebook_sha256": "5aab579a5acf32962704daf7b39b2d1cdb5f1f787761957548c6ebc59224a192",
+      "code_cells": 5,
+      "executed_code_cells": 5,
+      "error_outputs": 0,
+      "rich_mime_types": [
+        "text/plain"
+      ]
+    },
+    {
+      "notebook": "notebooks/poster_workbench.ipynb",
+      "source_sha256": "b0b0751c3b783bd6fe8f420c46d335b311124560986b05d03fcfcfb127214739",
+      "executed_notebook_sha256": "1f9727cf8df96200141100fd9d43a640afc7c742b41b057ab631226555649d9b",
+      "code_cells": 7,
+      "executed_code_cells": 7,
+      "error_outputs": 0,
+      "rich_mime_types": [
+        "image/png",
+        "text/plain"
+      ]
+    }
+  ]
+}
