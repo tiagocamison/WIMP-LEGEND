@@ -1,7 +1,8 @@
 # Optional fast SI calculation — implementation report
 
-Branch: **`poster-speedup`**. The completed workbench stays at
-`f5863ad280e0fc2250b6926d1659920e4f1caf5a` on `poster-workbench`.
+Branch: **`poster-speedup`**, based on the completed workbench delivery
+`f5863ad280e0fc2250b6926d1659920e4f1caf5a`. Later independent changes on
+`poster-workbench` are not overwritten or incorporated by this optimization.
 
 The numerical implementation and benchmark source are
 **`e76fd698a3f49d24679e4a88bc7662cb212494a9`**, tree
