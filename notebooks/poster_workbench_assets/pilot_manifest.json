@@ -1,0 +1,45 @@
+{
+  "status": "EXPLORATORY NOT INDEPENDENTLY VERIFIED; not poster-final",
+  "isotope": "100% Ge76 proxy; exact isotope composition pending",
+  "target_mass_GeV": 70.79355178392,
+  "masses_GeV": [
+    1.5,
+    1.8,
+    2.0,
+    2.5,
+    3.0,
+    3.5,
+    4.0,
+    5.0,
+    6.0,
+    8.0,
+    10.0,
+    12.0
+  ],
+  "reference_sigma_cm2": 1e-45,
+  "reference_c_GeV_minus2": 1e-07,
+  "operators": [
+    1,
+    8,
+    11
+  ],
+  "SI_proton_neutron_ratio": 1.0,
+  "NREFT_proton_neutron_ratio": 1.0,
+  "quenching": "Lindhard k=.157",
+  "sigma_energy": "sqrt(.05**2+.11*.00296*Eee) keV",
+  "efficiency": 0.9,
+  "halo": {
+    "rho_GeV_cm3": 0.3,
+    "v0_km_s": 220,
+    "vesc_km_s": 544,
+    "vlab_km_s": 266
+  },
+  "quadrature": "Gauss-Legendre via Emax*u**2, approx. signal bin CDF, 38 nodes",
+  "input": "/mnt/data/legend_bundle/CODE-AUDIT-007-FIX/plots/component_rates.csv",
+  "background_profiles": [
+    "legacy_enriched_UAr",
+    "enriched_UAr",
+    "legend_poster"
+  ],
+  "limitation": "no physical LEGEND calibration/activities; known-B counting, no nuisance systematics, exact 95% observed-signal ROI; ratio comparability only for two no-cooldown profiles; response also differs from historical notebook."
+}

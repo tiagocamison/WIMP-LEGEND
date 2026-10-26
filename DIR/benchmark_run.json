@@ -1,0 +1,301 @@
+{
+  "status": "BENCHMARK ONLY; not validated LEGEND-1000 prediction",
+  "configuration_sha256": "a9a26df13bed3f5ce550a1db40f61518eda123234d355ec2c5f832be6efee312",
+  "legacy_notebook_sha256": "ca3e8376f6fad9dfafb836ffe1b74b60377b7ed9e2dcb313f90b8807216ad39f",
+  "quadrature": {
+    "order": 6,
+    "truth_step_keV": 0.05,
+    "tail_sigma": 12.0,
+    "description": "bin probabilities from existing responses; exact point-line folding; fixed GL continua; explicit Gaussian tail cutoff; legacy observed spectra bin-averaged on10001-point grid without refolding"
+  },
+  "scenarios": {
+    "natural_AAr": {
+      "assumptions": {
+        "label": "natural_AAr",
+        "activities_per_kg_day": [
+          [
+            "H3",
+            0.2108145106091718
+          ],
+          [
+            "Ge68",
+            1.6427104722792607
+          ],
+          [
+            "Zn65",
+            0.16427104722792607
+          ],
+          [
+            "Fe55",
+            0.03285420944558522
+          ]
+        ],
+        "flat_rate_per_kg_day_keV_obs": 0.0002737850787132101,
+        "ar39_activity_Bq_per_kg_Ar": 0.964,
+        "argon_mass_per_kg_Ge": 20.0,
+        "lar_transfer_probability": 0.00014230663956447948,
+        "lar_veto_survival_probability": 1.0,
+        "cooldown_day": 0.0,
+        "run_duration_day": 365.25,
+        "ga68_initialization": "secular_equilibrium",
+        "ga68_initial_activity_per_kg_day": null,
+        "zn65_gamma_escape_probability": 0.0,
+        "ga68_gamma_escape_probability": 0.0,
+        "annihilation_escape_probability": 0.0,
+        "solar_flux_components": [
+          "pp",
+          "B8"
+        ],
+        "nu_target_A": 72.63,
+        "nu_target_mass_GeV": 67.65441665876459,
+        "nu_targets_per_kg": 8.291533471017487e+24,
+        "solar_sin2_theta12": 0.307,
+        "solar_sin2_theta13": 0.022,
+        "solar_delta_m21_eV2": 7.53e-05,
+        "solar_rho_Ye_g_cm3": 65.0,
+        "provenance": "EXPLICIT NOTEBOOK-DERIVED BENCHMARK. Intrinsic activities77/600/60/12 decays per kg Ge year, enrichment divisors14/2.5/1.33 and observed flat0.1(+15%) are illustrative, not measured LEGEND. Physical AAr0.964 Bq/kg (DEAP EPJC83,642(2023)); UAr0.00073 Bq/kg (DarkSide PRD93,081101(2016)); not certified LEGEND argon. Argon mass ratio20 kgAr/kgGe is arbitrary; transfer fitted to notebook integrated AAr normalization, not geometry prediction. Effective A surrogate72.63/76 and mass=A*0.93149410242 GeV approximate target; neutrino mixing rounded PDG-like values and rhoYe65 are fixed-density benchmark assumptions."
+      },
+      "physical_provenance": {
+        "ar39_intensity_after_transfer_and_veto": 236.7469721183606,
+        "mean_ar39_decays_per_kg_Ge_day_before_transfer": 1663639.678674936,
+        "mean_intrinsic_activities_per_kg_day": {
+          "Fe55": 0.02904852855483245,
+          "Ga68": 1.0676344211773878,
+          "Ge68": 1.067448868001599,
+          "H3": 0.20499005343719978,
+          "Zn65": 0.10222770151192877
+        },
+        "solar_coverage": "pp and B8 only; Be7/pep/CNO/hep omitted, not a full solar background",
+        "source_activities_at_reference_per_kg_day": {
+          "Fe55": 0.03285420944558522,
+          "Ge68": 1.6427104722792607,
+          "H3": 0.2108145106091718,
+          "Zn65": 0.16427104722792607
+        },
+        "source_manifest": {
+          "files": {
+            "Ar39_minimal_ENSDF.txt": "c4dd9d5793b4d53c262e4fbf7e4be0e50b23d4bc38d2aebb2ecdecf63634251d",
+            "ar39.csv": "407074ad75116f9f442e9c5679a5fc337ee045389f22c67b08dfb27d2c872df7",
+            "ar39_provenance.json": "6af997f564c03d48c0b669d9aa55d8f5ab7252a583f4777fe3c49f115b1c64e9",
+            "nuclear.json": "58dc1dde5fb31fbd85f23843eea13041f6ac28fd65ca7633cd49b0d600e15494",
+            "solar.json": "2855e3853d1478fa36011f6d00037d2e9d565e38420f1c21b963580a43e66c6a",
+            "source_ar39.bs": "7388a003d2bb013c938ad1fb69c71cdf2fc2dfbd776c47ea1356bd63b30797d6",
+            "source_ar39.rpt": "e30c32c2d024ec5aef9ab70c7df5fb1cf7bd2de63ad7dd8c35e0e644b3ab9044",
+            "source_ar39_default.bs": "16e2b319857ef4cb4f21c267111f89f204b50b9de67380d4cb04123a3910410f",
+            "source_b8.txt": "75ce26216a638b811d131b692e2d22b8624fcbb711839fd167c25cefaafb9789",
+            "source_pp.txt": "f350a6ad075a3e06fdc6990aa4de687b79c2af954ec8074244ca9127b7d4778f"
+          },
+          "version": "BG-BENCHMARK-001-v1"
+        },
+        "status": "BENCHMARK, not validated LEGEND-1000 prediction"
+      },
+      "analysis_window_keV": [
+        0.1,
+        15.0
+      ],
+      "expected_counts_in_analysis_window": {
+        "H3": 65.99795271892354,
+        "Ge68": 350.0128604159511,
+        "Ga68": 31.2607262015621,
+        "Zn65": 16.15726216394754,
+        "Fe55": 9.444374240794424,
+        "Ar39": 2443.718515413687,
+        "solar_CEvNS": 0.37698806127116613,
+        "solar_ES": 0.04028095271300074,
+        "flat_observed": 1.4900000000000002
+      }
+    },
+    "enriched_UAr": {
+      "assumptions": {
+        "label": "enriched_UAr",
+        "activities_per_kg_day": [
+          [
+            "H3",
+            0.2108145106091718
+          ],
+          [
+            "Ge68",
+            0.11733646230566147
+          ],
+          [
+            "Zn65",
+            0.06570841889117043
+          ],
+          [
+            "Fe55",
+            0.024702413116981365
+          ]
+        ],
+        "flat_rate_per_kg_day_keV_obs": 0.0003148528405201916,
+        "ar39_activity_Bq_per_kg_Ar": 0.00073,
+        "argon_mass_per_kg_Ge": 20.0,
+        "lar_transfer_probability": 0.00014230663956447948,
+        "lar_veto_survival_probability": 1.0,
+        "cooldown_day": 0.0,
+        "run_duration_day": 365.25,
+        "ga68_initialization": "secular_equilibrium",
+        "ga68_initial_activity_per_kg_day": null,
+        "zn65_gamma_escape_probability": 0.0,
+        "ga68_gamma_escape_probability": 0.0,
+        "annihilation_escape_probability": 0.0,
+        "solar_flux_components": [
+          "pp",
+          "B8"
+        ],
+        "nu_target_A": 76.0,
+        "nu_target_mass_GeV": 70.79355178392,
+        "nu_targets_per_kg": 7.92386942105263e+24,
+        "solar_sin2_theta12": 0.307,
+        "solar_sin2_theta13": 0.022,
+        "solar_delta_m21_eV2": 7.53e-05,
+        "solar_rho_Ye_g_cm3": 65.0,
+        "provenance": "EXPLICIT NOTEBOOK-DERIVED BENCHMARK. Intrinsic activities77/600/60/12 decays per kg Ge year, enrichment divisors14/2.5/1.33 and observed flat0.1(+15%) are illustrative, not measured LEGEND. Physical AAr0.964 Bq/kg (DEAP EPJC83,642(2023)); UAr0.00073 Bq/kg (DarkSide PRD93,081101(2016)); not certified LEGEND argon. Argon mass ratio20 kgAr/kgGe is arbitrary; transfer fitted to notebook integrated AAr normalization, not geometry prediction. Effective A surrogate72.63/76 and mass=A*0.93149410242 GeV approximate target; neutrino mixing rounded PDG-like values and rhoYe65 are fixed-density benchmark assumptions."
+      },
+      "physical_provenance": {
+        "ar39_intensity_after_transfer_and_veto": 0.17927934610622742,
+        "mean_ar39_decays_per_kg_Ge_day_before_transfer": 1259.8101301169122,
+        "mean_intrinsic_activities_per_kg_day": {
+          "Fe55": 0.02184099891340786,
+          "Ga68": 0.07625960151267056,
+          "Ge68": 0.07624634771439992,
+          "H3": 0.20499005343719978,
+          "Zn65": 0.04089108060477151
+        },
+        "solar_coverage": "pp and B8 only; Be7/pep/CNO/hep omitted, not a full solar background",
+        "source_activities_at_reference_per_kg_day": {
+          "Fe55": 0.024702413116981365,
+          "Ge68": 0.11733646230566147,
+          "H3": 0.2108145106091718,
+          "Zn65": 0.06570841889117043
+        },
+        "source_manifest": {
+          "files": {
+            "Ar39_minimal_ENSDF.txt": "c4dd9d5793b4d53c262e4fbf7e4be0e50b23d4bc38d2aebb2ecdecf63634251d",
+            "ar39.csv": "407074ad75116f9f442e9c5679a5fc337ee045389f22c67b08dfb27d2c872df7",
+            "ar39_provenance.json": "6af997f564c03d48c0b669d9aa55d8f5ab7252a583f4777fe3c49f115b1c64e9",
+            "nuclear.json": "58dc1dde5fb31fbd85f23843eea13041f6ac28fd65ca7633cd49b0d600e15494",
+            "solar.json": "2855e3853d1478fa36011f6d00037d2e9d565e38420f1c21b963580a43e66c6a",
+            "source_ar39.bs": "7388a003d2bb013c938ad1fb69c71cdf2fc2dfbd776c47ea1356bd63b30797d6",
+            "source_ar39.rpt": "e30c32c2d024ec5aef9ab70c7df5fb1cf7bd2de63ad7dd8c35e0e644b3ab9044",
+            "source_ar39_default.bs": "16e2b319857ef4cb4f21c267111f89f204b50b9de67380d4cb04123a3910410f",
+            "source_b8.txt": "75ce26216a638b811d131b692e2d22b8624fcbb711839fd167c25cefaafb9789",
+            "source_pp.txt": "f350a6ad075a3e06fdc6990aa4de687b79c2af954ec8074244ca9127b7d4778f"
+          },
+          "version": "BG-BENCHMARK-001-v1"
+        },
+        "status": "BENCHMARK, not validated LEGEND-1000 prediction"
+      },
+      "analysis_window_keV": [
+        0.1,
+        15.0
+      ],
+      "expected_counts_in_analysis_window": {
+        "H3": 65.99795271892354,
+        "Ge68": 25.00091860113936,
+        "Ga68": 2.2329090143972925,
+        "Zn65": 6.4629048655790164,
+        "Fe55": 7.101033263755207,
+        "Ar39": 1.8505337305518583,
+        "solar_CEvNS": 0.4176813250434377,
+        "solar_ES": 0.038494810467700556,
+        "flat_observed": 1.7134999999999996
+      }
+    },
+    "legend_poster": {
+      "assumptions": {
+        "label": "legend_poster",
+        "activities_per_kg_day": [
+          [
+            "H3",
+            0.2108145106091718
+          ],
+          [
+            "Ge68",
+            0.11733646230566147
+          ],
+          [
+            "Zn65",
+            0.06570841889117043
+          ],
+          [
+            "Fe55",
+            0.024702413116981365
+          ]
+        ],
+        "flat_rate_per_kg_day_keV_obs": 0.0003148528405201916,
+        "ar39_activity_Bq_per_kg_Ar": 0.00073,
+        "argon_mass_per_kg_Ge": 20.0,
+        "lar_transfer_probability": 0.00014230663956447948,
+        "lar_veto_survival_probability": 0.01,
+        "cooldown_day": 365.25,
+        "run_duration_day": 365.25,
+        "ga68_initialization": "secular_equilibrium",
+        "ga68_initial_activity_per_kg_day": null,
+        "zn65_gamma_escape_probability": 0.0,
+        "ga68_gamma_escape_probability": 0.0,
+        "annihilation_escape_probability": 0.0,
+        "solar_flux_components": [
+          "pp",
+          "B8"
+        ],
+        "nu_target_A": 76.0,
+        "nu_target_mass_GeV": 70.79355178392,
+        "nu_targets_per_kg": 7.92386942105263e+24,
+        "solar_sin2_theta12": 0.307,
+        "solar_sin2_theta13": 0.022,
+        "solar_delta_m21_eV2": 7.53e-05,
+        "solar_rho_Ye_g_cm3": 65.0,
+        "provenance": "EXPLICIT NOTEBOOK-DERIVED BENCHMARK. Intrinsic activities77/600/60/12 decays per kg Ge year, enrichment divisors14/2.5/1.33 and observed flat0.1(+15%) are illustrative, not measured LEGEND. Physical AAr0.964 Bq/kg (DEAP EPJC83,642(2023)); UAr0.00073 Bq/kg (DarkSide PRD93,081101(2016)); not certified LEGEND argon. Argon mass ratio20 kgAr/kgGe is arbitrary; transfer fitted to notebook integrated AAr normalization, not geometry prediction. Effective A surrogate72.63/76 and mass=A*0.93149410242 GeV approximate target; neutrino mixing rounded PDG-like values and rhoYe65 are fixed-density benchmark assumptions."
+      },
+      "physical_provenance": {
+        "ar39_intensity_after_transfer_and_veto": 0.0017881626248104306,
+        "mean_ar39_decays_per_kg_Ge_day_before_transfer": 1256.5560048940724,
+        "mean_intrinsic_activities_per_kg_day": {
+          "Fe55": 0.01698442725628442,
+          "Ga68": 0.029956817625800703,
+          "Ge68": 0.029951609687324042,
+          "H3": 0.19376826876698322,
+          "Zn65": 0.014488631219950832
+        },
+        "solar_coverage": "pp and B8 only; Be7/pep/CNO/hep omitted, not a full solar background",
+        "source_activities_at_reference_per_kg_day": {
+          "Fe55": 0.024702413116981365,
+          "Ge68": 0.11733646230566147,
+          "H3": 0.2108145106091718,
+          "Zn65": 0.06570841889117043
+        },
+        "source_manifest": {
+          "files": {
+            "Ar39_minimal_ENSDF.txt": "c4dd9d5793b4d53c262e4fbf7e4be0e50b23d4bc38d2aebb2ecdecf63634251d",
+            "ar39.csv": "407074ad75116f9f442e9c5679a5fc337ee045389f22c67b08dfb27d2c872df7",
+            "ar39_provenance.json": "6af997f564c03d48c0b669d9aa55d8f5ab7252a583f4777fe3c49f115b1c64e9",
+            "nuclear.json": "58dc1dde5fb31fbd85f23843eea13041f6ac28fd65ca7633cd49b0d600e15494",
+            "solar.json": "2855e3853d1478fa36011f6d00037d2e9d565e38420f1c21b963580a43e66c6a",
+            "source_ar39.bs": "7388a003d2bb013c938ad1fb69c71cdf2fc2dfbd776c47ea1356bd63b30797d6",
+            "source_ar39.rpt": "e30c32c2d024ec5aef9ab70c7df5fb1cf7bd2de63ad7dd8c35e0e644b3ab9044",
+            "source_ar39_default.bs": "16e2b319857ef4cb4f21c267111f89f204b50b9de67380d4cb04123a3910410f",
+            "source_b8.txt": "75ce26216a638b811d131b692e2d22b8624fcbb711839fd167c25cefaafb9789",
+            "source_pp.txt": "f350a6ad075a3e06fdc6990aa4de687b79c2af954ec8074244ca9127b7d4778f"
+          },
+          "version": "BG-BENCHMARK-001-v1"
+        },
+        "status": "BENCHMARK, not validated LEGEND-1000 prediction"
+      },
+      "analysis_window_keV": [
+        0.1,
+        15.0
+      ],
+      "expected_counts_in_analysis_window": {
+        "H3": 62.38502222952403,
+        "Ge68": 9.82103114723308,
+        "Ga68": 0.8771465729229145,
+        "Zn65": 2.2899528166559078,
+        "Fe55": 5.522045186251415,
+        "Ar39": 0.018457537495496848,
+        "solar_CEvNS": 0.4176813250434377,
+        "solar_ES": 0.038494810467700556,
+        "flat_observed": 1.7134999999999996
+      }
+    }
+  }
+}
