@@ -1,3 +1,9 @@
 src/wimp_legend/targets/data/ge_afh2014_v1/*.json text eol=lf
 tools/ge_nuclear_data/*.py text eol=lf
 src/wimp_legend/backgrounds/data/benchmark_v1/* -text
+
+# Preserve byte checksums of raw comparison data and numerical evidence.
+analyses/legend_poster/data/si_limits/* -text
+analyses/legend_poster/validation/** -text
+notebooks/historical/poster_workbench_pilot.ipynb -text
+analyses/legend_poster/validation/standard/*.csv whitespace=cr-at-eol

@@ -1,0 +1,186 @@
+{
+  "numerical_run_id": "744964164fbeb13907bd99936a9ec4796a36dc93f7261715ccee97c110db2924",
+  "numerical_manifest_sha256": "e1ce8d2739bcb3b998ba4fd483dd3ffe531b3062ddfe7263980ca39beebc0ce8",
+  "plotting": {
+    "energy_range_keV": [
+      0.03,
+      15.0
+    ],
+    "threshold_zoom_keV": [
+      0.03,
+      2.0
+    ],
+    "mass_range_GeV": [
+      0.3,
+      1000.0
+    ],
+    "sigma_range_cm2": [
+      1e-49,
+      1e-35
+    ],
+    "comparisons": [
+      "CRESST",
+      "CDMSLite",
+      "DarkSide-50_2022",
+      "LZ_2024",
+      "XENONnT_2025",
+      "SuperCDMS_SNOLAB",
+      "DarkSide-20k"
+    ],
+    "dpi": 160,
+    "title": "LEGEND provisional benchmark",
+    "limit_exposure_indices": [
+      -1
+    ],
+    "exposure_comparison_scenario": "legend_poster"
+  },
+  "comparison_provenance": {
+    "repository": "https://github.com/cajohare/DirectDetectionPlots",
+    "commit": "7d669ed5b9321e67c64dbbb361a9fc72af6f5f2c",
+    "accessed": "2026-10-26",
+    "attribution": "Ciaran O\u2019Hare et al., DirectDetectionPlots; source headers retained. Data only, no plotting utility code copied.",
+    "curves": [
+      {
+        "id": "CDMSLite",
+        "file": "CDMSLite.txt",
+        "sha256": "049e37bc4182437d31587add2acbf8cfddf0ca39f030594be4a589aa2d89b1cb",
+        "upstream_path": "data/limits/Nucleon/SI/CDMSLite.txt",
+        "kind": "observed_limit",
+        "confidence_level": 0.9,
+        "confidence_source": "arXiv:1808.09098, Sec. IX / Fig. 13: 90% CL. Upstream header also cites arXiv:0912.3592; release identity is not independently reconstructed.",
+        "source_header": "# https://arxiv.org/abs/1808.09098\n# https://arxiv.org/abs/0912.3592",
+        "units": [
+          "GeV",
+          "cm^2"
+        ],
+        "coupling": "spin-independent equal proton/neutron coupling; source astrophysical/experimental assumptions differ",
+        "currency": "Frozen source curve, may be outdated for 2026; not claimed latest result",
+        "upstream_git_blob_sha": "914ddc7ca4fdb8cf1feba9e937dde134016eba80"
+      },
+      {
+        "id": "CRESST",
+        "file": "CRESST.txt",
+        "sha256": "d8c2460081a8dc8ad238ca7df2b2076ab92f5b4070dcaccc0508dbb5e5643471",
+        "upstream_path": "data/limits/Nucleon/SI/CRESST.txt",
+        "kind": "observed_limit",
+        "confidence_level": 0.9,
+        "confidence_source": "arXiv:1904.00498, Fig. 7: 90% CL upper limits. Upstream digitization retained, not reanalysed.",
+        "source_header": "# https://arxiv.org/abs/1904.00498",
+        "units": [
+          "GeV",
+          "cm^2"
+        ],
+        "coupling": "spin-independent equal proton/neutron coupling; source astrophysical/experimental assumptions differ",
+        "currency": "Frozen source curve, may be outdated for 2026; not claimed latest result",
+        "upstream_git_blob_sha": "241ad3971b06e1a1a5b94630bbbcad0dee5d3052"
+      },
+      {
+        "id": "DarkSide-20k",
+        "file": "DarkSide-20k.txt",
+        "sha256": "234c79a2dc920cf15d46a6dfac6323d8334d354901fe5bf15f188a710e5f6cff",
+        "upstream_path": "data/limits/Nucleon/SI/Projections/DarkSide-20k.txt",
+        "kind": "projection",
+        "confidence_level": 0.9,
+        "confidence_source": "arXiv:1707.08145, introduction adopts standard 90% exclusion likelihood; Fig. 1 / Sec. 14.3 show the projected sensitivity. Curve digitization and construction are inherited from upstream, not independently reconstructed.",
+        "source_header": "# https://arxiv.org/pdf/1707.08145",
+        "units": [
+          "GeV",
+          "cm^2"
+        ],
+        "coupling": "spin-independent equal proton/neutron coupling; source astrophysical/experimental assumptions differ",
+        "currency": "Frozen source curve, may be outdated for 2026; not claimed latest result",
+        "upstream_git_blob_sha": "2a58fcf0a1bf9068fc65be5418ae9c891d73ec87"
+      },
+      {
+        "id": "DarkSide-50_2022",
+        "file": "DarkSide-50_2022.txt",
+        "sha256": "a512299b7cd7479b630be2b9bb3eb56e5e8fa8aa89f31fd630eac18bec44dac4",
+        "upstream_path": "data/limits/Nucleon/SI/DarkSide-50_2022.txt",
+        "kind": "observed_limit",
+        "confidence_level": 0.9,
+        "confidence_source": "arXiv:2207.11966 abstract: 90% confidence-level exclusion. Upstream digitization retained.",
+        "source_header": "# DarkSide-50 2022\n# https://arxiv.org/pdf/2207.11966\n# mass [GeV]    sigma_SI [cm^2]",
+        "units": [
+          "GeV",
+          "cm^2"
+        ],
+        "coupling": "spin-independent equal proton/neutron coupling; source astrophysical/experimental assumptions differ",
+        "currency": "Frozen source curve, may be outdated for 2026; not claimed latest result",
+        "upstream_git_blob_sha": "78f8eca22e4b33d4519ce809e1103f666eca8e30"
+      },
+      {
+        "id": "LZ_2024",
+        "file": "LZ_2024.txt",
+        "sha256": "ed9d4cdde18a36048374d903921ebd792e765cd7b432f5f8e0e3b8ed30457599",
+        "upstream_path": "data/limits/Nucleon/SI/LZ_2024.txt",
+        "kind": "observed_limit",
+        "confidence_level": 0.9,
+        "confidence_source": "arXiv:2410.17036 abstract: 90% confidence-level upper limit. Upstream digitization retained.",
+        "source_header": "# https://arxiv.org/pdf/2410.17036",
+        "units": [
+          "GeV",
+          "cm^2"
+        ],
+        "coupling": "spin-independent equal proton/neutron coupling; source astrophysical/experimental assumptions differ",
+        "currency": "Frozen source curve, may be outdated for 2026; not claimed latest result",
+        "upstream_git_blob_sha": "49f06476acd2b2ad95a3ce1ee83d40c08210ffa9"
+      },
+      {
+        "id": "SuperCDMS_SNOLAB",
+        "file": "SuperCDMS_SNOLAB.txt",
+        "sha256": "e6ad4db4baf8f99d938ff0f3093c4b9781f208df0de49d48adca246bbecf4332",
+        "upstream_path": "data/limits/Nucleon/SI/Projections/SuperCDMS_SNOLAB.txt",
+        "kind": "projection",
+        "confidence_level": 0.9,
+        "confidence_source": "arXiv:1610.00006, sensitivity discussion p. 13: median 90% CL optimum-interval projection.",
+        "source_header": "# SuperCDMS Projection\n# https://arxiv.org/pdf/1610.00006",
+        "units": [
+          "GeV",
+          "cm^2"
+        ],
+        "coupling": "spin-independent equal proton/neutron coupling; source astrophysical/experimental assumptions differ",
+        "currency": "Frozen source curve, may be outdated for 2026; not claimed latest result",
+        "upstream_git_blob_sha": "4509fdaabfeac7b5541fed4123dd65e0f13daa82"
+      },
+      {
+        "id": "XENONnT_2025",
+        "file": "XENONnT_2025.txt",
+        "sha256": "ba1be10ae15d01cf6b131373733090cbb78ba16149ec51557653f69ac3e88acd",
+        "upstream_path": "data/limits/Nucleon/SI/XENONnT_2025.txt",
+        "kind": "observed_limit",
+        "confidence_level": 0.9,
+        "confidence_source": "arXiv:2502.18005 abstract: 90% confidence-level upper limit. Upstream digitization retained.",
+        "source_header": "# XENONnT 2025\n# spin indepenent\n# https://arxiv.org/pdf/2502.18005",
+        "units": [
+          "GeV",
+          "cm^2"
+        ],
+        "coupling": "spin-independent equal proton/neutron coupling; source astrophysical/experimental assumptions differ",
+        "currency": "Frozen source curve, may be outdated for 2026; not claimed latest result",
+        "upstream_git_blob_sha": "1ad321a7005324c660c80f442fad6b61faafd4f3"
+      }
+    ],
+    "plotting_reference": {
+      "notebook": "DM-Nucleon.ipynb",
+      "notebook_sha256": "88d75ce304253f8fad6e3ed9491ace0dcb365fbf6d06cfbcb47fd5dfe3f34e75",
+      "utilities": "notebooks/PlotFuncs.py",
+      "role": "Inspected organization, logarithmic axes and individual observed/projection curves; no upstream code imported or executed."
+    }
+  },
+  "figure_sha256": {
+    "background_natural_AAr.pdf": "39498e74088a8890cfbd9dab4b10d1456012f620cf3652524b0d3ce7716f2dc5",
+    "background_natural_AAr.png": "99ff726a9679f76a8e35957de110f907a1d157ed3124067efe12e032063746d1",
+    "background_enriched_UAr.pdf": "665a7d5c2ad569a835bbbfb8bbfd89f4454c2579ed2c0bb8df82b5297fd8bb81",
+    "background_enriched_UAr.png": "d63f7323c5d0e5ced46bb0504f594d780fc69bcfb579957d2eff3421ca81cbab",
+    "background_legend_poster.pdf": "d23ef5f200072130fb935a00b2d4dee80cdc267c5bf7e7fca53abbdcc692d900",
+    "background_legend_poster.png": "dbd49edcf08f65ed9f2a84bb4b5408bfff5e78ee37bf69f2eafd7de142b75e51",
+    "limit_O1.pdf": "e6f4dbf51fa5b585c5683173512465c3db7e69e87faeeeab95cc8c89f00e5f5d",
+    "limit_O1.png": "e9ac04446aa746a117b72493c152a32915b4f9ad7b220b1d15786e06fd125a9f",
+    "limit_O8.pdf": "3392d7c95565bddb903c3760bb4e34f98ac8f52d4a877a665066387e87f471de",
+    "limit_O8.png": "513d0d2d31335ab648da6b0f532ab7d00815c6d48016aa50180d1e6d9e314ccc",
+    "limit_O11.pdf": "65b4e90a6250b7eb12ad028a8863d5ab4b63e15c125df4f49f936479b7681d2b",
+    "limit_O11.png": "acc3e44490b2274c400ee6c7a901faeec45c4d38092b06988b00014853b182f8",
+    "exposure_comparison.pdf": "339d5c5d2403e170c2d225aef2ff0495557fc6f89dc65af21630087d88546233",
+    "exposure_comparison.png": "db6c588e5e796698f942557d16ee6a8bfcd09912fc12bf81f365ffcc3d39a038"
+  }
+}

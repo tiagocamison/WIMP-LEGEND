@@ -1,0 +1,1303 @@
+{
+  "schema_version": 1,
+  "run_id": "744964164fbeb13907bd99936a9ec4796a36dc93f7261715ccee97c110db2924",
+  "numerical_id": "b3aae10030e65e710d97df52227a4a134247c6634cefe3b016104ee9e30cef14",
+  "resolved_configuration": {
+    "schema_version": 1,
+    "status": "PROVISIONAL LEGEND BENCHMARK; not a validated prediction",
+    "target": {
+      "isotopes": {
+        "70": {
+          "atomic_mass_u": 69.92424875,
+          "mass_GeV": 65.11773075070431,
+          "spin": 0.0,
+          "source": {
+            "reference": "NIST Atomic Weights and Isotopic Compositions for Germanium (SRD 144 snapshot)",
+            "url": "https://physics.nist.gov/cgi-bin/Compositions/stand_alone.pl?ascii=ascii&ele=Ge",
+            "accessed": "2026-10-26",
+            "kind": "literature_snapshot",
+            "notes": "NIST snapshot; not claimed to supersede newer CIAAW evaluations."
+          },
+          "atomic_mass_uncertainty_u": 9e-07
+        },
+        "72": {
+          "atomic_mass_u": 71.922075826,
+          "mass_GeV": 66.97869489225047,
+          "spin": 0.0,
+          "source": {
+            "reference": "NIST Atomic Weights and Isotopic Compositions for Germanium (SRD 144 snapshot)",
+            "url": "https://physics.nist.gov/cgi-bin/Compositions/stand_alone.pl?ascii=ascii&ele=Ge",
+            "accessed": "2026-10-26",
+            "kind": "literature_snapshot",
+            "notes": "NIST snapshot; not claimed to supersede newer CIAAW evaluations."
+          },
+          "atomic_mass_uncertainty_u": 8.1e-08
+        },
+        "73": {
+          "atomic_mass_u": 72.923458956,
+          "mass_GeV": 67.91147737341015,
+          "spin": 4.5,
+          "source": {
+            "reference": "NIST Atomic Weights and Isotopic Compositions for Germanium (SRD 144 snapshot)",
+            "url": "https://physics.nist.gov/cgi-bin/Compositions/stand_alone.pl?ascii=ascii&ele=Ge",
+            "accessed": "2026-10-26",
+            "kind": "literature_snapshot",
+            "notes": "NIST snapshot; not claimed to supersede newer CIAAW evaluations."
+          },
+          "atomic_mass_uncertainty_u": 6.1e-08
+        },
+        "74": {
+          "atomic_mass_u": 73.921177761,
+          "mass_GeV": 68.84084655743821,
+          "spin": 0.0,
+          "source": {
+            "reference": "NIST Atomic Weights and Isotopic Compositions for Germanium (SRD 144 snapshot)",
+            "url": "https://physics.nist.gov/cgi-bin/Compositions/stand_alone.pl?ascii=ascii&ele=Ge",
+            "accessed": "2026-10-26",
+            "kind": "literature_snapshot",
+            "notes": "NIST snapshot; not claimed to supersede newer CIAAW evaluations."
+          },
+          "atomic_mass_uncertainty_u": 1.3e-08
+        },
+        "76": {
+          "atomic_mass_u": 75.921402726,
+          "mass_GeV": 70.70404431844925,
+          "spin": 0.0,
+          "source": {
+            "reference": "NIST Atomic Weights and Isotopic Compositions for Germanium (SRD 144 snapshot)",
+            "url": "https://physics.nist.gov/cgi-bin/Compositions/stand_alone.pl?ascii=ascii&ele=Ge",
+            "accessed": "2026-10-26",
+            "kind": "literature_snapshot",
+            "notes": "NIST snapshot; not claimed to supersede newer CIAAW evaluations."
+          },
+          "atomic_mass_uncertainty_u": 1.9e-08
+        }
+      },
+      "mass_conversion": {
+        "u_GeV": 0.93149410372,
+        "electron_mass_GeV": 0.00051099895069,
+        "electron_binding_eV": 57299.450802052306,
+        "formula": "m_nucleus = atomic_mass_u*u_GeV - Z*m_e_GeV + B_e*1e-9",
+        "source": "CODATA 2022 NIST muc2mev, mec2mev; AME2020 II Eq.(2), DOI:10.1088/1674-1137/abddaf",
+        "binding_note": "Approximate total atomic electron-binding fit B_e=14.4381 Z^2.39+1.55468e-6 Z^5.35 eV; not a precision nuclear-mass evaluation. Z=32."
+      },
+      "presets": {
+        "natural": {
+          "fraction_kind": "number",
+          "fractions": {
+            "70": 0.2057,
+            "72": 0.2745,
+            "73": 0.0775,
+            "74": 0.365,
+            "76": 0.0773
+          },
+          "provenance": "NIST SRD144 snapshot above; central abundances, no uncertainty propagation",
+          "status": "literature_snapshot",
+          "fraction_uncertainties": {
+            "70": 0.0027,
+            "72": 0.0032,
+            "73": 0.0012,
+            "74": 0.002,
+            "76": 0.0012
+          }
+        },
+        "enriched_provisional": {
+          "fraction_kind": "number",
+          "fractions": {
+            "70": 0.0,
+            "72": 0.0,
+            "73": 0.0,
+            "74": 0.08,
+            "76": 0.92
+          },
+          "provenance": "HYPOTHETICAL 92% Ge76 / 8% Ge74 by number; NOT measured LEGEND enrichment. Replace all fractions with collaboration data.",
+          "status": "hypothetical"
+        }
+      },
+      "kg_normalization": "neutral_atomic_detector_mass",
+      "mass_fraction_definition": "bare_nuclear_ensemble (TargetComposition convention)"
+    },
+    "detector": {
+      "default": "benchmark",
+      "presets": {
+        "benchmark": {
+          "provenance": "Hypothetical low-energy noise/Fano, constant efficiency and Lindhard assumptions; uncalibrated",
+          "threshold_keV_obs": 0.1,
+          "noise_sigma_keV": 0.05,
+          "fano_factor": 0.11,
+          "pair_energy_keV": 0.00296,
+          "efficiency": 0.9,
+          "lindhard_k": 0.157,
+          "Z": 32,
+          "NR_energy_range_keV": [
+            0.0,
+            1500.0
+          ],
+          "ER_energy_range_keV": [
+            0.0,
+            20000.0
+          ]
+        }
+      }
+    },
+    "background": {
+      "base": {
+        "lar_transfer_probability": 0.00014230663956447948,
+        "argon_mass_per_kg_Ge": 20.0,
+        "cooldown_day": 365.25,
+        "run_duration_day": 365.25,
+        "ga68_initialization": "secular_equilibrium",
+        "ga68_initial_activity_per_kg_day": null,
+        "zn65_gamma_escape_probability": 0.0,
+        "ga68_gamma_escape_probability": 0.0,
+        "annihilation_escape_probability": 0.0,
+        "solar_flux_components": [
+          "pp",
+          "B8"
+        ],
+        "solar_sin2_theta12": 0.307,
+        "solar_sin2_theta13": 0.022,
+        "solar_delta_m21_eV2": 7.53e-05,
+        "solar_rho_Ye_g_cm3": 65.0,
+        "activities_per_kg_day": [
+          [
+            "H3",
+            0.2108145106091718
+          ],
+          [
+            "Ge68",
+            0.11733646230566147
+          ],
+          [
+            "Zn65",
+            0.06570841889117043
+          ],
+          [
+            "Fe55",
+            0.024702413116981365
+          ]
+        ],
+        "flat_rate_per_kg_day_keV_obs": 0.0003148528405201916,
+        "ar39_activity_Bq_per_kg_Ar": 0.00073,
+        "lar_veto_survival_probability": 0.01,
+        "provenance": "EXPLICIT NOTEBOOK-DERIVED BENCHMARK. Intrinsic activities77/600/60/12 decays per kg Ge year, enrichment divisors14/2.5/1.33 and observed flat0.1(+15%) are illustrative, not measured LEGEND. Physical AAr0.964 Bq/kg (DEAP EPJC83,642(2023)); UAr0.00073 Bq/kg (DarkSide PRD93,081101(2016)); not certified LEGEND argon. Argon mass ratio20 kgAr/kgGe is arbitrary; transfer fitted to notebook integrated AAr normalization, not geometry prediction. Effective A surrogate72.63/76 and mass=A*0.93149410242 GeV approximate target; neutrino mixing rounded PDG-like values and rhoYe65 are fixed-density benchmark assumptions."
+      },
+      "scenarios": {
+        "natural_AAr": {
+          "target": "natural",
+          "overrides": {
+            "cooldown_day": 0.0,
+            "activities_per_kg_day": [
+              [
+                "H3",
+                0.2108145106091718
+              ],
+              [
+                "Ge68",
+                1.6427104722792607
+              ],
+              [
+                "Zn65",
+                0.16427104722792607
+              ],
+              [
+                "Fe55",
+                0.03285420944558522
+              ]
+            ],
+            "flat_rate_per_kg_day_keV_obs": 0.0002737850787132101,
+            "ar39_activity_Bq_per_kg_Ar": 0.964,
+            "lar_veto_survival_probability": 1.0
+          },
+          "components": {}
+        },
+        "enriched_UAr": {
+          "target": "enriched_provisional",
+          "overrides": {
+            "cooldown_day": 0.0,
+            "lar_veto_survival_probability": 1.0
+          },
+          "components": {}
+        },
+        "legend_poster": {
+          "target": "enriched_provisional",
+          "overrides": {},
+          "components": {}
+        }
+      },
+      "solar_target_mode": "isotope_mixture",
+      "historical": {
+        "enabled": true,
+        "notebook": "WIMP_O1_spectrum.ipynb",
+        "sha256": "ca3e8376f6fad9dfafb836ffe1b74b60377b7ed9e2dcb313f90b8807216ad39f",
+        "pair_with": "enriched_UAr",
+        "target": "enrGe",
+        "argon": "UAr",
+        "provenance": "Frozen historical already-observed model. Same signal, exposure, ROI/statistics; its historical background response/selection remains frozen, not recalibrated or refolded."
+      }
+    },
+    "signal": {
+      "halo": {
+        "v0_km_s": 220.0,
+        "vesc_km_s": 544.0,
+        "v_lab_km_s": 266.0,
+        "rho_chi_GeV_cm3": 0.3,
+        "provenance": "Fixed Standard Halo Model benchmark; no annual average/modulation"
+      },
+      "masses_GeV": [
+        2.0,
+        3.0,
+        5.0,
+        10.0,
+        20.0,
+        50.0,
+        100.0
+      ],
+      "operators": [
+        1,
+        8,
+        11
+      ],
+      "j_chi": 0.5,
+      "sigma_p_ref_cm2": 1e-42,
+      "m_proton_GeV": 0.93827208943,
+      "m_N_reference_GeV": 0.93827208943,
+      "mass_reference_source": "CODATA2022 proton energy; explicit choice of nucleon reference mass, not a hidden core default",
+      "fn_over_fp": 1.0,
+      "proton_sign": 1,
+      "coefficient_basis": "proton_neutron",
+      "coefficient_unit": "GeV^-2",
+      "coefficient_ref_GeV_minus2": 1e-05,
+      "convention_id": "anand2014_prc89_065501_half_isospin_v1",
+      "provenance": "O1 from physical SI adapter; single O8/O11 with cp=reference, cn=fn_over_fp*cp; dimensionful coefficients; limits |cp|=sqrt(mu)*|cp_ref|, no SI relabeling"
+    },
+    "analysis": {
+      "scenarios": [
+        "natural_AAr",
+        "enriched_UAr",
+        "legend_poster"
+      ],
+      "exposures_kg_day": [
+        365.25,
+        3652.5,
+        36525.0
+      ],
+      "confidence_level": 0.9,
+      "roi": {
+        "method": "threshold_anchored",
+        "signal_fraction": 0.95,
+        "normalization": "signal inside configured observed analysis window"
+      },
+      "methods": [
+        "poisson_cls_counting"
+      ],
+      "days_per_year": 365.25,
+      "provenance": "Known background median exact Poisson CLs; optional binned_asimov explicitly asymptotic, not an exact alternative",
+      "binned_roi": "full_analysis_window"
+    },
+    "numerical": {
+      "bin_segments": [
+        [
+          0.03,
+          2.0,
+          0.01
+        ],
+        [
+          2.0,
+          15.0,
+          0.05
+        ]
+      ],
+      "background_order": 8,
+      "background_step_keV": 0.025,
+      "signal_fold_order": 8,
+      "signal_fold_step_keV": 0.025,
+      "gaussian_tail_sigma": 12.0,
+      "signal_grid_points": 56,
+      "signal_grid_min_keV": 1e-05,
+      "rate_epsrel": 1e-05,
+      "signal_refinements": 3,
+      "signal_total_rtol": 0.005,
+      "signal_bin_rtol": 0.03,
+      "significant_bin_fraction": 0.0001,
+      "background_total_rtol": 0.001,
+      "background_bin_rtol": 0.01,
+      "blas_threads": 1,
+      "gaussian_tail_probability_max": 1e-15
+    },
+    "execution": {
+      "default_profile": "standard",
+      "profiles": {
+        "standard": {},
+        "smoke": {
+          "masses_GeV": [
+            6.0,
+            20.0
+          ],
+          "scenarios": [
+            "natural_AAr",
+            "enriched_UAr",
+            "legend_poster"
+          ],
+          "signal_grid_points": 12,
+          "signal_refinements": 3,
+          "signal_total_rtol": 0.08,
+          "signal_bin_rtol": 0.3,
+          "background_order": 6,
+          "background_step_keV": 0.05,
+          "signal_fold_order": 6,
+          "signal_fold_step_keV": 0.05,
+          "label": "SMOKE: coarse numerical settings; not poster-quality results"
+        }
+      },
+      "resolved_profile": "standard",
+      "resolved_label": "standard"
+    },
+    "plotting": {
+      "energy_range_keV": [
+        0.03,
+        15.0
+      ],
+      "threshold_zoom_keV": [
+        0.03,
+        2.0
+      ],
+      "mass_range_GeV": [
+        0.3,
+        1000.0
+      ],
+      "sigma_range_cm2": [
+        1e-49,
+        1e-35
+      ],
+      "comparisons": [
+        "CRESST",
+        "CDMSLite",
+        "DarkSide-50_2022",
+        "LZ_2024",
+        "XENONnT_2025",
+        "SuperCDMS_SNOLAB",
+        "DarkSide-20k"
+      ],
+      "dpi": 160,
+      "title": "LEGEND provisional benchmark",
+      "limit_exposure_indices": [
+        -1
+      ],
+      "exposure_comparison_scenario": "legend_poster"
+    },
+    "provenance": {
+      "pilot_notebook": "notebooks/historical/poster_workbench_pilot.ipynb",
+      "pilot_sha256": "23f6178e6b94c2c277243a6348deb3c1f13600488fa8f7d6bfab08ba20e99d02",
+      "notes": [
+        "No physical source uncertainty propagation or LEGEND calibration.",
+        "Natural isotope central abundances and atomic masses from frozen NIST snapshot; enriched composition explicitly hypothetical.",
+        "Nuclear Ge response source closure deficits and unknown physical validity range retained.",
+        "Background physical source data and hashes inherited unchanged from BG-BENCHMARK-001."
+      ]
+    }
+  },
+  "source": {
+    "git_commit": "a819570f0f0669ab7b286c3dc77fd36a05cf77c4",
+    "git_status": "",
+    "physics_files": {
+      "analyses/legend_poster/__init__.py": "06c404bfbd934090db51a10a6f5064010f478ff6aea30dd99b57c235e7173bce",
+      "analyses/legend_poster/__main__.py": "1ec4de962141b0f7c5f105f7003f5f14126da999ab9bce6982d83758a09c02e7",
+      "analyses/legend_poster/analysis.py": "1bd347ab7473224f485cd750ff83937279e0ac999f4bb0a79ebc94868bfec6d4",
+      "analyses/legend_poster/configuration.py": "34dc9f8062ee73ff89c29e42dc8c475b461c52ff49049d2cb4d28f8b6d7e7043",
+      "analyses/legend_poster/folding.py": "a2958f3d416fe73de3b44d8ed4eee843c26021b4bf9f937ad8132504a734b6e3",
+      "analyses/legend_poster/models.py": "199d50afbf34acedd40b4006a392daa3f23ba9b26197f22c77c6c17f00f9eabe",
+      "analyses/legend_poster/storage.py": "c90b97c9a0a39e6f3df0b397268cf0c49d09e0a879f438682b9e9bbd911a88a6",
+      "src/wimp_legend/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/wimp_legend/_analysis.py": "c15c9709056a3750a9d54a87e1633e74a1cbd2d5ffce8a1b6c4b4f39bfc9d93e",
+      "src/wimp_legend/backgrounds/__init__.py": "74cd64f9747b4557d74c73a8d7cba07b5ff97d908a2fd55ad3dec4759c729dd3",
+      "src/wimp_legend/backgrounds/benchmark.py": "3293681273456d5ec9f4ecb858e161e5970ed684b080f846ce3a1aa285dff991",
+      "src/wimp_legend/backgrounds/beta.py": "7351a4b22260ae21671421a33a14046c7584b4f9455a6efa27e1faa31f95d1c8",
+      "src/wimp_legend/backgrounds/data/benchmark_v1/Ar39_minimal_ENSDF.txt": "c4dd9d5793b4d53c262e4fbf7e4be0e50b23d4bc38d2aebb2ecdecf63634251d",
+      "src/wimp_legend/backgrounds/data/benchmark_v1/ar39.csv": "407074ad75116f9f442e9c5679a5fc337ee045389f22c67b08dfb27d2c872df7",
+      "src/wimp_legend/backgrounds/data/benchmark_v1/ar39_provenance.json": "6af997f564c03d48c0b669d9aa55d8f5ab7252a583f4777fe3c49f115b1c64e9",
+      "src/wimp_legend/backgrounds/data/benchmark_v1/manifest.json": "a2b295083c73caf7d3d542ff24911967d0bf712609a5bd3f54ba53bf0683af20",
+      "src/wimp_legend/backgrounds/data/benchmark_v1/nuclear.json": "58dc1dde5fb31fbd85f23843eea13041f6ac28fd65ca7633cd49b0d600e15494",
+      "src/wimp_legend/backgrounds/data/benchmark_v1/solar.json": "2855e3853d1478fa36011f6d00037d2e9d565e38420f1c21b963580a43e66c6a",
+      "src/wimp_legend/backgrounds/data/benchmark_v1/source_ar39.bs": "7388a003d2bb013c938ad1fb69c71cdf2fc2dfbd776c47ea1356bd63b30797d6",
+      "src/wimp_legend/backgrounds/data/benchmark_v1/source_ar39.rpt": "e30c32c2d024ec5aef9ab70c7df5fb1cf7bd2de63ad7dd8c35e0e644b3ab9044",
+      "src/wimp_legend/backgrounds/data/benchmark_v1/source_ar39_default.bs": "16e2b319857ef4cb4f21c267111f89f204b50b9de67380d4cb04123a3910410f",
+      "src/wimp_legend/backgrounds/data/benchmark_v1/source_b8.txt": "75ce26216a638b811d131b692e2d22b8624fcbb711839fd167c25cefaafb9789",
+      "src/wimp_legend/backgrounds/data/benchmark_v1/source_pp.txt": "f350a6ad075a3e06fdc6990aa4de687b79c2af954ec8074244ca9127b7d4778f",
+      "src/wimp_legend/backgrounds/model.py": "b721f648f67685173f79fbf89176ce1a969f366a4f354b6bba2c6223d684614a",
+      "src/wimp_legend/backgrounds/neutrinos.py": "8000204263254b7bea11d64564c1eb3afa6c308be7dd5d4a77d50800bbd7e48c",
+      "src/wimp_legend/backgrounds/radioactive.py": "58dede1d38ab4049ee1ce26162c653d64f1efaff4e2c3d37aaee60ef72314394",
+      "src/wimp_legend/backgrounds/routing.py": "5fd754a854ff7edbc5561f5b7b20ec09916f6cf0cb326eebf3845ac90c02fca9",
+      "src/wimp_legend/config.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/wimp_legend/constants.py": "865256ff17d8f54b31924aad1a4414173f40cefa2fceff29204cee8d7ce13545",
+      "src/wimp_legend/detector/__init__.py": "2d32cd06e5b63f287cf6646a844d9e7c1381a75baab8f0c0f5cf9b1eb51042e0",
+      "src/wimp_legend/detector/efficiency.py": "da1a1b0082da679ff6e7def36428e3d01cf53c6134c8e952c035da7858a61269",
+      "src/wimp_legend/detector/electron.py": "5074062e4caae5625887dd52121858ed23e8623f411e5c16a1476b7eb47895ca",
+      "src/wimp_legend/detector/quenching.py": "ca0b36017f1ba6c987ef2fab8c2b7acb068b12846b3df4aa8bcbeebe3bd3a723",
+      "src/wimp_legend/detector/resolution.py": "0c4b0685efe85f1e7c6ff6b1f3f2715b2080cac8d244c8d3cd06542488d794e6",
+      "src/wimp_legend/detector/response.py": "543dda6e1608c612e7b96fa51d768b814d931b8cd9c9308aeec50a0bea677ac0",
+      "src/wimp_legend/energy.py": "d4f53dfb8d319633c0140f74f7e771ca3b5cf6dcc491a345b215ff327da7326e",
+      "src/wimp_legend/halo/__init__.py": "5aeaba9a1519574ad468686dd52455158963bc49cc9634b3eea1f6d30a7cb88e",
+      "src/wimp_legend/halo/base.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/wimp_legend/halo/integrals.py": "1c1be56f6249e41d4beb41b80eb22a18f894afbff2bc1edf292941544dfd6c31",
+      "src/wimp_legend/halo/shm.py": "93988e15c0da5b90445c4fb3c5bbc8e26730e3e3f674ab53ec4e0327e59a98a3",
+      "src/wimp_legend/interactions/__init__.py": "c6d6274b68c96bf933a65aa79b6e5c34409966ce107b17e84dbdfaefe8519853",
+      "src/wimp_legend/interactions/base.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/wimp_legend/interactions/nreft.py": "ccad6fec722eb3d477c979dc9560011a519e7291eb8e1df5b352c4875c352947",
+      "src/wimp_legend/interactions/o1.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/wimp_legend/interactions/wilson.py": "a0ea700343d09ef6c5d479a9827db33b8da6a584755385e4ebc4cf61b0e2e1fa",
+      "src/wimp_legend/kinematics.py": "f5209c044a04705170527333c97fa525d795397fc823f604caddd0c0efcc09dc",
+      "src/wimp_legend/rates/__init__.py": "93f636343cb495acb1e8af10ac9ccac344662990e15784bc2b92ed0728993573",
+      "src/wimp_legend/rates/kinematics.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/wimp_legend/rates/recoil.py": "7bad3bf80f25014ae84c46add750b7fdcde58d9b87c9ef83907661d453c5154f",
+      "src/wimp_legend/sensitivity.py": "0edcb67e46a90e1016af4d3a804d8903ca6f5ea27a609160725eadc8878b05c6",
+      "src/wimp_legend/si.py": "e4155a29c2174955821fb87d28f4f50bd37a96f029669e7f0efc25208150aca9",
+      "src/wimp_legend/statistics/__init__.py": "37c4ad2ec913a4ec7d37dcc9f103c50f17f8c16117a62f571c010b3394631e98",
+      "src/wimp_legend/statistics/base.py": "c1997ba05f1f365f62ea7086904f796bac9ec64f2d9fa7465eb0a9e254749d17",
+      "src/wimp_legend/statistics/binned.py": "3e497c74d5e1c5937243008e8d3005859f937eb7066795b1c8f3d2ef76912b4a",
+      "src/wimp_legend/statistics/counting.py": "7c92f21c096691439848d17ebc0d3f92d9c743c88e77dc76b085fe648f0f87b1",
+      "src/wimp_legend/targets/__init__.py": "55f918c3b2da3148f59a3732bb6b5a7ef605c6274e7b01fad89fe8acc97d0ff9",
+      "src/wimp_legend/targets/data/ge_afh2014_v1/ge70.json": "01c5a505d3dc6b2b0fe93e4a0195f2ff6dc95553af462f32d24211ac80ee12a5",
+      "src/wimp_legend/targets/data/ge_afh2014_v1/ge72.json": "baba554841bd646a3034729214a3bee7c26f7a466262efc4b2a4f6362c8d6379",
+      "src/wimp_legend/targets/data/ge_afh2014_v1/ge73.json": "7c97e13c266a751961bed8214512013e2d5941d1fbc8ada252de5248dc354256",
+      "src/wimp_legend/targets/data/ge_afh2014_v1/ge74.json": "ddf30673b689a41ccce308c15d0e70a9fcf36820c68fed3e84ceb2eb232dee64",
+      "src/wimp_legend/targets/data/ge_afh2014_v1/ge76.json": "d803be8ef578c06abb4519c36d1085fad9fabc4ab91bafe5bffbfe6a3169be20",
+      "src/wimp_legend/targets/data/ge_afh2014_v1/manifest.json": "b17df65326c24a46a4effef6f2b5881304c9c0f03792417c2635e921a6a76f33",
+      "src/wimp_legend/targets/germanium.py": "3e497a5615268aa3b9400d18bab3b4e26388cf666158998a2f710a2806b8de14",
+      "src/wimp_legend/targets/isotopes.py": "b4e04ea30194c3f006662b40cd15e0e7a25901a5505fa657b2b47310ce15bd5a",
+      "src/wimp_legend/targets/nuclear_responses.py": "a43c8afedd09c0873a543f4578c80700694dac4042f30b8e48ee7f2e34aa80bf",
+      "src/wimp_legend/targets/provenance.py": "627c353d0e20eb93b1c04cb5e49a37aeda6c64b0d2a1aa899bade4f4906d6d2f",
+      "tools/background_benchmark/folding.py": "92b8f5c7f3bd4f44954d917bb4dc8e8b91461bc1f6e9430d8906cbb3df03ca5b",
+      "tools/background_benchmark/legacy.py": "9e281f31a748d9c860cc2ffbfaa3a756caae4926923e7d9ece15a23e1ac77960"
+    },
+    "physics_fingerprint": "6bd35c1f07f2fdca70655fc4a4aa440f611e8403a35192a45c56259610ea6319",
+    "environment": {
+      "python": "3.12.14",
+      "numpy": "2.3.5",
+      "scipy": "1.17.0"
+    }
+  },
+  "isotope_weights": {
+    "natural_AAr": {
+      "70": {
+        "number_fraction": 0.2057,
+        "nuclear_mass_fraction": 0.19804170687851452,
+        "bulk_mass_fraction": 0.19804355145202948,
+        "targets_per_kg": 1.7056259645527543e+24,
+        "pure_targets_per_kg": 8.612378196852799e+24
+      },
+      "72": {
+        "number_fraction": 0.2745,
+        "nuclear_mass_fraction": 0.2718329768127494,
+        "bulk_mass_fraction": 0.2718336191909213,
+        "targets_per_kg": 2.276102709138216e+24,
+        "pure_targets_per_kg": 8.373146470671107e+24
+      },
+      "73": {
+        "number_fraction": 0.0775,
+        "nuclear_mass_fraction": 0.07781583684459206,
+        "bulk_mass_fraction": 0.07781576077225202,
+        "targets_per_kg": 6.42615518973449e+23,
+        "pure_targets_per_kg": 8.258166630976337e+24
+      },
+      "74": {
+        "number_fraction": 0.365,
+        "nuclear_mass_fraction": 0.3715028742763129,
+        "bulk_mass_fraction": 0.3715013079965335,
+        "targets_per_kg": 3.0265117990362435e+24,
+        "pure_targets_per_kg": 8.146705634383618e+24
+      },
+      "76": {
+        "number_fraction": 0.0773,
+        "nuclear_mass_fraction": 0.08080660518783112,
+        "bulk_mass_fraction": 0.08080576058826378,
+        "targets_per_kg": 6.409571563438399e+23,
+        "pure_targets_per_kg": 7.932072561135358e+24
+      }
+    },
+    "enriched_UAr": {
+      "70": {
+        "number_fraction": 0.0,
+        "nuclear_mass_fraction": 0.0,
+        "bulk_mass_fraction": 0.0,
+        "targets_per_kg": 0.0,
+        "pure_targets_per_kg": 8.612378196852799e+24
+      },
+      "72": {
+        "number_fraction": 0.0,
+        "nuclear_mass_fraction": 0.0,
+        "bulk_mass_fraction": 0.0,
+        "targets_per_kg": 0.0,
+        "pure_targets_per_kg": 8.373146470671107e+24
+      },
+      "73": {
+        "number_fraction": 0.0,
+        "nuclear_mass_fraction": 0.0,
+        "bulk_mass_fraction": 0.0,
+        "targets_per_kg": 0.0,
+        "pure_targets_per_kg": 8.258166630976337e+24
+      },
+      "74": {
+        "number_fraction": 0.08,
+        "nuclear_mass_fraction": 0.07805639036827085,
+        "bulk_mass_fraction": 0.07805683914106132,
+        "targets_per_kg": 6.3590609123266e+23,
+        "pure_targets_per_kg": 8.146705634383618e+24
+      },
+      "76": {
+        "number_fraction": 0.92,
+        "nuclear_mass_fraction": 0.9219436096317292,
+        "bulk_mass_fraction": 0.9219431608589387,
+        "targets_per_kg": 7.31292004917559e+24,
+        "pure_targets_per_kg": 7.932072561135358e+24
+      }
+    },
+    "legend_poster": {
+      "70": {
+        "number_fraction": 0.0,
+        "nuclear_mass_fraction": 0.0,
+        "bulk_mass_fraction": 0.0,
+        "targets_per_kg": 0.0,
+        "pure_targets_per_kg": 8.612378196852799e+24
+      },
+      "72": {
+        "number_fraction": 0.0,
+        "nuclear_mass_fraction": 0.0,
+        "bulk_mass_fraction": 0.0,
+        "targets_per_kg": 0.0,
+        "pure_targets_per_kg": 8.373146470671107e+24
+      },
+      "73": {
+        "number_fraction": 0.0,
+        "nuclear_mass_fraction": 0.0,
+        "bulk_mass_fraction": 0.0,
+        "targets_per_kg": 0.0,
+        "pure_targets_per_kg": 8.258166630976337e+24
+      },
+      "74": {
+        "number_fraction": 0.08,
+        "nuclear_mass_fraction": 0.07805639036827085,
+        "bulk_mass_fraction": 0.07805683914106132,
+        "targets_per_kg": 6.3590609123266e+23,
+        "pure_targets_per_kg": 8.146705634383618e+24
+      },
+      "76": {
+        "number_fraction": 0.92,
+        "nuclear_mass_fraction": 0.9219436096317292,
+        "bulk_mass_fraction": 0.9219431608589387,
+        "targets_per_kg": 7.31292004917559e+24,
+        "pure_targets_per_kg": 7.932072561135358e+24
+      }
+    }
+  },
+  "nuclear_masses_GeV": {
+    "70": 65.11773075070431,
+    "72": 66.97869489225047,
+    "73": 67.91147737341015,
+    "74": 68.84084655743821,
+    "76": 70.70404431844925
+  },
+  "background_provenance": {
+    "natural_AAr": {
+      "ar39_intensity_after_transfer_and_veto": 236.7469721183606,
+      "mean_ar39_decays_per_kg_Ge_day_before_transfer": 1663639.678674936,
+      "mean_intrinsic_activities_per_kg_day": {
+        "Fe55": 0.029048528554832455,
+        "Ga68": 1.0676344211773878,
+        "Ge68": 1.067448868001599,
+        "H3": 0.2049900534371998,
+        "Zn65": 0.10222770151192877
+      },
+      "solar_coverage": "pp and B8 only; Be7/pep/CNO/hep omitted, not a full solar background",
+      "source_activities_at_reference_per_kg_day": {
+        "Fe55": 0.03285420944558522,
+        "Ge68": 1.6427104722792607,
+        "H3": 0.2108145106091718,
+        "Zn65": 0.16427104722792607
+      },
+      "source_manifest": {
+        "files": {
+          "Ar39_minimal_ENSDF.txt": "c4dd9d5793b4d53c262e4fbf7e4be0e50b23d4bc38d2aebb2ecdecf63634251d",
+          "ar39.csv": "407074ad75116f9f442e9c5679a5fc337ee045389f22c67b08dfb27d2c872df7",
+          "ar39_provenance.json": "6af997f564c03d48c0b669d9aa55d8f5ab7252a583f4777fe3c49f115b1c64e9",
+          "nuclear.json": "58dc1dde5fb31fbd85f23843eea13041f6ac28fd65ca7633cd49b0d600e15494",
+          "solar.json": "2855e3853d1478fa36011f6d00037d2e9d565e38420f1c21b963580a43e66c6a",
+          "source_ar39.bs": "7388a003d2bb013c938ad1fb69c71cdf2fc2dfbd776c47ea1356bd63b30797d6",
+          "source_ar39.rpt": "e30c32c2d024ec5aef9ab70c7df5fb1cf7bd2de63ad7dd8c35e0e644b3ab9044",
+          "source_ar39_default.bs": "16e2b319857ef4cb4f21c267111f89f204b50b9de67380d4cb04123a3910410f",
+          "source_b8.txt": "75ce26216a638b811d131b692e2d22b8624fcbb711839fd167c25cefaafb9789",
+          "source_pp.txt": "f350a6ad075a3e06fdc6990aa4de687b79c2af954ec8074244ca9127b7d4778f"
+        },
+        "version": "BG-BENCHMARK-001-v1"
+      },
+      "status": "BENCHMARK, not validated LEGEND-1000 prediction",
+      "workbench_solar_target": {
+        "isotope_weights": {
+          "70": {
+            "bulk_mass_fraction": 0.19804355145202948,
+            "nuclear_mass_fraction": 0.19804170687851452,
+            "number_fraction": 0.2057,
+            "pure_targets_per_kg": 8.612378196852799e+24,
+            "targets_per_kg": 1.7056259645527543e+24
+          },
+          "72": {
+            "bulk_mass_fraction": 0.2718336191909213,
+            "nuclear_mass_fraction": 0.2718329768127494,
+            "number_fraction": 0.2745,
+            "pure_targets_per_kg": 8.373146470671107e+24,
+            "targets_per_kg": 2.276102709138216e+24
+          },
+          "73": {
+            "bulk_mass_fraction": 0.07781576077225202,
+            "nuclear_mass_fraction": 0.07781583684459206,
+            "number_fraction": 0.0775,
+            "pure_targets_per_kg": 8.258166630976337e+24,
+            "targets_per_kg": 6.42615518973449e+23
+          },
+          "74": {
+            "bulk_mass_fraction": 0.3715013079965335,
+            "nuclear_mass_fraction": 0.3715028742763129,
+            "number_fraction": 0.365,
+            "pure_targets_per_kg": 8.146705634383618e+24,
+            "targets_per_kg": 3.0265117990362435e+24
+          },
+          "76": {
+            "bulk_mass_fraction": 0.08080576058826378,
+            "nuclear_mass_fraction": 0.08080660518783112,
+            "number_fraction": 0.0773,
+            "pure_targets_per_kg": 7.932072561135358e+24,
+            "targets_per_kg": 6.409571563438399e+23
+          }
+        },
+        "mode": "isotope_mixture",
+        "note": "CEvNS explicit isotope kernels; ES uses exact total Ge atom count. Factory effective fields are bookkeeping only in mixture mode."
+      }
+    },
+    "enriched_UAr": {
+      "ar39_intensity_after_transfer_and_veto": 0.17927934610622742,
+      "mean_ar39_decays_per_kg_Ge_day_before_transfer": 1259.8101301169122,
+      "mean_intrinsic_activities_per_kg_day": {
+        "Fe55": 0.02184099891340786,
+        "Ga68": 0.07625960151267054,
+        "Ge68": 0.07624634771439992,
+        "H3": 0.2049900534371998,
+        "Zn65": 0.04089108060477151
+      },
+      "solar_coverage": "pp and B8 only; Be7/pep/CNO/hep omitted, not a full solar background",
+      "source_activities_at_reference_per_kg_day": {
+        "Fe55": 0.024702413116981365,
+        "Ge68": 0.11733646230566147,
+        "H3": 0.2108145106091718,
+        "Zn65": 0.06570841889117043
+      },
+      "source_manifest": {
+        "files": {
+          "Ar39_minimal_ENSDF.txt": "c4dd9d5793b4d53c262e4fbf7e4be0e50b23d4bc38d2aebb2ecdecf63634251d",
+          "ar39.csv": "407074ad75116f9f442e9c5679a5fc337ee045389f22c67b08dfb27d2c872df7",
+          "ar39_provenance.json": "6af997f564c03d48c0b669d9aa55d8f5ab7252a583f4777fe3c49f115b1c64e9",
+          "nuclear.json": "58dc1dde5fb31fbd85f23843eea13041f6ac28fd65ca7633cd49b0d600e15494",
+          "solar.json": "2855e3853d1478fa36011f6d00037d2e9d565e38420f1c21b963580a43e66c6a",
+          "source_ar39.bs": "7388a003d2bb013c938ad1fb69c71cdf2fc2dfbd776c47ea1356bd63b30797d6",
+          "source_ar39.rpt": "e30c32c2d024ec5aef9ab70c7df5fb1cf7bd2de63ad7dd8c35e0e644b3ab9044",
+          "source_ar39_default.bs": "16e2b319857ef4cb4f21c267111f89f204b50b9de67380d4cb04123a3910410f",
+          "source_b8.txt": "75ce26216a638b811d131b692e2d22b8624fcbb711839fd167c25cefaafb9789",
+          "source_pp.txt": "f350a6ad075a3e06fdc6990aa4de687b79c2af954ec8074244ca9127b7d4778f"
+        },
+        "version": "BG-BENCHMARK-001-v1"
+      },
+      "status": "BENCHMARK, not validated LEGEND-1000 prediction",
+      "workbench_solar_target": {
+        "isotope_weights": {
+          "70": {
+            "bulk_mass_fraction": 0.0,
+            "nuclear_mass_fraction": 0.0,
+            "number_fraction": 0.0,
+            "pure_targets_per_kg": 8.612378196852799e+24,
+            "targets_per_kg": 0.0
+          },
+          "72": {
+            "bulk_mass_fraction": 0.0,
+            "nuclear_mass_fraction": 0.0,
+            "number_fraction": 0.0,
+            "pure_targets_per_kg": 8.373146470671107e+24,
+            "targets_per_kg": 0.0
+          },
+          "73": {
+            "bulk_mass_fraction": 0.0,
+            "nuclear_mass_fraction": 0.0,
+            "number_fraction": 0.0,
+            "pure_targets_per_kg": 8.258166630976337e+24,
+            "targets_per_kg": 0.0
+          },
+          "74": {
+            "bulk_mass_fraction": 0.07805683914106132,
+            "nuclear_mass_fraction": 0.07805639036827085,
+            "number_fraction": 0.08,
+            "pure_targets_per_kg": 8.146705634383618e+24,
+            "targets_per_kg": 6.3590609123266e+23
+          },
+          "76": {
+            "bulk_mass_fraction": 0.9219431608589387,
+            "nuclear_mass_fraction": 0.9219436096317292,
+            "number_fraction": 0.92,
+            "pure_targets_per_kg": 7.932072561135358e+24,
+            "targets_per_kg": 7.31292004917559e+24
+          }
+        },
+        "mode": "isotope_mixture",
+        "note": "CEvNS explicit isotope kernels; ES uses exact total Ge atom count. Factory effective fields are bookkeeping only in mixture mode."
+      }
+    },
+    "legend_poster": {
+      "ar39_intensity_after_transfer_and_veto": 0.0017881626248104306,
+      "mean_ar39_decays_per_kg_Ge_day_before_transfer": 1256.5560048940724,
+      "mean_intrinsic_activities_per_kg_day": {
+        "Fe55": 0.016984427256284424,
+        "Ga68": 0.0299568176258007,
+        "Ge68": 0.029951609687324042,
+        "H3": 0.19376826876698325,
+        "Zn65": 0.014488631219950832
+      },
+      "solar_coverage": "pp and B8 only; Be7/pep/CNO/hep omitted, not a full solar background",
+      "source_activities_at_reference_per_kg_day": {
+        "Fe55": 0.024702413116981365,
+        "Ge68": 0.11733646230566147,
+        "H3": 0.2108145106091718,
+        "Zn65": 0.06570841889117043
+      },
+      "source_manifest": {
+        "files": {
+          "Ar39_minimal_ENSDF.txt": "c4dd9d5793b4d53c262e4fbf7e4be0e50b23d4bc38d2aebb2ecdecf63634251d",
+          "ar39.csv": "407074ad75116f9f442e9c5679a5fc337ee045389f22c67b08dfb27d2c872df7",
+          "ar39_provenance.json": "6af997f564c03d48c0b669d9aa55d8f5ab7252a583f4777fe3c49f115b1c64e9",
+          "nuclear.json": "58dc1dde5fb31fbd85f23843eea13041f6ac28fd65ca7633cd49b0d600e15494",
+          "solar.json": "2855e3853d1478fa36011f6d00037d2e9d565e38420f1c21b963580a43e66c6a",
+          "source_ar39.bs": "7388a003d2bb013c938ad1fb69c71cdf2fc2dfbd776c47ea1356bd63b30797d6",
+          "source_ar39.rpt": "e30c32c2d024ec5aef9ab70c7df5fb1cf7bd2de63ad7dd8c35e0e644b3ab9044",
+          "source_ar39_default.bs": "16e2b319857ef4cb4f21c267111f89f204b50b9de67380d4cb04123a3910410f",
+          "source_b8.txt": "75ce26216a638b811d131b692e2d22b8624fcbb711839fd167c25cefaafb9789",
+          "source_pp.txt": "f350a6ad075a3e06fdc6990aa4de687b79c2af954ec8074244ca9127b7d4778f"
+        },
+        "version": "BG-BENCHMARK-001-v1"
+      },
+      "status": "BENCHMARK, not validated LEGEND-1000 prediction",
+      "workbench_solar_target": {
+        "isotope_weights": {
+          "70": {
+            "bulk_mass_fraction": 0.0,
+            "nuclear_mass_fraction": 0.0,
+            "number_fraction": 0.0,
+            "pure_targets_per_kg": 8.612378196852799e+24,
+            "targets_per_kg": 0.0
+          },
+          "72": {
+            "bulk_mass_fraction": 0.0,
+            "nuclear_mass_fraction": 0.0,
+            "number_fraction": 0.0,
+            "pure_targets_per_kg": 8.373146470671107e+24,
+            "targets_per_kg": 0.0
+          },
+          "73": {
+            "bulk_mass_fraction": 0.0,
+            "nuclear_mass_fraction": 0.0,
+            "number_fraction": 0.0,
+            "pure_targets_per_kg": 8.258166630976337e+24,
+            "targets_per_kg": 0.0
+          },
+          "74": {
+            "bulk_mass_fraction": 0.07805683914106132,
+            "nuclear_mass_fraction": 0.07805639036827085,
+            "number_fraction": 0.08,
+            "pure_targets_per_kg": 8.146705634383618e+24,
+            "targets_per_kg": 6.3590609123266e+23
+          },
+          "76": {
+            "bulk_mass_fraction": 0.9219431608589387,
+            "nuclear_mass_fraction": 0.9219436096317292,
+            "number_fraction": 0.92,
+            "pure_targets_per_kg": 7.932072561135358e+24,
+            "targets_per_kg": 7.31292004917559e+24
+          }
+        },
+        "mode": "isotope_mixture",
+        "note": "CEvNS explicit isotope kernels; ES uses exact total Ge atom count. Factory effective fields are bookkeeping only in mixture mode."
+      }
+    }
+  },
+  "cache": {
+    "hits": 458,
+    "misses": 0,
+    "keys": [
+      "003e42981c48a844956eb2dabe7d6933ec2fec25d69e6dee0763dbcabb9552d8",
+      "016f5cd21e704d04242d70fa53a63b93b3048d83eee924074702ce0e1748c14a",
+      "01c0e9f3f243a388c05c603afa10043d47e269702f68d95c0eca83598221cc0a",
+      "0298840b77e2633f897f3a5dc2939ad32a159de69ea6e826beb66c3de6929008",
+      "02c9558b20c9ab1b1ca4427df0c8e0946c2827a66599ba49dd16329a09b03462",
+      "02ed734bec24b820b6a9b0c34e8f493982db0f1d69e8ef8f6387eaf27a60943a",
+      "036767db42f249aa82ba5235aa719e25cbce085903442bec66bca4bf5e63ade2",
+      "03ae63ce4b0330d67dbcafbfe5e426faace7f795ffcfa617144d04f0af4689e9",
+      "046bd263438641a75b68c38086b8f1c4b9cc8fd34d4631b8792c5be19c6029e1",
+      "057de816d7ccbab38c7903f65c05730e18df583fcb7071cf92c71a80eac97c0c",
+      "05805bee56a7e349e74633133f44c9f30d9cf522f8cd391d42eeb153a533fadf",
+      "058d44b69533e2bb42601df8fa89546b1bb313cf512f1b04ae350d1f63b3ebcf",
+      "06bafa6097d50098dcc946f13d28adfecdb9bec2d0db2654de334f4c2d7b93f9",
+      "06f05597743d83479086af026595fbf548c8c74f2d71df38f4815b5e629fdb5f",
+      "08385a0dcb8a3c3c279bc6292076e969dd3f850c4baf6ac7f8744548a77b8292",
+      "097225b132d401ce284387c9ca2103287ab7cb0dd89d0782e0d89cfb8e92d007",
+      "09d8983d0bffa6fcb48cb753d4f6f4e6cf3fd8fcc0f5bed9ca47493268e1e4e2",
+      "0a0171b25fafbae0fb1a24f79d7d55d1792e46b5858585de9bd9c1ff65237006",
+      "0ad05ee355af6d8f8d851e8d5a403c86225a6997074a6274e7efb3a128ce1e77",
+      "0c0f2b7576c0b726490a461fe6940f9c11bf439a86cac8e7f3f8764b7b0640c9",
+      "0c3ffb9bf9ce9c69ec2ce109f358b01190921c653cc78ae783b79a30d36a7bc8",
+      "0c48c0ae1ebc554f0721aea11e8ca007f9d87a3d6074d393e7cd1e3aeb88a1d4",
+      "0c998627d6ef370c7baad65e055dae647773fff6761f5c0068a79ccb8dff871b",
+      "0cfdb8c475a3e46304aa1ac7050e1260ebf5d1723132ab9527a2f340e1c79643",
+      "0d13e6d7122f89f21e76265d9be2c4c26ca7e2f1705b78412aed1654cfef327e",
+      "0fec4e107ef4f0ea05bff80bc40635febe9bf1f45d5d7b25fd2d548743517a8f",
+      "10aa425844d231285b55b0af703317baa86cb816ffe485736b788693f94c481b",
+      "10abc8cc074ef2ee29e1d98d959eb163fd8bd35c98f304a876bf7e1d44639085",
+      "11ee2a7b4f032a4b2a7889ca3a209e793d21ffc44ad3478be0a4a969ece57b20",
+      "13a1b9f635abe0cee97a4686a1bf9066ad7656723a701209bd7e320f13a4aa12",
+      "13c181accdd619ece893578bbddd73cb9823c54dbbd73c9dad6d5fb5039f2121",
+      "14267afd966b8a7a8c1d14f2f3c0d7cc113bd1e14c68a83126430759e4390069",
+      "14a4a532c494534adbfcc021b920d2bd7aef36d9be0483a3c02bdb9e3b695f7f",
+      "14c54ba733f4e9fab5db88b5e7b6aaaaab9f8b2b3eed2933ef9522f785fc4d6f",
+      "168be9d43f925bcb45b4b7ba6dc41e35d105afe8cc9d2ba075a46eaf13fae096",
+      "1758999aef7830389bfcc2419dc6c418afd881503509cdbea9a5618bbcc5f52c",
+      "181404259a4c3f37288afa46a86166286dc5f109fea14481f0b5b9198434bcb1",
+      "1891b3eb0f84bbef7ad8a5e4fa086b7ceea4251ba4dff24bbef147e4b7407867",
+      "18de557a079a79a31008bd7456d9838d9eb35f28dbee1ab4b8904785678b094c",
+      "1ab8c53c34e5ef7fed00f17d02772b81779ff8552a91dfbb3b28fe6d6600896a",
+      "1c848971194c7331ed98d261eed4d2e8fb70d5c1cb664e482cec067ca82f6540",
+      "1c8d963bbf98271e82f1c92d0a64f54db91cc7c3f34686fe568e7bedf22d7d72",
+      "1d7963d8523ce6e87a309cec7b3e8b4f77e982dc363d8aeb4db8c7bf77735446",
+      "1e086a87e7b117e9cc85789b798c555ff4449c18a3e5c7c195cfcdd4d36cc953",
+      "1f3c10fd43f854c7410e9b11bfc32d56348108da27dee5673ea76c00816ce4aa",
+      "1f76c755ee5f7ad949687780c05be8fb1e2c5ae71a468f07362260eb99a68447",
+      "200d1e8cf2a8d03ad5ec2afd40cecba2a8a97fc0353beaf9e7f168c3039d5276",
+      "20570abab19e1b3ae0f336889821f698a6871e4caf11efd01a843657c9245fea",
+      "206928cf9c233a15b2181eae422d859fbc01a0ec9eb46e6a5ba545317d46e8ee",
+      "215a88d0857dddb03bd295706848f33068972dbd148385eaf5eea7c4429fa387",
+      "227dd0f5e2330aa28963d476ea5af6a6b4dc9f8119479d19a50ca90b3a3f891f",
+      "22837f8d6e4e957236ce6ce2b21c2ada67ab8fcfa17333485ef83232a71eefa0",
+      "2347a5cc842cb42ccb6ca6783a91604f6ce253f5bccfb89021ece219e5ba01a3",
+      "234fa80a48af612ebc0d3703dfcdec8c03ecfd56edfd1b73465b988a64ff8b41",
+      "24b6e8006ac78a7199fa2b08e9c05dee31d952d266b445a20beef82a3dbb52d7",
+      "259081ef971f2c9bedc568b00eda206498bf8b4980755218468666d6c4d69495",
+      "25a8058b529d041df8ce829bf47a9b2fefefa35d319e079400fd3013f6e7f531",
+      "25b84060d5194e0abe7ca219902305aa06e04a84086e6e69e4cedafccead3ae1",
+      "2729c4ede5d8d2c267b50d988aecb290f3f4cc3690e0fb0dd5902524d0286cff",
+      "29ace3df06da00320f5c7c635e1f2c16db3c75e2d33db0557ac6f29a2eeed7a0",
+      "29bc799e363dc46018d7157a2a6ef5794790f6d75ae25acc909faf3e2586a845",
+      "2b54b76a8c056a4670364ee23a5696dc8b865535160b75bc0b622e74e8afe451",
+      "2be958ae14803fd1a6871ef4a80218815f97b5bc522de7d27889620d134ba254",
+      "2bf816d2f82f6c71425e545e531f90a3d352148450b6ec6c4637dd0191306bc5",
+      "2c864cf810775320f2b795cd663bf7d7f7efd500942dd19b15d39870ccf5d964",
+      "2ca2d558ed7d3727ecee91c51384f3d2df9c35c2559cdeba6dc10206d3ce53d7",
+      "2d4c9776089155b0ad7fa0502e0a25b32a7fbbcf7cce16c23609714fb646d987",
+      "2e4cb9312fe434621fd0247440344456934350fbcfd419502779747cfe3316a4",
+      "2ea3abcecd5a81da0c1915fb74d847306e3a8e83ace8fa3b0340347a61ad1d23",
+      "2ed021a74566e7f4fba2ef4c327a360ffed6fb3d315f82734bd63a701869c450",
+      "2f220cf25da77cec5403d96b48370070f73d8b48e81b71a6626bda980e28c927",
+      "2f2e87edf9ea86c97877de5ee86625e9128b1e0d40ccaa2d2bd3c27cddfb1fdd",
+      "2f3e24808f2c77b4be66a877d5f5356e8268a68b69a9e2b5ff2a32bfce9ae5f3",
+      "2f534a99ba2fe1a57cab657a644c65d4d2916b99a0c02b4c1b87ced1bdaf7c06",
+      "3008f06d638b3e678516e48396f94b6a7c1d9b5af96f5157505be0b185dd8b93",
+      "3016e4d6e24ee238f5985f2c21216ed7d9779b74726819a032fa50ad743b351d",
+      "301aa1f01e01608a555a9c1f918f4f38611fc0e396dba9e6589632069885c462",
+      "30617613a63ffa42c4738cc9c04e544c1e128de05fe1a66e6af4a7745bdde16c",
+      "31897217f87149707fb8488a695ac960228e57e0d88c08f7ad964a9c9d95a820",
+      "31c13718dcc0a8ca401b49ce9d0e260eb54944c1a7deb03149f896ecdea3d28e",
+      "32d90c36d9ddd81167a52f20c7d89a416e11f6664f09a12960c7734bfcc3a30b",
+      "33bdeaee40af0cd0aa9ce45c8062ca59687e9a1be90f9fdcd14bb8ba9b72aefc",
+      "33caec22be7dc68adc39c796b0a8da992a65405dae99861173968750a6d6cde2",
+      "33d106799e15818d6ba82b97d3e2649685743eaedf5933b10ce46fb96e975063",
+      "34441571d5446385d1b81561e68b1323bb582bb9d9d19dff746313a109519a2d",
+      "348f68523c76684a25de797e7bffafb602d5a39c08591b4ea9a2e7cd74e19cf7",
+      "34ac55fcb9ed8e4a2131bf9d0d68c5233bb5b305c5dabdf4ed3bd8e0b8ff4919",
+      "355a4d6d1475b1840ac2d14ac2606774eaf24a38f98d27b448a97234d4b84f54",
+      "364421af7f17817d2df8602106895b14f24a28eb8cb8913fdbe25d29bd025f60",
+      "36627f5635c455612addd5e51bbbb97ab51e1d5d800926d898232c3cbfbcb0a6",
+      "37249a92c770c33a2136297ed57b5a4695f111306244df0dbf23131e6a492e84",
+      "37e07c2657b835b47ae8b35966e6b35fbfcf9568777bd2d0a448dabba3151d28",
+      "391b0c1155da34f979f10eb80721dcaa9e8dd497a844f45e93bc01b0a4f2fc64",
+      "3995c52110003a981d6b5af1339f02b7d5829cab7921e68fb98c2a775eed25c7",
+      "39d633ee34dd7c9aac66bad873232df2a2d173538ece2064a465b29dc57a95cb",
+      "3a009ca7464211b484ed069db10598a7e5e58a494dfebc790d9c38acc7db8b8f",
+      "3a719f650d1e80b380ee6b478877ee48df805d02cbaf450f2a298fb124ec5240",
+      "3a9c5c2f9729a28fe75e0b9cc8215c20458e7a5e19e36b9738ef21f56c21b70d",
+      "3aff0a45aa9e691b06ae170e8661145a6954449745af00933bb02a64b9611482",
+      "3b464587d1fa41b70591a75a0a6ed1f1f5f56bbc1eeb970d11914eff8dab2ac3",
+      "3bd6b6c34c227d636cacb8ddd9a1bbffe550fa85efb41bdde38dd730ca3ac316",
+      "3bef49c14430da3836077cf19af876e0437db26f8247c9f8aff701ae8815bac5",
+      "3c6258112c3f118a7ccb73af38515df9e7a5c7d2588c492607339a6465ca24b3",
+      "3d7c0706759368ac94b3ebd6aa795a5d6c98e41571b1405d8412175e850c5318",
+      "3da8e3696315e056ecc1e9436fbb4a84d6429411d83a46e80639f8d6f88f8c1c",
+      "3e5614defdf3e2c18e851078014091a2eaeb925d755289df256c45cf2e97f440",
+      "3f5b90b9ad9f55a35ff32f8ca4447605275af104d59cebf02d445cc34090ea2a",
+      "404d49858a17cf5fe280ebc46d9d439dabf017a3d2ce13185c31ed802630d241",
+      "409670076d1beb4536384bbf7ed8a653382c8377db2f7aa05fa8b63197d56966",
+      "40c6385739ffbfc40de68b3d273a075e08e20cc702a062966b8b88cc51c879ef",
+      "413878e97c3b8c2ecc0cc008b62d449e25666e5c8c2f864e544b26a698be1466",
+      "415d7659488c9663e43804ff33937a5d3c98839d8bed50e8d26b3208e1d37e66",
+      "418618d1943730469066211a6f34e709538116fe59ddc5a44cee01403c4da26a",
+      "426ba86ee5cf793d756f269ff194bf11a30dd12b854ba1dc99e70019a772ebe2",
+      "43e30474f8cfbfb5672652b83fef5992715b1a3faf005ece2a8be2368715b72d",
+      "440e4cdc6aeb2eab9575d8d3a905d8aacb879c256433f5bf46c5f97d1d7e687d",
+      "44505d6c3d93b22452e8966fc44c2ac23a153fa4129852bb90a5903452d880f9",
+      "44d7b27e65cb290a1d10a6a59d47f7ff42e5ecd085f2dedf35ddc011b343fb99",
+      "4511f935bc25a60dfe7d84ad22417c995ed55ed58bab8c1ded095dc5fd00c15c",
+      "457f5b835c2e40423c4d153b64f6e373021ee3348625597777f09ae5a21ccab7",
+      "461dd548852fd801783abd9746b6ad1e47f7c638ab05f14ad78f43d909c67e2f",
+      "46703888b71ee3c4ee8f21c0618ca26aea64eeffa567c3de8a8a125bccbe0cc4",
+      "46d988af446a99ccaeecfe8b71a4ab91ced08da274f8c34c7206aa05a6fca147",
+      "47d806c4441d1a7e9d2678fe86d698b84c89111eeb2dea3d3fc00dd69921521a",
+      "4852c9d4f56f6c8930f4c78e0e609d0242b46362f11fe255abcd3d03c75670c8",
+      "48c71e9dbd2fc2ca641f888dc3b33f0d8ce72f5375517d3db766e87fe99b541a",
+      "49eb6a71b48b329e533bbccd97117f25d921773b79cfb52ee7ef6cabee38ddc6",
+      "4a04fb7238be1131107abf57c0d6dc08388bab109a0de7cd752ba6596e5e3722",
+      "4b1c507d6204bb56edd4db10c234a902cb0263a68721d02a0682f8cbcf60537f",
+      "4b21e779b384893392da0547449dfcd17075b0ea8748be0576357a8724afabf1",
+      "4b8148d6d6d6335268589f28ecb753d09c7dec3b5fab3c59c3776388ce9e3535",
+      "4ba2f3b682064339dc92bf02143a0170ab61ea35b00cf3b50c91687375dc4de7",
+      "4c4acc710f0db2eed56943eb386c0dbf9ba6d9852b5a083ad3b85c3f8b73da66",
+      "4c807e4631373f66059eadb88c739d897b2e3637df3444f83a8a14ee0b8082f3",
+      "4cf76ab0f45f3c2c5308790e736bc47ee978df4d5c11a7566e6f144be9e69f1a",
+      "4d3e8da39c160049ee5284bcf98f0d6ca5a50e31bec001fcaa7f817192d2a5c0",
+      "4d82517a39f76a8f6819d14f72e1a7349d33d856d08cb0148eacec74a4004402",
+      "4df0fccc2eb2abdfa8eecd95cf82908db150b4a996bc5beafa8bdd6a87d6055f",
+      "4e1a2c357e55acf3462e32f60e3932f7ffb500500589952bc7c49ed8e8ef05bf",
+      "4ef88f448fe7e18d40ecc2ac7a7d235ac17019e953bb75b60642c915046d6a82",
+      "507e76020454ba8f7e961e64c7dd297a4edc178ce767ec570ca7dd2fd2c62d7c",
+      "50ec97729a30d3b4ed259f3c2dbc60ea449d84e24427b6a9d900e36d7d85d66b",
+      "5253fd5fb7335daa09dceff011554398c3d4ba02db2dd0f20fbba54bfca7ca9a",
+      "52af288dfbe91240fe876a3316bdb95ed8ccaa06fe07df8d0f0a808b7093e9de",
+      "53bdb869c31884c80b682d82a1848005dcd85b0a46db10357d85b44098de3a9b",
+      "5436f4e76f2fe4247542fc7b20224baa1e0b068981fdcf6231421a8343f464fa",
+      "549cef85d27e9892f8560f3b1855f19c5ad3eab7beaefc7d62e40bbc0c9dc0c5",
+      "55acc8deb157aa723d008d423052ca7387bff106c8dc0bb31ae2e3b6d7e18884",
+      "55e989fd8c35073982dc666418d68bbadf569a104b090794349dda12d1bc62b5",
+      "570af3cca2cc24881e7549c454c7da2db344f2e746fcc7e320ab8086ae3fa5b9",
+      "57b297335e6220b91dcac735d69d1728fb863214088157140f5931563d88724f",
+      "57c721572f96d731da892a5dfcf07b5e9ce913d49248cb8ebe917a646dab1fe2",
+      "57ce3b94b8e4fe5bb3eebbedbcc2f2f09f07b0c410a63e9a4a38f04a8492f03c",
+      "581d2e9bc5b9f0e227c9709f3cd5b6b374585b75a570e5b13819355a7cd40579",
+      "586daef32e6c9782249e6010700e97a3e56bcb9f1e6fe322349f00991b22b7b9",
+      "5880eec96a4d4aec81e0578f5b43a817115707fc498e53413d9754ede4f7bfbf",
+      "589a86fdbfde0e09b5dd08d113805d55fc7daa606930cdbbae9ede8d5033c75c",
+      "58c84bd9b866a66ad0fa56f30ed49a38dadd262799963f51b7122dff8a97ef18",
+      "59aa49265dd3741f702c3485f714b0f5054aa6605600c63bfac9b3c4dac8cbaf",
+      "59d3c972654c2926ad18ec480cf9040d231c19c1bb8a7ca336a542487c750f71",
+      "5a0bfc4e55f55e5cf97e800f22fd9e62aa24527d0d464dfa37f73e12e27e1292",
+      "5ad286572808cf36cf33e1e9c53c8f79142fd5f4ae82cf3668b119a2b2c11610",
+      "5b0458fcaca538654a149f06011ef5b04d95e4bf679fb213e6e1cce1116c8d8c",
+      "5bc040f5be3a4a1d6a51c979b8151ce66dbb4775555586d095479b6811be2277",
+      "5bf5cb00c05387ee95566d937eace6e07397854193b144e5907710c097a6ca12",
+      "5c05af34ee675501860d367a1a92139af732035e4b1a4a3f87e0d0346132f35a",
+      "5c445fcdb2e440ac01a7938fb81acbe136f33ec1b8515d22420324588cc30fc2",
+      "5d47e5d1c50d5ee2118ea1d78b2d00f832ad50aef7d92dc337b7f634a0b55a16",
+      "5db831bb69af3a2063f77193c7082756575869631e4aa068abe25ccd43e339ea",
+      "5db856a0b49deaa0dd8cccfc7698bb150c61593c6403f7a563e45def27567dbf",
+      "5f2bdd139c39b419ce076cb36094686d4d771b6d7bb1f8d085e42268384bc155",
+      "5f4c89f03cb5b291a7b6a21f331383797042c69365a2decff12ffcbb7552c8ba",
+      "5f5fe3577fd33675865dbe93cb4ddad15f03cb81c1ab96d772457ed7d9f0f93a",
+      "617375617d50e38f60b6c219770a570c3bfa4dd8e92dca2fe5573eb956424d6d",
+      "617c358297daad9e54247a3aa88594d36ecd07f20abbd09b8714c06fa67902a2",
+      "61d3f01fbf3dda731ec891f4c2bdca369f4eaf65a0680f31ca22bd1d131a776c",
+      "61d8a3ca486e16273bd3b8ac6113cad9e076bcc1224dc8a776ca3b636cded8da",
+      "6221a8fba72500ace39d09745693afc8d28a221818358fc8acec18d058042435",
+      "64e9151da607763bdb76c514f781bb961bb0d10a5060a8f8b3d9c8592718acea",
+      "656f49926d67cecd870667283ec7c5e18dad8d0e1c1a2674417f1150197e3066",
+      "65d6fea599460bbdc223210a5f12ed87257203282c79fd63a5fa307463b6c5ae",
+      "67380a9c969568c363b2171a2a35b03077fa00e6dd2cd2fd4117f5734244f9bf",
+      "67549b9ca46ba390a3a1f99e665954083ece68a2caa19b4439d0853698b2d542",
+      "67912208de9575069139defab544029112636b69f903dd026f7f88f8b656a1db",
+      "67a0a7d614fd8317361fdec87a2839c41d49cb5c48f42f9f6221cb8d578562bc",
+      "6801037ab52d5027a497fbd2b248d2b85d82083264342288877103271ffc040d",
+      "6a0949fe49540ccbe3414eba4f3d9947cb4685e18e1d467bd3d542a9cd70194a",
+      "6a81a7e0df4328b7df33edebc5cb4ad48c2457cd80857941c2cfe696381593a3",
+      "6aca1ee93430df6c89c3dc929240aa4d1d07187991fd1e2a09ae0e47482f5a12",
+      "6b5994784f9acb059ff062edece95c8708aeae11620b328c8052c2abe4f8dffa",
+      "6b8f3062924de3e67b2737df18334dea0de1bd62c5e588ad5cdeb662811fec7c",
+      "6bca6c48df756e3780d2ffb7f989c5894b9e78648a4c2187e210b5fd1307c17a",
+      "6be0b226f31f5d0def6e273b32c2f673a83e57baacbf1766c9de1642f9813a78",
+      "6c4ed663671466911e0956be41081b5cc2ee9e6a93b8ee277961f3dbc046daea",
+      "6cfde88302ca5ca66abb81a1f0532c34981c74b0a03865d74d7493b1054766b4",
+      "6d78bfebbba1dc834526a6ed6fca82a9d486cd491e22ed67fc347cf7c1e9857e",
+      "6d8569602f5d244b43d0c506b6b95556ffd967734d46b91937427767c4cdd7ab",
+      "6e41c94bbd6a018b9403483ad6c56e578f3b547fb653fa2d585118be86526493",
+      "6e9c48962ba823a6b10fdca71b86b4153bb9d398b42c2ba6d3194100ead60100",
+      "6edcf819d22c30b58bf6db259faa6f0d3480e93e3af1269f686b1afcdccb7e01",
+      "6f1ef09c46e6b4b3a3284d7327d859649f449f3ac69a2e7d6cda604fd7818c34",
+      "6f3611c501898dd6027fe12b010a4b5ca3e7fa0b3beca644fa2d685898f3a84a",
+      "70f02a77dcacbe91a7691b8155381543aeb41eedbf3d1f21ee3e842955c25982",
+      "7118fbbb73123cc2fcf769d2ac9cd05791b2150afc57d7cdbb169bd9f70ab1d9",
+      "718d3599d92bc7f4f4fce22732a6adb178874e61c23f57369c5d6068b32106b2",
+      "71d0e84a312f03838b698090d171d178801383a529975904dffe23e9325e5332",
+      "721686c33567b2eaf2bf3c0baf404327dbd36719df0b1d595bba133c6dc8968f",
+      "724b67dcfc064e802833fd3cdafb39cceb321473aa0371ad5e5521fc73897f21",
+      "72a160d7cf1ba57c77c5335f20eb45150417247c4964a2f8a46c8808c1dd85a2",
+      "72c40e8c3624ebb9edb8931f7e4ee22956e4d2d658305fb6ca433d978b718ce0",
+      "73cd2350bc3a1f7c1cbe4b19d4499160ed4d474e54310db9dfd45851bf3fe1f9",
+      "73f363074609c87e21610b2c26a48cc948d58ec72c3cb9d6a6405e9b07a7d768",
+      "747b595b9472b9dd6aa0a4d7d83f5c4807ae068927ea566fca1e3b1eb9a67f67",
+      "7508c6cbf9c1fa6bfd16832aa6134056cf0a53c2cc241a6c6d371de570ad2bdb",
+      "7583da33de2665a9d86666025215ab51b0b217fb3697ce6eb84978e11c5eb54e",
+      "75c16c5abb9db784888d87668778cebb4943c718cffc41fff591698fe4c06a93",
+      "76570675af6f81717715c4b5f963e0ad99ff9535cced5799f80740258ed26a00",
+      "77a01e33c8a8f6ae4c1d929b3eddfb7e100749023322bab76e0f3ddc55fb834d",
+      "7a3ff98355ccf05fea7373b3590953e74810169f2e917933d4e77bec4f75a588",
+      "7b1172b9312147a5c891e65a82ce6d9be7dcba8e26100de5751df1c31214d77b",
+      "7c6597527ea9dd810ded6ce7cf3a2b274c9bec807dbbdd876861f54be5704a56",
+      "7d1701231acec8902e5961d03efef7f7924960dd4b9c8d2ee56cd063ffa6c5f5",
+      "7d318184391ab3c9372386c917f46126c64c82c9dd60fbeb8916fe793689cce7",
+      "7f188c088e8685755bbaf2db81d76aaa1f62750a34afe1a27cb4644b151b868d",
+      "80a3c2d0b331483f67f7c83699bcaedcb6b84abc0b9e0ad7048ed87ce8fc328d",
+      "80a3cde27f684e2e882eedf72e03b0f383ce1de04da3b8c5cec488356e1ad6fc",
+      "816d805696a13d2c439d1d89a291e7a5c05681f9ac36762cff2950698791b2c5",
+      "819575ccc190cb8d67a5056475e5c5cdcf3cd33f3526c0ec532b12cdb8923389",
+      "81ddcb2ed7a37c12201b056d7f4cc7d39a5a776eb78d3ab7c1d25d2a41037980",
+      "821b1f58911fced98f45b3d698ac8f576abb5f11712b2c317446a72b47b903a1",
+      "8259abed0503357dbf6bbd6f410ecace88b85e8e023c52e788c65aec93e9a23b",
+      "8296771a9d66455fd294b8a1151ac1b70948dbe90e3b61d49818195b9a21c03c",
+      "82d56accf7927e6eb5bdc3a2a2de24097c292e789670029419d31296d6db43ad",
+      "8305ff83526502905396173ce84361cebf3a542431e28bac435df9d4c38573ed",
+      "83708735af12bb0226cf5750f2d3d8b0fcfd67d8b9d31cc4b715e944b680b008",
+      "855327d31aec0680db702bd038e44dafb435e8cdb028033a7f3271aadc7f2c87",
+      "8611225703b654c86400f06673d2ead9575393a905b1e5747973d543e4ab927f",
+      "88424c72a65e8cb935a3c27c1dc69a3d4636a7df0d439ea84d0589c078fb8d76",
+      "88644863f81f2ac1d58fe1a424d82323cff9f401d851a59158c51c31c92071c9",
+      "896554ba22fc1741a87b97f6392e80b43ded38bbda34466be89c5b051b2d5549",
+      "897650d6cc8f59c032aa21df6d5450daa94ea3ccd050472ca54c37a7e637d365",
+      "8996a0b1fbe5438e8963f939aad88805d76965d963f621dba8adb4ec8dbee605",
+      "89bc3aa6945ea9f473b06914b265ac2e6a75191fb236131cea69aeb9c3f43f84",
+      "89cdeced1284bed26f2743790851102f051f81ff1e9dbcfaf538510fa1246635",
+      "8a38b4b0d182fde74f176b8640ce6a3667f2401cd81d9a26a65cc3d852f39bb5",
+      "8b5a17325f92cf988e1151b809975d3acb148dc7a8db02046cb783aa5db9664d",
+      "8b6885d0bcf824fef889913b9422bbea6a75b00b6e49af24258f3e6f949a33ee",
+      "8c01300bd70df13dacdd281b351245bfad246280d267c01fecb8e2d4999f3ad0",
+      "8c3d2e06ec1bfc570a156afb46eda7f6d2f541344ee71991c0f96a90549ec2a9",
+      "8c89d028fdf46f36aeca8ed4db5c5a07317fdf0535c66d3e4c80957c2a57786f",
+      "8dba2559c89a681dd027baa76bbb6d83462d2271f3c7968bf648fef37885b9bb",
+      "8e0d258e24e0a32ba0387b33745584774f35f28afc3f517be5161991f017d58a",
+      "8e1aad65c955e10b43e207f941bb3b56afada71f7d5f6efbd9167e2aa8af1320",
+      "8e6f42f1fc374146d08341894253b1a6e4b4cc99762e6c48131f4eeb9ff53134",
+      "8ebff0a7608a43d2a92a26a707cfcab38ea6efca826829e4a72a10da1741bb68",
+      "8f15b37b0a750b98debb800be3d88bfa500be7bdb3ef7a7ca2763f5555281be6",
+      "8fcc2024f7a12345cdcbb4e4cd3e538ea3b0a70fb896ab7b2e71aa4dd8ab94d5",
+      "900715f3724d37b432fa957b7e1c56828a25a0907554b45ea41aadfcfd704f8d",
+      "907bbc0a1a890ef679f5e83f82bcbbe04e9c71c555e7b9aa4cdf02464196db35",
+      "90857fe0028c9e48d19cef5f6e2a3a0a2c0c42fee0a246c578721dcdd3f40ace",
+      "90f09bd828d84c73f3099cf3ecd0b7665856f084b283af1ea2485092fe79f0f6",
+      "91887636df6a876db8ec6b96f376a9394d31958b98c831ec273577ed91cd7df0",
+      "91896297c558573d18f1b0415999adad967763b7b5b290c3599435d6697a6d45",
+      "928b7c9e04d2cf10118289fe74b72c03cea978ff989095ae9e9c484cd4039e17",
+      "9291c65939ae7482afe566300f5e9731cb94aac6f70219f6878113026fdd23dc",
+      "93712f40e40a48855b4291afcfd0424aef81cd74458dc9a803daf42ffe5b6cc2",
+      "95b7cfdcc4efb2e132cf16b7e9fce0243414e3147d6cae7ab50e882d5e61be96",
+      "9607c50b6240e6031cbcae476e4b552b1a38adbe1315720438d65a4effe08977",
+      "98e55cb74d7d6c63f9b11e290825c15280dfad5f48ac0144ea8c2b2f1ab99bd1",
+      "994331ad673487a255ce565b3d7a7094731e93c9a0db2713f29cb91a730ddb7a",
+      "996c83ece0f818e8bf9ac37d29b6304e732132c75c2473fa77b39f3f5e24824d",
+      "9a2433fc4864918816c9ca6f0af5c3d9fab5b6cb1a8edf446077c08c151fada7",
+      "9a288e4ce91aefad90193d7470b09083b105f4a43032f841763c85d12d0f6fe1",
+      "9afbc5318cba4db78c121e4daed5558b6703a6a5b40ed5de8dd268bd2980ad2f",
+      "9b0f82ab1d3ae5936d82e3b8567dd88e11385285f72dd2c872dc8727a2063061",
+      "9b10f7f73dabe8e7dc3d818e148df2e4a551fd30c75250e3d311f8627651d234",
+      "9ca3fa84f462ddfd43f819400421a09b8b62f63c67363f810b09da93e2355332",
+      "9d93c6b98d896f31d8a38082308e0d94e7e900c3208709eeed970b3df1aaa1bd",
+      "9d9f9cf7745ae02c3b02b8e7219ed686eed777f4ef9d7f1ff16831803ee70746",
+      "9dd039a8296ee690540c9f591a37cb63c9a850a380d984f474469f1e179729b7",
+      "9f08fd0928ee692b95f04b4e8608daf5e8def66cf6d9a28d4f513878e541b0bd",
+      "9f1786e56830faad8df23222eb80c72944ef6d3b4fdded49422bc62f63acc08d",
+      "9f346dd40ffe400e0a8d6fe96883f05543fe3fe754402ecefd773ad7fca18b09",
+      "9fa488de14dfd3417ab3df5eeffc10b03141151c9445d4d2468c5d54bbe351d6",
+      "a047c28e4dcd66abe8783f7969915f2423617067864e2370ad9e2fe1ef5927b4",
+      "a05005ce906ee239b261a38d6163c5959308dec9b2fff960a40a71dfbd81460f",
+      "a06dd13ad51ad387849a77a117a2f9b2f8109ee80e6ea59f50438e8fbd5d9279",
+      "a09185826b92eb04d016530c34a5791f857285428f3a2c0c10ad9ac4391a38d1",
+      "a0cec2243218720b18c1706ecb9ad6013c57b8aca6b46a932bf8dce690d41fa7",
+      "a12bbcc962af0dab9ae9bd04b367336ca76caf333a1c35141d733cf2c1ea9e26",
+      "a2450723628ab8d771768f00ccb2ae78563587b60af993f5e99808244ad195f7",
+      "a309a3d01a6da4ec9071024acbdbc683bca7671f9ddfb79890fc7594f986eeae",
+      "a31c52bff40e0cd9f28e2d7d22761d7eda1d3cbde15b05f12535587df7561828",
+      "a463ff3889a124ad08fe2f6215585449119e4b374bc8582bd4b22ada1d89cb4f",
+      "a5b34d32cdc0570850e821f028a48fdc6418294471bc104a2a9652c302c4cf9e",
+      "a6aaaafa32d3a50012bbee23cc09f6679feb3493edb6c5c1cfa83340ce244200",
+      "a75989e1b10d3e1cecc1d64ed4c96d71d6b11614926620a879f59405219a5caa",
+      "a7b47311f9f17de3a409f9c71689e6e4be7cad5023341766f75b2c9777e27fb8",
+      "a8ea5246b41d5536e327f8a3fbc19b846d3be9c0ce40407db60287bcd145b0ef",
+      "a941d58bc85287731441ddd2de0378072f946a9b8a9e5beb7607766cedb449f9",
+      "a9eb544a11241b01755da8dbfcb9765632e7fa58edb8d2ce1cb7a54653f6ca30",
+      "aa6d1026194487514942a25d593899dccda57363e849e91ca76e944665d55552",
+      "ab4cc5ed991d0664f363f5329fbba23ac81ef061dc88dffdd803f99a55f070c2",
+      "ad9ccb3f4dfe244159351457c102f4ac94bbe04e4bd0ee554b82eb9b7f1ebda7",
+      "af4543192dfe29e68d372fdfb493a9295f9c702aada54c674d255166bd82a93d",
+      "af6c7a8352bf94d8e5af8d88a3d994102f2167bfab07c796d652182a322a9703",
+      "af9804bef21e47f9c42b592745c03e2301a00dbff12bcaaf55c7670d5097a925",
+      "aff8381a24564b6f5e21803899c3f437a1f2aa3d45caf0419aded88ac6c6b3d5",
+      "b0483abb3ba66508b8b636631a24770aa1f26fec2065952f13e663b96bb02aa5",
+      "b0adea19a703124a035ea5e67779c535a379582773110e06b2fae63cdb1e8b0e",
+      "b0c5351067869dbf669fd428d2a39a5940fa6466fd38687cb9bad7d165d8a365",
+      "b2186819cdcf915eb92b3715dd81831e7eb4d1bd7aca9d8997101a6f77955a51",
+      "b25fd77136f049a95a556011fe8e37a0e40de48642133ef14e086760f9e62d65",
+      "b410bb03ef5176419c30b9cfd24863c024adbc486f80ca01c1ab32681a799f13",
+      "b41a348419a7967d06a99133c82393848fc499a2a31234c35c3961658c2cdad6",
+      "b5b251521170577f5542c0dae8ed0a2c8ebcd3e1bb3b6b7cad381f63ad01d29e",
+      "b5c8b506d3620c2795ddf7361a9c9f097ed8c6d0131564d80232f1c089a357c4",
+      "b5e8d8d300bc0e3a75bac00ee372e3e22eb78ab78c25edeec6d26dbe1f1c923a",
+      "b6040f72ca4feef0c1eb131ffd5a899b6a9e68a6a01b4f5356f3945929aa08d5",
+      "b63e785c0e82edf07aae4eae1c0802d6483762e0a8f4a21aa6d2a9312e435aa1",
+      "b6efef6207966904ec7ef3d9fe18ba6124c22ce4a96b74db30aa97346aa78a89",
+      "b78437cc6739a7883b25e791416578f739678f93f5ce50fba27e3af40241a82b",
+      "b78ba9932fb1b33ddb6bfabfe2e6217008de26a57c8377b637150c85c59ae660",
+      "b809a6144eaa4262283d0a329a19000793acd2231b9467846ed0bc6bfec8f058",
+      "b93c08f5b4cf3271417c208afa9efc07a28e6efd051dd83b2c8e65bc937b8806",
+      "b9e06949bfd63ce0930eff067489bbe54ab8b979e40837e235115198f9815925",
+      "b9f6b163154fb292bf6b172d8cc7a9290f3619b95208d3212d6718d17ff16b65",
+      "baaafc634743cb6f7882c3430ddedd31df08e8224c855b9aefbb9f499bcd6f19",
+      "bacafcab138059d529a8682e469764a47f89e48810ce72ba26a91c9c3df50e6a",
+      "bad23b269b5cfe352cb368a8d974b434f22a12f8803c7ef7829ba2fa53e009f9",
+      "bb463b76a66d9be1469938be0bab94aa6de815244a60a826b89d0a0f79f74c13",
+      "bc9e066283cda5dee3c50f6f79bc0a0a65f9301c6e6248d78efe2277ededf6f3",
+      "bcb0da2e927937695ffa4d6dc2c1067368da5ad4edd3cadccef07cb2a138b1d5",
+      "bdec1430fb693a5cdd420d2ac23f45b5d3bc3e291262a8e993bd792c383fc41e",
+      "bdf673110d52e796679485a7b1c6a8fb19e2c7366e6902c8e5416cb76d3cb822",
+      "c04639221578f24a3f6dafa72d953fa4d864bfdbf0873b8c361e20045e154c4c",
+      "c06a8d91f440d9318a3477c62fcdea32c7b4b0746da0b25e4801af7b646e44f8",
+      "c0aa70f6a6249216e4971fa7975761d7bf54828cd673ebd7daa166de683c4721",
+      "c15afff3ff663744e0b36ff02afc26bb6984a5d453a41f1b4b910e8fdba36afb",
+      "c166b5fc449d25876aeff2dc5c03fcb0b3f97f7b0d390b6e381cf278c538b14f",
+      "c17fed6e6a89a1a8a6b03920500a6c8a22a41d79f80b26e4862d138c7787a201",
+      "c2daf6ebfed22361d7686a403f3f80d19f9b348e1778321e2939c6e1076316a4",
+      "c359027dc12d5e36bbc4a96cd1ee99657f117e27f5849f132a35bab87bdc3a11",
+      "c38180c8f314662324b2aacbb176cb37ae4cb73575da46ea9a1c9c2b5a219e7f",
+      "c38b7afc85798af24cca9451f17000e19c4f0f491136904925909e046542a186",
+      "c4a51410ac4d40fa7393deb36b2324d64142800392076207b5a1892ca88ca80e",
+      "c518e9d39438a8d28d5ff3ee0f14f398e8d11d8efc16c63ea4f5bc50df70cf16",
+      "c526d580c2ed7cf9869e8d4074160005e598fef7de7b382d3ab3e67b603dd8c6",
+      "c54250fde6ca3a131bb628812cfa7eb4285aa5b0c17e94bf00b313d8e3258eca",
+      "c5bf5fb1648b93a3c79b77b5b62b2d5054d2d0465d7307dccdd6cb7de82f2a6b",
+      "c60bdcee58334daa3403b0fe5ffc84d511105011fe2bc6b44a5448b981467ca1",
+      "c61d744be9953a39bd01ed32ff7570bea890bc67e8c4d299e0f633970abc5aed",
+      "c66b724e83965509531373fe197bd7a4fbe1c8e83ce402175436057fb27ead85",
+      "c67fabf772641aedbfe86f224e8a969a3baa1aacb78332546065cbe9aab6b2c2",
+      "c7ed7e2d0c83207ffacc70ead64a68b7b75be5acec7ba446ab4b063062541684",
+      "c7f0f23164e85a08b877d0a1ce0d52a22fa7a115e5cfaa60636c2e08931e1922",
+      "c8d0b3575f466bfd372e7187d387475df95378eb8f69a7638eaf20c7209ba3d2",
+      "cab5c70f96b9300abb75fcf510e13cca78bacab25afe8a3c9b5b95c47c6c1de9",
+      "cad17bddf7b7a015007fb2786feb0646a3998a4e8434953bd30a9aef795a4b8e",
+      "caff045473b4796176dada58180deae3724f546410a68a01308f068e5671a2a0",
+      "cbdce19c8d849de799ae0c485be77a2c9b45958d5f8884903edf70a5c324792b",
+      "cc900fe3096d1bd6b8806143c6d363b0f0ccd41ecad98c6bb491746bae938d76",
+      "ccf70bc2726a68123140814d0bb3064595bf0ed87243fcbb23d0aabb8f405d2f",
+      "cd640067d55d0d4ac9eab9128e96b781be64cfce18f4b3578e09b0d12fe8d2f0",
+      "ce48e201065bddfd0b287add4809e1fa2d2e0044472f32e608fbb05131821555",
+      "cf8c0e5d2ce84ca8f7345eaa3397704a74b593bea66e01263ce8bc6da19af855",
+      "d04eb7da2041fded65675d31b9568bead903902944afd9f5723717cc67e2dec6",
+      "d0e2975576f4c9009db08a4d71ca70294fe4ddd3f094bc3bc88b400e4ca9c45e",
+      "d15f22bfc68dfb9a4e77690c3ac2309742498f9f918ed306c6a1b121f1477350",
+      "d257ff436a3afd1dad4505058c08191de1d32b17eed184db782d2a620767cc60",
+      "d25e818e113eb0534be181328a092b8192f8b24510644345debbf1cebb8ae8a4",
+      "d3169e9c6df72b4f7f9058439d81041281c2d4b815eb4cbd6c9ca3a64dcb0296",
+      "d3bec768a637b95c82888317151afcdd9450285ce93b8bb42846eef4a6692fad",
+      "d495113d1701dfb29dacb65ddbd9be1558d652daae17b368b0ec95681fb33aae",
+      "d49ae5cf5d5a3cc2641c09776a787ac12754b3c5fa7378a606a35bc81fbc462d",
+      "d55e51aa0afdf72fe5fc5666aec8e6850b486b9ffbc14699a867aea28337b5d2",
+      "d6607bff7bdc72c30df6b22aa8524cbb3535562d939f89e38916b0e98da84274",
+      "d684191a8ea325251e12d7b69e6eb3bfc956ae8d81a470ac219b512c79cf693f",
+      "d6fa5fd3856e4425af12701a93fe315ea2cc25eae219c37b96aaa92eeb560f2d",
+      "d8b935cbce0611dc261f444200f3dcaf4ecb7ca6ce36aa96befa0d4f3f69ca83",
+      "d8b9fc72fddabdced2608211c749bcc6f4df23a10fcc6fb5545194c831b05890",
+      "d8bf545fc0360ca17ed490b3237c437bb20b2dd41ef98391978ea1bb3b8d8e54",
+      "d9310d9e3e4f722a5c6a493ec579a3640c433bd7e474454db8cb559086867fed",
+      "d9c20333940ac7dedb3179e35e7550ff08374460b4e7438381a7125e0e44890e",
+      "daf54262693b957230f1fac7479f3de03f359604b83400d1f8f74af1b713ff53",
+      "db386f5610f986c5f96762a96b5e49ba45b1ccf0504e950d160374d80df18f6c",
+      "db428ddd63acb522347a1b98744934081fb969d6e7fec4205f2abe05b1c4fb74",
+      "db4edd5bbcf80441311eb7dceb38205685f2a8efca9fc2912428cc26abb36a7d",
+      "db7f81df2ea5d6d4465c038fd04cf3f137909cc8680432383cbf990b1669a58c",
+      "dbf53f782b314b3ef1079407e656550c2b47bf69ac11b698d4b5b06b779b7abb",
+      "dc42b34396aac6eb908e8aa7f881aaedb888bd30dd37ef8fc82334e2d5cf39b1",
+      "dc6b853651d431f0f543d9c5c503d4fb4201040c3907348c06fa52f54ef41acf",
+      "dd3c9b1b5257e66e0f9cd8cc413c5330cee85feeb847de22e5b3b09261093d8f",
+      "de0097aad4b61af02af8b97ff10215ccfa38d886d09ad12feb5789352c14f494",
+      "dedc690b6cb2baa87225a4fc426aac3c60b2f7be3cca7d7136752d47ab6929f5",
+      "df772cbeec175a4a15ae41c57f6275f11b42626b69de66c1ea27b05d103a0655",
+      "dfb64a65df8379ad60b328da74ecb3202ce889f44dbb602209e7296837c41a1a",
+      "e0462166cd92d4b571f400cb3debe46c6c0d6624ae7002ad4bfc717856e35f1e",
+      "e11197182061e3396d64035b21246a2d974b3b5836d303b1bf389870dcddb847",
+      "e197257c2cb5e3f774207de87a835dc2b70e5261844f320c24905fe625f05aa1",
+      "e233771339cfdef763d1aee0066785b1d6821fece1e730ba137ebfff43d8f0a3",
+      "e27648450262cee0140af789162abb1552d8139f66eb1aa0389c009658525654",
+      "e292e09997ac2a3538f65e8309f2d2710545fd16de9222b2c3d38af497dc90ea",
+      "e2ae298a31b1f7d8545aa39c4497b1d2b42552f2dc8d22800d3d586c08a5280a",
+      "e2cde85a744631414c620974b6c9ba818731b659539800729d211498a211c027",
+      "e2f0c034ad5b4dbd4d39828b2fdc2d3fca7666136e77ce60854839829f9c1581",
+      "e398ec96a176aa73ae0fd5da209c7328434d56301d981ce653c57dd65684736c",
+      "e3aec4ed335a33580989e77fc455074063c44c8c661e593ea434302c67d8d972",
+      "e3b25a8a543e364ce65b5a05d3c32ded0d44e007129fbc9d18b24a7a5efe91bc",
+      "e4703e519866c062c991d785324e882b90e257a978b37f74d038e94d0c5967d5",
+      "e4eaabfd7a5983aaa4cb107cce1bf2982d3f13a2eafa75b627b4a9b0730a300e",
+      "e56c09572770f47c5c1f7b5881b4738e9bf4f122956e9323fe435c18582037fa",
+      "e5bd82c0d11f657ee53ace04f9c99054dda46d30b0f1b67ec2ff91c973619cda",
+      "e62cb326e9801d774cb6ef1c8b2e6c7d3833e2f83085bd5337522dc969ac665c",
+      "e68c25ac0d491c3b57b3b2dfe5d278b107a3c86c2c605038f760254ed671337e",
+      "e6c109515d1151dbcfb3553e988c931fe074d3039daa8f62aab77d5a00d23c03",
+      "e725c08d5b40fa319e6e01823cfacc3b4bfadcce7e96995ef30b298e031542e9",
+      "e75a95ed89d314faea6b99de7cd15f0576e47b96f0d3d7b36016d1d1a5307268",
+      "e76542f8a138738998856e147ed5830d99cddad6fe65e9f0d90fb2e4aebe1a1a",
+      "e8a529cd0e8ecfd43240aeec915a711b7340178ebd78f32d465ecc94ac1e51af",
+      "e9924d9ea6abaf9755678bfed0d19a19f7aeb5d82a212171b1b47c19b75500fe",
+      "e9c3cdf922a4aebb3083f80064c3ad202bad20f66cb9eefa6ebfa6ae6e811eea",
+      "ea99acd24d0b095551518a9aff66f086c53642e442be9c68565119d0c0e1e458",
+      "ebbf552e8d8b2fe2feeb5de7a54cbd23308e23bada06528540e26dd9b52fe8e2",
+      "ebe18ead88fcd660333eda7e9f8ab71ff273b7f0e209374496b80061404ba6af",
+      "edb68b1eb0261985aa0fd87c9391c3bfdee248c2ba97f95147e3bd763446c7ce",
+      "eef487fbaf1753bf8cc63a11babe5451fa482b8cab94d7558b87fa5cfc18c3da",
+      "eefa92f49854e1d8754fe873587af05f235962bc4af63dfcbf99d3ec214f3397",
+      "f001caa1dfa5603baaf8dd7249b819299cc12175e6ef69bbca7a8e9fc61c5135",
+      "f08b6692ebec50bc1a79724e79710402c8769aa64b6579608cf5b55c43474036",
+      "f0b970ab761d47fda6d0958e90022f974d0475920e6da50ef5a62bcadede069e",
+      "f0f1df809ebd0237fcf483dc3d26904dd8f2f8d9d5a5462a1c337bf8c6edb083",
+      "f1f955125d1cb93262392a7c0f0d12af3f43075d9d1fe9c4646204bead30acc0",
+      "f313debef7c0f2e05085bd1e6a925f7cc00e28100e4b1c55f23caa15149c6c5f",
+      "f36bacda110f7362dac96836c24866cdb5ced06cf1056fddeeebf0a0c416b2e1",
+      "f36d9bd913d5a6a835480d02589fe164deeb1214b08cabc55ceeb6889cdb9b4f",
+      "f4c9c024106bac1d67998b6a6fe8202b564f6705bc6bfa73742ddfcd4545115b",
+      "f54614fe801ee5d6b5a82f6fe48f7cd5909235589f3ac3fe8ccda29c8fb50b1e",
+      "f57432c009512d67a54b654518388c2ba27f31bb3f6130e1558899cad0dd988e",
+      "f588fa720e127cf5fb7bfc3a0049e8fe344afe479200011f355b608a5cf5e6d6",
+      "f5f282e643ce61517b260a42b8ffdb938ee248806a1a315cea00cb0e8b5a8ec4",
+      "f61f1d54a63889405015935d6334e31b609c30ce2efaaaa9608191264a0363f5",
+      "f71d684728230673f73ad577b5abb7d7dd06902b39825c3687c9380dbb2051de",
+      "f8999f0c5fdea7b48898319c0910baa01c0d3f00bfaab10302ed6b8f8f5b09a4",
+      "f8f5fcaf42b3719bf2274fd9216357e3836e21edac261f081ff04c854d36c1d1",
+      "f9f4d6317b1c233be4ac9968e027a4bb9c9fda49dbf1fa2e6ac5e006041ddecc",
+      "fdcb63aef87ed3a9c46708d8ac368eb2c96bcf96e8ead1c2483b23fbe04aec50",
+      "fde702b4c63e303a99bf49af92fa439f14bd69aaca37434951cdeb4a0dea8bb8",
+      "fe2e4f3dbae0ed6e5b18609cf79d6241652e225611c2de8c5d204cecf7b8b4ea",
+      "fe7fe6ad864f4bdcd898692da08b34f81d5b67a279aa40f8c9f85286c866157c",
+      "ff2522889b946f85a186ab1f95291bda9f33b9eb0d930a69c97f9df93c58fed8",
+      "ff576bbe6e411e6c59662d0e73305e561c6a8f2ea0c373737230e7cd56f6245a",
+      "ff6ca58333adaeda7cc21983b21993211339ce8d3e0e95110f68b99ef9535dd0",
+      "ffbfae9b7775aa4a853e284848396ce1f023a6916a6de298d445d9a9efc096ab",
+      "ffd8443e98cec0efb943f8bb6fa94af74f6c46991b306526c3f71c759f012d57",
+      "fffc8c57aadc26950d5c8b48f49b65f3a9a066aa783b6866d60f040185df1eee"
+    ]
+  },
+  "numerical_notes": [
+    "All observed bins reintegrated; PCHIP used only for core truth rates.",
+    "Gaussian continuum/source and batch-bin pruning at configured sigma bound; combined omitted probability <=2 Phi(-tail_sigma) per event; exact unpruned line probabilities.",
+    "Per-kg normalization uses neutral atomic mass; kinematics uses derived bare nuclear masses.",
+    "Solar CEvNS/ES summed over configured isotope nuclei when isotope_mixture selected.",
+    "95% ROI conditional on signal inside threshold-to-upper analysis window; not full unobserved signal.",
+    "Historical backgrounds already observed; no additional folding/efficiency; frozen historical response."
+  ],
+  "output_sha256": {
+    "backgrounds.npz": "738b0efae536482dc1cd5afe0077dc54d0a8747a13410f2fc183adb1e0ebbe8d",
+    "signals.npz": "56ed688fa93db38c63800dfbdefa97e79e5898070fb157d7f39946036852dda6",
+    "limits.csv": "9f101084a2a6526ac9338fa360f24ab022a8a82246e6adc6849edb5c7b0cf94e",
+    "convergence.json": "7af6423ae09c97548c2e0f720c55f5c9649c425c6dfc6f1a06d1568fa30a8064"
+  }
+}

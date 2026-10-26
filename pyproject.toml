@@ -12,6 +12,7 @@ dependencies = ["numpy>=1.23", "scipy>=1.9"]
 [project.optional-dependencies]
 test = ["pytest>=7"]
 poster = ["matplotlib>=3.6"]
+workbench = ["matplotlib>=3.6", "threadpoolctl>=3", "nbformat>=5", "nbclient>=0.10", "ipykernel>=6"]
 nuclear-data-regeneration = ["sympy==1.14.0", "Mathics3==10.0.1"]
 
 [tool.pytest.ini_options]

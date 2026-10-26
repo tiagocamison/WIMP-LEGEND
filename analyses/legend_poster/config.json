@@ -1,0 +1,393 @@
+{
+  "schema_version": 1,
+  "status": "PROVISIONAL LEGEND BENCHMARK; not a validated prediction",
+  "target": {
+    "isotopes": {
+      "70": {
+        "atomic_mass_u": 69.92424875,
+        "mass_GeV": 65.11773075070431,
+        "spin": 0.0,
+        "source": {
+          "reference": "NIST Atomic Weights and Isotopic Compositions for Germanium (SRD 144 snapshot)",
+          "url": "https://physics.nist.gov/cgi-bin/Compositions/stand_alone.pl?ascii=ascii&ele=Ge",
+          "accessed": "2026-10-26",
+          "kind": "literature_snapshot",
+          "notes": "NIST snapshot; not claimed to supersede newer CIAAW evaluations."
+        },
+        "atomic_mass_uncertainty_u": 9e-07
+      },
+      "72": {
+        "atomic_mass_u": 71.922075826,
+        "mass_GeV": 66.97869489225047,
+        "spin": 0.0,
+        "source": {
+          "reference": "NIST Atomic Weights and Isotopic Compositions for Germanium (SRD 144 snapshot)",
+          "url": "https://physics.nist.gov/cgi-bin/Compositions/stand_alone.pl?ascii=ascii&ele=Ge",
+          "accessed": "2026-10-26",
+          "kind": "literature_snapshot",
+          "notes": "NIST snapshot; not claimed to supersede newer CIAAW evaluations."
+        },
+        "atomic_mass_uncertainty_u": 8.1e-08
+      },
+      "73": {
+        "atomic_mass_u": 72.923458956,
+        "mass_GeV": 67.91147737341015,
+        "spin": 4.5,
+        "source": {
+          "reference": "NIST Atomic Weights and Isotopic Compositions for Germanium (SRD 144 snapshot)",
+          "url": "https://physics.nist.gov/cgi-bin/Compositions/stand_alone.pl?ascii=ascii&ele=Ge",
+          "accessed": "2026-10-26",
+          "kind": "literature_snapshot",
+          "notes": "NIST snapshot; not claimed to supersede newer CIAAW evaluations."
+        },
+        "atomic_mass_uncertainty_u": 6.1e-08
+      },
+      "74": {
+        "atomic_mass_u": 73.921177761,
+        "mass_GeV": 68.84084655743821,
+        "spin": 0.0,
+        "source": {
+          "reference": "NIST Atomic Weights and Isotopic Compositions for Germanium (SRD 144 snapshot)",
+          "url": "https://physics.nist.gov/cgi-bin/Compositions/stand_alone.pl?ascii=ascii&ele=Ge",
+          "accessed": "2026-10-26",
+          "kind": "literature_snapshot",
+          "notes": "NIST snapshot; not claimed to supersede newer CIAAW evaluations."
+        },
+        "atomic_mass_uncertainty_u": 1.3e-08
+      },
+      "76": {
+        "atomic_mass_u": 75.921402726,
+        "mass_GeV": 70.70404431844925,
+        "spin": 0.0,
+        "source": {
+          "reference": "NIST Atomic Weights and Isotopic Compositions for Germanium (SRD 144 snapshot)",
+          "url": "https://physics.nist.gov/cgi-bin/Compositions/stand_alone.pl?ascii=ascii&ele=Ge",
+          "accessed": "2026-10-26",
+          "kind": "literature_snapshot",
+          "notes": "NIST snapshot; not claimed to supersede newer CIAAW evaluations."
+        },
+        "atomic_mass_uncertainty_u": 1.9e-08
+      }
+    },
+    "mass_conversion": {
+      "u_GeV": 0.93149410372,
+      "electron_mass_GeV": 0.00051099895069,
+      "electron_binding_eV": 57299.450802052306,
+      "formula": "m_nucleus = atomic_mass_u*u_GeV - Z*m_e_GeV + B_e*1e-9",
+      "source": "CODATA 2022 NIST muc2mev, mec2mev; AME2020 II Eq.(2), DOI:10.1088/1674-1137/abddaf",
+      "binding_note": "Approximate total atomic electron-binding fit B_e=14.4381 Z^2.39+1.55468e-6 Z^5.35 eV; not a precision nuclear-mass evaluation. Z=32."
+    },
+    "presets": {
+      "natural": {
+        "fraction_kind": "number",
+        "fractions": {
+          "70": 0.2057,
+          "72": 0.2745,
+          "73": 0.0775,
+          "74": 0.365,
+          "76": 0.0773
+        },
+        "provenance": "NIST SRD144 snapshot above; central abundances, no uncertainty propagation",
+        "status": "literature_snapshot",
+        "fraction_uncertainties": {
+          "70": 0.0027,
+          "72": 0.0032,
+          "73": 0.0012,
+          "74": 0.002,
+          "76": 0.0012
+        }
+      },
+      "enriched_provisional": {
+        "fraction_kind": "number",
+        "fractions": {
+          "70": 0.0,
+          "72": 0.0,
+          "73": 0.0,
+          "74": 0.08,
+          "76": 0.92
+        },
+        "provenance": "HYPOTHETICAL 92% Ge76 / 8% Ge74 by number; NOT measured LEGEND enrichment. Replace all fractions with collaboration data.",
+        "status": "hypothetical"
+      }
+    },
+    "kg_normalization": "neutral_atomic_detector_mass",
+    "mass_fraction_definition": "bare_nuclear_ensemble (TargetComposition convention)"
+  },
+  "detector": {
+    "default": "benchmark",
+    "presets": {
+      "benchmark": {
+        "provenance": "Hypothetical low-energy noise/Fano, constant efficiency and Lindhard assumptions; uncalibrated",
+        "threshold_keV_obs": 0.1,
+        "noise_sigma_keV": 0.05,
+        "fano_factor": 0.11,
+        "pair_energy_keV": 0.00296,
+        "efficiency": 0.9,
+        "lindhard_k": 0.157,
+        "Z": 32,
+        "NR_energy_range_keV": [
+          0.0,
+          1500.0
+        ],
+        "ER_energy_range_keV": [
+          0.0,
+          20000.0
+        ]
+      }
+    }
+  },
+  "background": {
+    "base": {
+      "lar_transfer_probability": 0.00014230663956447948,
+      "argon_mass_per_kg_Ge": 20.0,
+      "cooldown_day": 365.25,
+      "run_duration_day": 365.25,
+      "ga68_initialization": "secular_equilibrium",
+      "ga68_initial_activity_per_kg_day": null,
+      "zn65_gamma_escape_probability": 0.0,
+      "ga68_gamma_escape_probability": 0.0,
+      "annihilation_escape_probability": 0.0,
+      "solar_flux_components": [
+        "pp",
+        "B8"
+      ],
+      "solar_sin2_theta12": 0.307,
+      "solar_sin2_theta13": 0.022,
+      "solar_delta_m21_eV2": 7.53e-05,
+      "solar_rho_Ye_g_cm3": 65.0,
+      "activities_per_kg_day": [
+        [
+          "H3",
+          0.2108145106091718
+        ],
+        [
+          "Ge68",
+          0.11733646230566147
+        ],
+        [
+          "Zn65",
+          0.06570841889117043
+        ],
+        [
+          "Fe55",
+          0.024702413116981365
+        ]
+      ],
+      "flat_rate_per_kg_day_keV_obs": 0.0003148528405201916,
+      "ar39_activity_Bq_per_kg_Ar": 0.00073,
+      "lar_veto_survival_probability": 0.01,
+      "provenance": "EXPLICIT NOTEBOOK-DERIVED BENCHMARK. Intrinsic activities77/600/60/12 decays per kg Ge year, enrichment divisors14/2.5/1.33 and observed flat0.1(+15%) are illustrative, not measured LEGEND. Physical AAr0.964 Bq/kg (DEAP EPJC83,642(2023)); UAr0.00073 Bq/kg (DarkSide PRD93,081101(2016)); not certified LEGEND argon. Argon mass ratio20 kgAr/kgGe is arbitrary; transfer fitted to notebook integrated AAr normalization, not geometry prediction. Effective A surrogate72.63/76 and mass=A*0.93149410242 GeV approximate target; neutrino mixing rounded PDG-like values and rhoYe65 are fixed-density benchmark assumptions."
+    },
+    "scenarios": {
+      "natural_AAr": {
+        "target": "natural",
+        "overrides": {
+          "cooldown_day": 0.0,
+          "activities_per_kg_day": [
+            [
+              "H3",
+              0.2108145106091718
+            ],
+            [
+              "Ge68",
+              1.6427104722792607
+            ],
+            [
+              "Zn65",
+              0.16427104722792607
+            ],
+            [
+              "Fe55",
+              0.03285420944558522
+            ]
+          ],
+          "flat_rate_per_kg_day_keV_obs": 0.0002737850787132101,
+          "ar39_activity_Bq_per_kg_Ar": 0.964,
+          "lar_veto_survival_probability": 1.0
+        },
+        "components": {}
+      },
+      "enriched_UAr": {
+        "target": "enriched_provisional",
+        "overrides": {
+          "cooldown_day": 0.0,
+          "lar_veto_survival_probability": 1.0
+        },
+        "components": {}
+      },
+      "legend_poster": {
+        "target": "enriched_provisional",
+        "overrides": {},
+        "components": {}
+      }
+    },
+    "solar_target_mode": "isotope_mixture",
+    "historical": {
+      "enabled": true,
+      "notebook": "WIMP_O1_spectrum.ipynb",
+      "sha256": "ca3e8376f6fad9dfafb836ffe1b74b60377b7ed9e2dcb313f90b8807216ad39f",
+      "pair_with": "enriched_UAr",
+      "target": "enrGe",
+      "argon": "UAr",
+      "provenance": "Frozen historical already-observed model. Same signal, exposure, ROI/statistics; its historical background response/selection remains frozen, not recalibrated or refolded."
+    }
+  },
+  "signal": {
+    "halo": {
+      "v0_km_s": 220.0,
+      "vesc_km_s": 544.0,
+      "v_lab_km_s": 266.0,
+      "rho_chi_GeV_cm3": 0.3,
+      "provenance": "Fixed Standard Halo Model benchmark; no annual average/modulation"
+    },
+    "masses_GeV": [
+      2.0,
+      3.0,
+      5.0,
+      10.0,
+      20.0,
+      50.0,
+      100.0
+    ],
+    "operators": [
+      1,
+      8,
+      11
+    ],
+    "j_chi": 0.5,
+    "sigma_p_ref_cm2": 1e-42,
+    "m_proton_GeV": 0.93827208943,
+    "m_N_reference_GeV": 0.93827208943,
+    "mass_reference_source": "CODATA2022 proton energy; explicit choice of nucleon reference mass, not a hidden core default",
+    "fn_over_fp": 1.0,
+    "proton_sign": 1,
+    "coefficient_basis": "proton_neutron",
+    "coefficient_unit": "GeV^-2",
+    "coefficient_ref_GeV_minus2": 1e-05,
+    "convention_id": "anand2014_prc89_065501_half_isospin_v1",
+    "provenance": "O1 from physical SI adapter; single O8/O11 with cp=reference, cn=fn_over_fp*cp; dimensionful coefficients; limits |cp|=sqrt(mu)*|cp_ref|, no SI relabeling"
+  },
+  "analysis": {
+    "scenarios": [
+      "natural_AAr",
+      "enriched_UAr",
+      "legend_poster"
+    ],
+    "exposures_kg_day": [
+      365.25,
+      3652.5,
+      36525.0
+    ],
+    "confidence_level": 0.9,
+    "roi": {
+      "method": "threshold_anchored",
+      "signal_fraction": 0.95,
+      "normalization": "signal inside configured observed analysis window"
+    },
+    "methods": [
+      "poisson_cls_counting"
+    ],
+    "days_per_year": 365.25,
+    "provenance": "Known background median exact Poisson CLs; optional binned_asimov explicitly asymptotic, not an exact alternative",
+    "binned_roi": "full_analysis_window"
+  },
+  "numerical": {
+    "bin_segments": [
+      [
+        0.03,
+        2.0,
+        0.01
+      ],
+      [
+        2.0,
+        15.0,
+        0.05
+      ]
+    ],
+    "background_order": 8,
+    "background_step_keV": 0.025,
+    "signal_fold_order": 8,
+    "signal_fold_step_keV": 0.025,
+    "gaussian_tail_sigma": 12.0,
+    "signal_grid_points": 56,
+    "signal_grid_min_keV": 1e-05,
+    "rate_epsrel": 1e-05,
+    "signal_refinements": 3,
+    "signal_total_rtol": 0.005,
+    "signal_bin_rtol": 0.03,
+    "significant_bin_fraction": 0.0001,
+    "background_total_rtol": 0.001,
+    "background_bin_rtol": 0.01,
+    "blas_threads": 1,
+    "gaussian_tail_probability_max": 1e-15
+  },
+  "execution": {
+    "default_profile": "standard",
+    "profiles": {
+      "standard": {},
+      "smoke": {
+        "masses_GeV": [
+          6.0,
+          20.0
+        ],
+        "scenarios": [
+          "natural_AAr",
+          "enriched_UAr",
+          "legend_poster"
+        ],
+        "signal_grid_points": 12,
+        "signal_refinements": 3,
+        "signal_total_rtol": 0.08,
+        "signal_bin_rtol": 0.3,
+        "background_order": 6,
+        "background_step_keV": 0.05,
+        "signal_fold_order": 6,
+        "signal_fold_step_keV": 0.05,
+        "label": "SMOKE: coarse numerical settings; not poster-quality results"
+      }
+    }
+  },
+  "plotting": {
+    "energy_range_keV": [
+      0.03,
+      15.0
+    ],
+    "threshold_zoom_keV": [
+      0.03,
+      2.0
+    ],
+    "mass_range_GeV": [
+      0.3,
+      1000.0
+    ],
+    "sigma_range_cm2": [
+      1e-49,
+      1e-35
+    ],
+    "comparisons": [
+      "CRESST",
+      "CDMSLite",
+      "DarkSide-50_2022",
+      "LZ_2024",
+      "XENONnT_2025",
+      "SuperCDMS_SNOLAB",
+      "DarkSide-20k"
+    ],
+    "dpi": 160,
+    "title": "LEGEND provisional benchmark",
+    "limit_exposure_indices": [
+      -1
+    ],
+    "exposure_comparison_scenario": "legend_poster"
+  },
+  "provenance": {
+    "pilot_notebook": "notebooks/historical/poster_workbench_pilot.ipynb",
+    "pilot_sha256": "23f6178e6b94c2c277243a6348deb3c1f13600488fa8f7d6bfab08ba20e99d02",
+    "notes": [
+      "No physical source uncertainty propagation or LEGEND calibration.",
+      "Natural isotope central abundances and atomic masses from frozen NIST snapshot; enriched composition explicitly hypothetical.",
+      "Nuclear Ge response source closure deficits and unknown physical validity range retained.",
+      "Background physical source data and hashes inherited unchanged from BG-BENCHMARK-001."
+    ]
+  }
+}
