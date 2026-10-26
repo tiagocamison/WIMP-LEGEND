@@ -5,18 +5,22 @@
 Branch: **`poster-speedup`**, based on completed workbench delivery
 `f5863ad280e0fc2250b6926d1659920e4f1caf5a`.
 
-Executable implementation commit:
+Numerical implementation and timing-source commit:
 **`e76fd698a3f49d24679e4a88bc7662cb212494a9`**.
-Executable implementation tree: **`b8315e0a08bd388c19e3e9190ce543b201d79a3b`**.
+Numerical implementation tree: **`b8315e0a08bd388c19e3e9190ce543b201d79a3b`**.
 This matches locally tested implementation `890eeffeb12a9a6de0d7e06b44272295906fa268`.
-The subsequent handoff commit adds this document, a cold-fold benchmark driver
-and one further regression test; it does not change executable physics.
+Subsequent validation commits add this document, the cold-fold driver and
+regressions. Input-ownership hardening is published at
+`f93084236d7770a94e56eed911f47f04142d5e89`, tree
+`d499813d4a577651dc4d390acdbb00fc66551426`: breakpoint iterators are copied before
+matching the explicit SHM. The numerical kernels and benchmark tuple inputs are
+unchanged.
 
 Status on 2026-10-26:
 
-* **174 focused optimization tests passed in 108.43 s**. This includes the
-  additional test of folded counts/90% limits for four coupling cases.
-* **219 existing SI/rate/halo tests passed in 24.27 s**; these overlap the full
+* **175 focused optimization tests passed in 154.44 s**. This includes the
+  additional folded-count/90%-limit test for four coupling cases and iterator ownership.
+* **219 existing SI/rate/halo tests passed in 38.45 s**; these overlap the full
   suite and must not be added to its eventual total.
 * **35 pure-isotope folded spectra and 84 SI limits** passed comparison with
   the immutable generic standard snapshot. Maximum tested-bin relative
@@ -24,17 +28,19 @@ Status on 2026-10-26:
   relative limit difference was `4.440892098500626e-16`.
 * The matched cold detector-fold probe completed: median speedup **3.2586x**
   for the configured middle mass (10 GeV), Ge-73, standard numerical settings.
-  The preliminary raw-rate scan measured about **2160x**, not an end-to-end
-  analysis speedup. A repeat benchmark from the published implementation is
-  running; its final evidence will be delivered separately.
-* The **complete regression run is still running**. It collected 1099 tests
-  before the extra folded-coupling test was added. It has not yet certified a
-  full-suite pass. The older composite background check is slow; do not infer
-  a pass or failure from an incomplete progress log. The final checkout should
-  collect 1100 tests. No existing test/assertion was edited or disabled.
+  The final raw-rate scan measured **2116.45x**, not an end-to-end speedup.
+  Both samples, allocation measurements and source hashes are included in
+  `validation/si_speedup/`.
+* The **complete regression run passed: 1099 tests in 4537.31 s**, with warnings
+  treated as errors. It was collected before two extra regression functions and
+  the iterator input hardening. Post-hardening 175 optimization and 219 existing
+  affected-interface tests passed in separate runs. They overlap: **1101 distinct
+  cases** are covered, not a single 1101-test invocation. No existing test or
+  assertion was edited or disabled. The final checkout should collect 1101.
+
 
 This is an implementation-author handoff, **not independent Tester approval**.
-The final implementation report/evidence will update the pending statuses.
+The final implementation report and checksummed evidence record these completed runs.
 
 ## Checkout and reproduce
 
@@ -60,7 +66,7 @@ to a frozen reference as though they were identical.
 Enabling the optimization in `analyses/legend_poster/config.json`:
 
 ```python
-configuration['signal']['si_rate_engine'] = 'factorized_shm'
+working['signal']['si_rate_engine'] = 'factorized_shm'
 ```
 
 Validate/save with `poster_setup.ipynb`, then rerun `poster_workbench.ipynb` or
@@ -204,9 +210,9 @@ operators retain generic integration. Detector integration is still a substantia
 cold-scan cost. This change does not validate LEGEND calibration, nuclear inputs
 or earlier independently documented core audit limitations.
 
-Final benchmark JSON, regression logs and the implementation report will be
-published on the same branch after the running checks finish. Check their source
-commit, actual file/data hashes, reference snapshot hash and resolved configuration.
-An incomplete full-suite log must remain labeled incomplete until its final result
-is available. Record independent failures and tolerances rather than replacing
-the supplied assertions with copies of the implementation.
+Final benchmark JSON and regression logs are in `validation/si_speedup/`; the
+implementation report is `SI_SPEEDUP_REPORT.md`. Check their source commits,
+actual file/data hashes, reference snapshot hash and resolved configuration.
+The evidence records collection timing and overlapping test counts explicitly.
+Record independent failures and tolerances rather than replacing the supplied
+assertions with copies of the implementation.

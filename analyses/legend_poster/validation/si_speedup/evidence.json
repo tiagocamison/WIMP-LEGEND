@@ -1,0 +1,36 @@
+{
+  "numerical_implementation_commit": "e76fd698a3f49d24679e4a88bc7662cb212494a9",
+  "input_hardening_commit": "f93084236d7770a94e56eed911f47f04142d5e89",
+  "parent_workbench_commit": "f5863ad280e0fc2250b6926d1659920e4f1caf5a",
+  "test_runs": [
+    {
+      "file": "full-suite.log",
+      "passed": 1099,
+      "seconds": 4537.31,
+      "note": "Collected before two added regression functions and the breakpoint-iterator ownership hardening."
+    },
+    {
+      "file": "optimization-tests.log",
+      "passed": 175,
+      "seconds": 154.44,
+      "note": "After iterator hardening; overlaps 173 tests in the full run and adds two."
+    },
+    {
+      "file": "reference-tests.log",
+      "passed": 219,
+      "seconds": 38.45,
+      "note": "Existing affected interfaces after hardening; overlaps the full run."
+    }
+  ],
+  "distinct_tests_covered": 1101,
+  "single_1101_invocation_claimed": false,
+  "evidence_sha256": {
+    "reference-tests.log": "2a514f74f2bbbbf5faeff61a65fe015ab7567761182089cb39b152d02db3d326",
+    "benchmark.log": "0941c33b73924393e6bf2aacdfa1a83d9d01ac0d5507cee8fbb593baa8c283c8",
+    "optimization-tests.log": "4e36fbc39347bce74a2a0e208e7bb7a7626b14c3486ec77b4db63c9f0087de4a",
+    "fold_benchmark.json": "bccc7f4a29c4775499ff4f6092c46f10a4e6eda16e8c1dd31bdc77ee04d18470",
+    "fold-benchmark.log": "7bb206572cc2c57c54ce579a2a1ea74a5fdae3e43ffc87b1f868767caa0d2459",
+    "full-suite.log": "e3b36f9b3100fd29371141d627f63007f0ef47f16d5c510a035cfc09bf1ed5de",
+    "benchmark.json": "9f530f027fc48e18af365c8b6285de331a381b9cc334fc4c5af9bc4705d345a6"
+  }
+}

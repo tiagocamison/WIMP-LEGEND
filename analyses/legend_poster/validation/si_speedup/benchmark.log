@@ -1,0 +1,39 @@
+Validated 35 pure-isotope folds in 461.3777580179999 seconds; 0 cache hits; 140 misses
+Validated 84 physical SI limits
+generic raw scan 1 : 174.3544732270002 seconds
+generic raw scan 2 : 287.708537126 seconds
+factorized_shm raw scan 1 : 0.12103981399968688 seconds
+factorized_shm raw scan 2 : 0.09727969000005032 seconds
+Passed 35 pure-isotope folded comparisons and 84 SI limit comparisons
+{
+  "masses": 12,
+  "isotopes": 5,
+  "recoil_energies": 24,
+  "repeats": 2,
+  "construction_included": false,
+  "seconds": {
+    "generic": [
+      174.3544732270002,
+      287.708537126
+    ],
+    "factorized_shm": [
+      0.12103981399968688,
+      0.09727969000005032
+    ]
+  },
+  "median_speedup": 2116.453188504662
+}
+{
+  "method": "tracemalloc per 24-point call; Python/NumPy tracked allocations, excludes untracked native memory",
+  "measurements": {
+    "generic": {
+      "tracked_peak_bytes": 25957,
+      "tracked_current_bytes": 732
+    },
+    "factorized_shm": {
+      "tracked_peak_bytes": 7591,
+      "tracked_current_bytes": 416
+    }
+  },
+  "whole_benchmark_peak_RSS_KiB": 105332
+}

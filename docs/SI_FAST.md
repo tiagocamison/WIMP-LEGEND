@@ -74,7 +74,9 @@ zero reference proton cross section. This pre-existing distinction is preserved.
   original generic integrator is called, with coefficients intact.
 * `SIO1Signal(..., use_fast_si=True, halo=halo)`: physical SI adapter using the
   same conversion and cross-section limit method. Its supplied PDF/support/
-  breakpoints must match that explicit SHM exactly. Custom PDFs remain supported
+  breakpoints must match that explicit SHM exactly: pass `halo.lab_speed_pdf`
+  and `halo=halo` from the same halo instance. Breakpoint iterables are copied.
+  Custom PDFs remain supported
   by the default generic adapter; a contradictory fast request raises.
 
 Both paths enforce the same canonical dataset convention, units, spin/config
