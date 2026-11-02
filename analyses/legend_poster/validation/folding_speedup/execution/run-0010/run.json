@@ -1,0 +1,46 @@
+{
+  "id": "run-0010",
+  "status": "passed",
+  "reserved_seconds": 7200.0,
+  "charged_seconds": 2830.8590740950003,
+  "record": "/workspace/scratch/ebd48d783ed1/fold-evidence/run-0010/run.json",
+  "command": [
+    "../venv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-W",
+    "error",
+    "--durations=20"
+  ],
+  "cwd": "/workspace/scratch/ebd48d783ed1/WIMP-LEGEND",
+  "source_before": {
+    "commit": "12398ec1414fd76a40fd57b97f426eb84758ded2",
+    "tree": "126d4d04bf820669242c8f5de006332bc9dfa4a3",
+    "dirty": false,
+    "inputs": {}
+  },
+  "started_utc": "2026-11-02T09:45:07.300267+00:00",
+  "environment": {
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "platform": "Linux-6.18.57-x86_64-with-glibc2.39",
+    "threads": {}
+  },
+  "resource_enforcement": {
+    "wall_timeout_seconds": 7200.0,
+    "ram": "not enforced by this helper",
+    "concurrency": "one command; children share resources"
+  },
+  "elapsed_seconds": 2830.8590740950003,
+  "source_after": {
+    "commit": "12398ec1414fd76a40fd57b97f426eb84758ded2",
+    "tree": "126d4d04bf820669242c8f5de006332bc9dfa4a3",
+    "dirty": false,
+    "inputs": {}
+  },
+  "returncode": 0,
+  "timed_out": false,
+  "error": null,
+  "missing_artifacts": [],
+  "finished_utc": "2026-11-02T10:32:18.173069+00:00"
+}

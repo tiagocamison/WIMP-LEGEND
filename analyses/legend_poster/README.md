@@ -6,6 +6,12 @@ call the same Python orchestration; neither contains a second set of physical
 parameters. The accepted package physics, nuclear datasets and conventions are
 unchanged.
 
+An opt-in SHM O1 acceleration is available through
+`signal.si_rate_engine = "factorized_shm"`; `"generic"` remains the default.
+O8/O11 and mixed operators retain the generic engine. See
+[`docs/SI_FAST.md`](../../docs/SI_FAST.md) for the exact coefficient gate,
+physical normalization and cache behavior.
+
 ## Start here
 
 From the repository root, in a fresh Python 3.12 environment:
@@ -187,3 +193,7 @@ utilities were inspected for organization; their code is not imported or execute
 See `IMPLEMENTATION_REPORT.md` and `TESTER_HANDOFF.md` for validation and remaining
 physical limitations. No core physics, historical notebook, nuclear dataset or
 detector/statistics module is modified by this workbench.
+
+Optional detector acceleration: set `numerical.folding_backend` to `vectorized`.
+The default `reference` backend remains available. See [FOLDING_FAST.md](../../docs/FOLDING_FAST.md)
+for configuration, unchanged mathematics, fallback and matched benchmarks.

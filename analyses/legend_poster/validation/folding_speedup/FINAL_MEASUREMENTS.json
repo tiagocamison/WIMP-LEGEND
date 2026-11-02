@@ -1,0 +1,36 @@
+{
+  "kind": "recovered_tool_completion_summary",
+  "source_commit": "12398ec1414fd76a40fd57b97f426eb84758ded2",
+  "source_tree": "126d4d04bf820669242c8f5de006332bc9dfa4a3",
+  "full_suite": {
+    "passed": 1140,
+    "seconds": 2829.8,
+    "durable_record": "execution/run-0010/"
+  },
+  "final_dense_benchmark": {
+    "masses": 24,
+    "limits": 288,
+    "reference_cold_seconds": 1568.6829817020002,
+    "vectorized_cold_seconds": 158.52568855800018,
+    "reference_warm_seconds": 3.2712245180000536,
+    "vectorized_warm_seconds": 3.3927081989995713,
+    "cold_speedup": 9.8954497278721,
+    "max_relative_differences": {
+      "signals": 0.0,
+      "backgrounds": 0.0,
+      "limits": 0.0
+    },
+    "reference_peak_rss_KiB": 213596,
+    "vectorized_peak_rss_KiB": 213264,
+    "warm_cache_misses": 0,
+    "added_JIT_compilation_seconds": 0,
+    "completion_observed": true,
+    "reported_manifest_sha256": "3ec5e011cac218df8b5dcb698a926d10886dd588afd50e533849dc18834d9711"
+  },
+  "final_profile": {
+    "cold_seconds": 50.20524066899998,
+    "warm_seconds": 2.1884051659999386,
+    "reported_manifest_sha256": "b51170e5607c265123fad0fc37f74d04b0e4f996e7bb616c9bd2a378b11ad5fb"
+  },
+  "evidence_limitation": "Final benchmark/profile completion and measurements were observed in tool outputs. Their local raw files were lost when the interrupted publication reverted the execution workspace to an older snapshot. This JSON is a recovered summary, not a reconstructed raw run record. The earlier complete benchmark raw data and final full-suite record remain published. No rerun was made for this delivery."
+}

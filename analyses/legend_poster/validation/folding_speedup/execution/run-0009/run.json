@@ -1,0 +1,49 @@
+{
+  "id": "run-0009",
+  "status": "failed",
+  "reserved_seconds": 9000.0,
+  "charged_seconds": 9000.0,
+  "record": "/workspace/scratch/ebd48d783ed1/fold-evidence/run-0009/run.json",
+  "command": [
+    "../venv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-W",
+    "error",
+    "--durations=20"
+  ],
+  "cwd": "/workspace/scratch/ebd48d783ed1/WIMP-LEGEND",
+  "source_before": {
+    "commit": "12398ec1414fd76a40fd57b97f426eb84758ded2",
+    "tree": "126d4d04bf820669242c8f5de006332bc9dfa4a3",
+    "dirty": false,
+    "inputs": {}
+  },
+  "started_utc": "2026-11-02T09:35:05.954134+00:00",
+  "environment": {
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "platform": "Linux-6.18.57-x86_64-with-glibc2.39",
+    "threads": {}
+  },
+  "resource_enforcement": {
+    "wall_timeout_seconds": 9000.0,
+    "ram": "not enforced by this helper",
+    "concurrency": "one command; children share resources"
+  },
+  "elapsed_seconds": 559.618855,
+  "source_after": {
+    "commit": "12398ec1414fd76a40fd57b97f426eb84758ded2",
+    "tree": "126d4d04bf820669242c8f5de006332bc9dfa4a3",
+    "dirty": false,
+    "inputs": {}
+  },
+  "returncode": null,
+  "timed_out": false,
+  "error": "Execution environment became unavailable. write_stdin reported executor key changed during session recovery; no completion or test exit code was recoverable. Snapshot files survived but this attempt is not a suite pass. Entire reservation charged conservatively.",
+  "missing_artifacts": [],
+  "finished_utc": "2026-11-02T09:44:25.572989+00:00",
+  "manual_interruption_record": true,
+  "source_after_reconstructed_from_recovered_snapshot": true,
+  "finished_time_kind": "Recovery observation; execution completion unknown"
+}

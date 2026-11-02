@@ -1,5 +1,5 @@
 """Build existing target/halo/detector/background APIs from resolved input data."""
-from dataclasses import replace
+from dataclasses import dataclass, replace
 import json
 import numpy as np
 from wimp_legend.constants import C_CM_S, GEV_TO_J
@@ -48,11 +48,26 @@ def isotope_weights(config, preset):
                    pure_targets_per_kg=kg_GeV/atoms[a]) for a in numbers}
 
 
+@dataclass(frozen=True)
+class NoiseFanoSigma:
+    """Existing noise+Fano formula, with an explicit array-call contract.
+
+    Parameters come only from the configured detector preset. Arbitrary user
+    resolution callbacks do not acquire this vectorization contract.
+    """
+    noise_sigma_keV: float
+    fano_factor: float
+    pair_energy_keV: float
+
+    def __call__(self, energy):
+        return np.sqrt(self.noise_sigma_keV**2+
+            self.fano_factor*self.pair_energy_keV*np.asarray(energy))
+
+
 def responses(config, preset=None):
     name = preset or config['detector']['default']
     d = config['detector']['presets'][name]
-    def sigma(energy):
-        return np.sqrt(d['noise_sigma_keV']**2+d['fano_factor']*d['pair_energy_keV']*np.asarray(energy))
+    sigma=NoiseFanoSigma(d['noise_sigma_keV'],d['fano_factor'],d['pair_energy_keV'])
     kwargs = dict(resolution=GaussianResolution(sigma),
                   observed_efficiency=ConstantEfficiency(d['efficiency']))
     return (ElectronRecoilResponse(**kwargs),

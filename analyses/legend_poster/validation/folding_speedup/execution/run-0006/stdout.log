@@ -1,0 +1,5 @@
+reference cold 1533.1257800120002 seconds
+reference warm 3.455734917999507 seconds
+vectorized cold 154.65045028700024 seconds
+vectorized warm 3.433857631000137 seconds
+{"speedups": {"cold": 9.913490566414945, "warm": 1.0063710524285767}, "agreement": {"signals_max_relative": 0.0, "backgrounds_max_relative": 0.0, "limit_max_relative": 0.0}, "limits": 288}

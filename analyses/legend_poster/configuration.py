@@ -46,6 +46,8 @@ def validate_config(config):
                 if lo!=0 or hi<=lo:raise ValueError('truth ranges must start at zero')
             responses(c,name)
         s=c['signal']
+        if s.get('si_rate_engine','generic') not in ('generic','factorized_shm'):
+            raise ValueError('si_rate_engine must be generic or factorized_shm')
         if s['convention_id']!=NREFT_CONVENTION_ID or s['coefficient_basis']!='proton_neutron' or s['coefficient_unit']!='GeV^-2':
             raise ValueError('unsupported Wilson convention; no automatic conversion')
         if not s['operators'] or any(type(op)!=int or op not in (1,8,11) for op in s['operators']):
@@ -75,6 +77,8 @@ def validate_config(config):
         if not a['exposures_kg_day']:raise ValueError('exposure list is empty')
         _positive(a['days_per_year'],'days_per_year')
         n=c['numerical'];previous=None
+        if n.get('folding_backend','reference') not in ('reference','vectorized'):
+            raise ValueError('folding_backend must be reference or vectorized')
         _positive(n['gaussian_tail_probability_max'],'Gaussian tail probability bound')
         if math.erfc(n['gaussian_tail_sigma']/math.sqrt(2))>n['gaussian_tail_probability_max']:
             raise ValueError('Gaussian tail truncation exceeds requested probability bound')
