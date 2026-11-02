@@ -125,9 +125,24 @@ The full suite was deliberately stopped on that earlier revision after this
 review finding. The cancelled run (exit 130) is preserved under
 `validation/folding_speedup/execution/run-0007/`; it is not counted as a pass.
 The full suite passed on `12398ec`: **1140 passed in 2829.80 s**.
-A matched complete benchmark is being repeated on the same final numerical
-revision. Independent acceptance is pending.
+The matched complete benchmark finished; see the final delivery update below.
+Independent acceptance is pending.
 
 The completed full-suite record is preserved under
 `validation/folding_speedup/execution/run-0010/`. Run 0009 lost its executor;
 its partial log is preserved separately and is not counted as a pass.
+
+## Final delivery update
+
+The corrected source above passed **1140 tests in 2829.80 s**, including all 39
+focused tests. The final 24-mass repeat measured **9.8954x cold speedup**, with
+exact agreement of saved arrays and all 288 limits. Warm runs were 3.271/3.393 s;
+peak RSS was 208.59/208.27 MiB; added JIT compilation was zero.
+
+The final raw benchmark/profile records did not survive the interrupted upload's
+workspace rollback. `validation/folding_speedup/FINAL_MEASUREMENTS.json` is an
+explicitly recovered tool-completion summary, not a fabricated raw manifest.
+The final full-suite log and earlier complete benchmark raw data are durable.
+Reproduce the final-source paired benchmark with the commands above if raw
+final-source timing evidence is required for independent acceptance. No additional
+benchmark runs are required to pull/use the fully updated implementation.

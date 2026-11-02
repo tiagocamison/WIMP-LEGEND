@@ -1,126 +1,85 @@
-# Detector-folding / full-analysis speedup
+# Detector folding speedup — final report
 
-## Delivery
+Numerical implementation: `12398ec1414fd76a40fd57b97f426eb84758ded2`.  
+Numerical tree: `126d4d04bf820669242c8f5de006332bc9dfa4a3`.
+Branch: `poster-speedup`. All implementation code is pushed.
 
-Branch: `poster-speedup`, based on SI-speedup delivery
-`0a4274686640a3e9e3d819091490a59f8916c9b8`.
-Numerical implementation commit: `12398ec1414fd76a40fd57b97f426eb84758ded2`;
-tree: `126d4d04bf820669242c8f5de006332bc9dfa4a3`.
-The tree is identical to local verification checkpoint
-`a8d90595fc4a38fc50e30f6e683f7b23aad00483`.
-Subsequent report/evidence commits do not change numerical code.
+## Result
 
-## Implementation and unchanged science
+**1140 tests passed in 2829.80 seconds**, with warnings treated as errors.
+This single complete invocation includes all **39 focused folding tests**;
+overlapping test counts are not added. The full log and immutable source record
+are published in `validation/folding_speedup/execution/run-0010/`.
 
-* `folding.py`: optional bounded NumPy/SciPy Gaussian-bin evaluation, retaining
-  signed CDF/survival differences, original batch-union pruning and original
-  exact unpruned line probabilities. Arbitrary observed-efficiency callbacks
-  keep the reference probability integral; custom response ports keep their
-  own count implementation. No persistent dense response matrix or JIT.
-* `models.py`: frozen `NoiseFanoSigma` replaces the existing noise-plus-Fano
-  closure with the **same** formula and configured parameters. Only this known
-  callback gets bulk evaluation; all arbitrary callbacks retain scalar semantics.
-* `analysis.py`/`configuration.py`/master JSON: independent optional
-  `numerical.folding_backend` (`reference` default, `vectorized` opt-in), selected
-  for both signals and backgrounds. All quadrature and acceptance criteria are
-  unchanged. Backend-specific fold keys prevent stale cross-backend cache reuse;
-  truth-rate, exposure/style/on-grid-threshold reuse remains intact.
-* Setup/main notebooks: opt-in example and display of resolved backend.
-* Focused tests and `tools/benchmark_folding.py`: identical complete analysis
-  inputs, independent cold caches/processes, warm reruns, saved numerical outputs,
-  exact ROI checks, count/limit comparisons and per-process peak RSS.
-* Prior `benchmark_si_fast.py`: migrate only the absent archived folding field
-  to its reference default before its existing strict configuration equality gate.
-  No physical parameter or assertion was removed from that gate.
+The final 24-mass complete SI analysis measured:
 
-There are **no changes under `src/wimp_legend/`**. Nuclear data/conventions,
-SI/NREFT rates, quenching, resolution and efficiency formulas, background
-physics/activities, detector/statistical kernels, ROI/CLs construction and
-historical notebooks/data are unchanged. `poster`, `main` and `poster-workbench`
-are not modified. No Numba, fastmath, extra workers or new dependencies.
-
-## Profiling evidence
-
-The complete two-mass O1 analysis profile (standard numerical settings, all
-three scenarios/exposures and historical comparison) attributed 239.62 of
-320.04 profiled seconds to the nested Gaussian-resolution probability routine;
-270.98 seconds including its pruning wrapper. After the first vectorized
-kernel, the same complete analysis took 76.96 profiled seconds and all saved
-signals/backgrounds/24 limits were **exactly equal**. Scalar resolution sampling
-still consumed 26.44 seconds; this motivated the final explicit array callable.
-These are profiling measurements at the intermediate implementation
-`30f8737d985c3746e4b462dc7df64bc9a8232ef6` (tree identical to local `8a4553b...`),
-**not** the final unprofiled speedup claim.
-
-A preliminary setup-overlapping profile is retained in evidence but excluded
-from performance/physics acceptance; it loaded libraries while the environment
-was being pinned. The repeated pinned baseline profile completed without stderr.
-
-## Recorded unprofiled complete benchmark
-
-| Complete 24-mass SI analysis | Reference | Vectorized |
+| Measurement | Reference | Vectorized |
 |---|---:|---:|
-| Cold wall time | 1533.126 s | 154.650 s |
-| Warm wall time | 3.456 s | 3.434 s |
-| Peak RSS | 214.72 MiB | 216.32 MiB |
+| Cold wall time | 1568.683 s | 158.526 s |
+| Warm wall time | 3.271 s | 3.393 s |
+| Peak process RSS | 208.59 MiB | 208.27 MiB |
 | Warm cache misses | 0 | 0 |
+| Added JIT compilation | none | none |
 
-Cold speedup: **9.9135x**. Warm speedup: 1.0064x (essentially unchanged). Both cold calls had 506 misses and two legitimate within-run hits; both warm calls had 508 hits.
+**9.8954x faster cold.** All saved signal/background arrays and **288 limits**
+matched exactly; maximum relative differences were zero. ROI boundaries,
+statuses and existing convergence criteria matched. Warm performance is
+essentially unchanged because those runs read numerical caches.
 
-All saved signals/backgrounds and **288 limits** compare exactly in this run: maximum relative differences are zero; ROI boundaries/statuses match and every original convergence check passes. No tolerance was relaxed.
+Both modes used factorized SI, standard numerical settings, 24 logarithmically
+spaced masses from 3 to 100 GeV, all five Ge isotopes, three scenarios, configured
+exposures and historical comparisons. Separate processes and empty numerical
+caches defined cold runs; OS caches were not flushed. BLAS threads were one.
+RSS includes imports and both calls. These are shared-host measurements, not
+runtime guarantees.
 
+## Implementation
 
-Cold means a fresh subprocess with an empty numerical cache; OS page caches
-are not flushed. Warm repeats exactly the same configuration in that process.
-Both backends use `factorized_shm`, standard quadrature and convergence settings,
-24 log-spaced masses 3–100 GeV, all five natural Ge isotopes, three scenarios,
-all configured exposures and historical/revised comparisons. These are complete
-SI analysis timings, not a raw-probability or raw-rate microbenchmark. Timed calls
-exclude imports; subprocess time including imports is also recorded. Single
-matched cold/warm samples on a shared 8-CPU-quota host; timings are not guarantees.
-BLAS threads remain one. Peak RSS includes imports and both calls per backend.
-There is no added JIT compilation overhead. The already-fast warm path may vary
-in either direction because it reads caches rather than running CDF kernels.
+* Optional NumPy/SciPy Gaussian-bin batches replace nested Python loops, retaining
+  the reference CDF/survival subtraction and existing integration nodes/pruning.
+* Immutable `NoiseFanoSigma` evaluates the existing noise-plus-Fano formula in
+  bulk. Arbitrary sigma callbacks retain scalar sampling; nonconstant observed
+  efficiencies and zero-width Gaussian batches delegate reference probabilities.
+* Discrete lines retain exact unpruned probabilities; observed templates bypass
+  response/efficiency. Custom response ports retain their own count interface.
+* Backend-specific fold keys preserve cache integrity; existing isotope and
+  unit-exposure reuse remains. No Numba, fastmath or worker pool was added.
+* Master configuration, notebook examples, regression tests and reproducible
+  `tools/benchmark_folding.py` are included. Package physics modules, datasets,
+  conventions, statistical methods and historical notebooks are unchanged.
 
-## Validation
+Profiling identified nested Gaussian probabilities as the dominant removable
+cost. The final optimized two-mass complete profile took 50.205 profiled seconds;
+profiling overhead is separate from the dense timings above. Existing tests and
+acceptance tolerances were not relaxed. Two ER/NR local-edge regressions cover
+the zero-width fallback; interrupted attempts are retained separately from passes.
 
-**39 focused tests passed in 177.02 s** on the final numerical tree.
-**Complete regression suite: 1140 passed in 2829.80 s**, warnings treated as errors. The 39 focused cases are included in this single invocation; counts are not additive across runs.
-The earlier 35-test run is superseded/overlapping, not an additional test total.
+## Enable and reproduce
 
-No existing tests were modified, disabled or relaxed. New focused cases cover
-all five isotopes at 3/10/100 GeV; folded counts and 90%-CLs limits; ER/NR continua,
-lines, threshold bins and narrow/broader resolution; scalar/array/empty inputs;
-constant and nonconstant efficiencies; arbitrary callback/custom-response/observed
-fallbacks; zero-width rows; and ownership of response inputs/configuration.
-Tolerances: probabilities exact in tested built-in cases; synthetic count
-`rtol=2e-14`; physical count/limit `rtol=3e-8` (the earlier SI comparison tolerance).
-The original coarse/fine convergence settings, significant-bin selection and
-ROI-edge equality are retained.
+Set in the saved master configuration:
 
-## Limits and Tester action
+```python
+config['signal']['si_rate_engine'] = 'factorized_shm'
+config['numerical']['folding_backend'] = 'vectorized'
+```
 
-See `FOLDING_SPEEDUP_TESTER_HANDOFF.md` and `docs/FOLDING_FAST.md` for commands
-and independent checks. Independent acceptance remains pending. Warm caches
-already avoid folding; remaining cold cost includes physical solar-source
-integration, bin-crossing roots and output/cache I/O. No change to these physical
-kernels or new interpolation of backgrounds was introduced to chase timings.
-Existing provisional calibration/enrichment/background assumptions, source
-closure deficits and physical nuclear-response validity uncertainties remain.
+Use the setup/main notebooks normally; restart kernels after pulling code.
+The reference implementations remain defaults. Reproduce the full benchmark:
 
-## Zero-width hardening / validation in progress
+```bash
+python tools/benchmark_folding.py --output /tmp/folding-benchmark --masses 24
+```
 
-The corrected implementation delegates any zero-width Gaussian batch to the
-reference wrapper, preserving its local final-bin endpoint semantics. Two new
-ER/NR edge regressions pass. This does not affect the recorded poster benchmark,
-whose resolution is strictly positive; its measured source was C2 (`c2f1db6`).
-The full suite was deliberately stopped on that earlier revision after this
-review finding. The cancelled run (exit 130) is preserved under
-`validation/folding_speedup/execution/run-0007/`; it is not counted as a pass.
-The full suite passed on `12398ec`: **1140 passed in 2829.80 s**.
-A matched complete benchmark is being repeated on the same final numerical
-revision. Independent acceptance is pending.
+Use a fresh output directory. See `docs/FOLDING_FAST.md` and
+`FOLDING_SPEEDUP_TESTER_HANDOFF.md` for APIs, equations and independent checks.
 
-The completed full-suite record is preserved under
-`validation/folding_speedup/execution/run-0010/`. Run 0009 lost its executor;
-its partial log is preserved separately and is not counted as a pass.
+## Evidence availability
+
+The complete test log and earlier matched benchmark raw numerical data are
+published. The final benchmark/profile finished successfully, but their raw
+local records were lost after the interrupted upload reverted the workspace
+snapshot. `validation/folding_speedup/FINAL_MEASUREMENTS.json` faithfully records
+the observed completion measurements and this limitation; it is not a substitute
+raw run manifest. No additional calculations were performed for this resupply.
+Independent Tester acceptance remains pending. Existing provisional physical
+background/calibration/enrichment and AFH validity assumptions are retained.
