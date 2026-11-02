@@ -1,0 +1,44 @@
+elapsed 96.80752524899981
+         81808937 function calls (81781854 primitive calls) in 96.783 seconds
+
+   Ordered by: cumulative time
+   List reduced from 692 to 35 due to restriction <35>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+       13    0.000    0.000   96.368    7.413 /workspace/scratch/ebd48d783ed1/WIMP-LEGEND/analyses/legend_poster/storage.py:51(arrays)
+       22    0.002    0.000   96.166    4.371 /workspace/scratch/ebd48d783ed1/WIMP-LEGEND/analyses/legend_poster/analysis.py:61(fold_component)
+    32/22    1.651    0.052   96.159    4.371 /workspace/scratch/ebd48d783ed1/WIMP-LEGEND/tools/background_benchmark/folding.py:17(quadrature_counts)
+        1    0.001    0.001   88.302   88.302 /workspace/scratch/ebd48d783ed1/WIMP-LEGEND/analyses/legend_poster/analysis.py:91(background_counts)
+        9    0.000    0.000   87.868    9.763 /workspace/scratch/ebd48d783ed1/WIMP-LEGEND/analyses/legend_poster/analysis.py:103(compute)
+       20    0.000    0.000   76.272    3.814 {built-in method builtins.sum}
+       12    0.001    0.000   76.272    6.356 /workspace/scratch/ebd48d783ed1/WIMP-LEGEND/tools/background_benchmark/folding.py:23(<genexpr>)
+     4354    0.414    0.000   71.325    0.016 /workspace/scratch/ebd48d783ed1/WIMP-LEGEND/analyses/legend_poster/folding.py:21(bin_probabilities)
+     4131    0.036    0.000   62.008    0.015 /workspace/scratch/ebd48d783ed1/WIMP-LEGEND/src/wimp_legend/detector/response.py:104(bin_probabilities)
+     4131   48.937    0.012   61.584    0.015 /workspace/scratch/ebd48d783ed1/WIMP-LEGEND/src/wimp_legend/detector/resolution.py:97(bin_probabilities)
+     3517   15.815    0.004   20.621    0.006 /workspace/scratch/ebd48d783ed1/WIMP-LEGEND/src/wimp_legend/backgrounds/neutrinos.py:121(__call__)
+     8485    0.026    0.000   16.008    0.002 /workspace/scratch/ebd48d783ed1/WIMP-LEGEND/src/wimp_legend/detector/resolution.py:91(sigma_at)
+     8485    0.763    0.000   15.980    0.002 /workspace/scratch/ebd48d783ed1/WIMP-LEGEND/src/wimp_legend/_analysis.py:62(elementwise)
+  1306639    5.303    0.000   14.865    0.000 /workspace/scratch/ebd48d783ed1/WIMP-LEGEND/src/wimp_legend/_analysis.py:24(array)
+  1076186    0.788    0.000   14.582    0.000 /workspace/scratch/ebd48d783ed1/WIMP-LEGEND/src/wimp_legend/_analysis.py:55(sample)
+        1    0.000    0.000    8.482    8.482 /workspace/scratch/ebd48d783ed1/WIMP-LEGEND/analyses/legend_poster/analysis.py:146(pure_signal_counts)
+        2    0.000    0.000    8.476    4.238 /workspace/scratch/ebd48d783ed1/WIMP-LEGEND/analyses/legend_poster/analysis.py:156(calculate)
+  2636988    1.366    0.000    8.365    0.000 /workspace/scratch/ebd48d783ed1/venv/lib/python3.12/site-packages/numpy/_core/fromnumeric.py:2474(any)
+        2    0.000    0.000    8.298    4.149 /workspace/scratch/ebd48d783ed1/WIMP-LEGEND/analyses/legend_poster/analysis.py:173(integrate)
+  2637000    2.476    0.000    6.999    0.000 /workspace/scratch/ebd48d783ed1/venv/lib/python3.12/site-packages/numpy/_core/fromnumeric.py:86(_wrapreduction_any_all)
+      634    0.002    0.000    6.428    0.010 /workspace/scratch/ebd48d783ed1/WIMP-LEGEND/src/wimp_legend/detector/electron.py:38(bin_probabilities)
+  2437446    1.640    0.000    3.616    0.000 {method 'any' of 'numpy.generic' objects}
+ 45579476    3.295    0.000    3.353    0.000 {built-in method builtins.isinstance}
+    41364    0.093    0.000    2.831    0.000 /workspace/scratch/ebd48d783ed1/WIMP-LEGEND/src/wimp_legend/detector/quenching.py:58(mean_energy_keV)
+    34476    0.015    0.000    2.196    0.000 /workspace/scratch/ebd48d783ed1/WIMP-LEGEND/tools/background_benchmark/folding.py:35(<lambda>)
+     6116    0.236    0.000    2.155    0.000 /workspace/scratch/ebd48d783ed1/WIMP-LEGEND/src/wimp_legend/backgrounds/neutrinos.py:63(helm_squared)
+  1076210    1.691    0.000    1.995    0.000 /workspace/scratch/ebd48d783ed1/WIMP-LEGEND/analyses/legend_poster/models.py:54(sigma)
+  2437446    0.532    0.000    1.975    0.000 /workspace/scratch/ebd48d783ed1/venv/lib/python3.12/site-packages/numpy/_core/_methods.py:55(_any)
+    41364    0.580    0.000    1.788    0.000 /workspace/scratch/ebd48d783ed1/WIMP-LEGEND/src/wimp_legend/detector/quenching.py:47(quenching_factor)
+   106693    0.078    0.000    1.688    0.000 /workspace/scratch/ebd48d783ed1/WIMP-LEGEND/src/wimp_legend/_analysis.py:50(output)
+  2645918    1.685    0.000    1.685    0.000 {method 'reduce' of 'numpy.ufunc' objects}
+     1836    1.567    0.001    1.567    0.001 /workspace/scratch/ebd48d783ed1/WIMP-LEGEND/src/wimp_legend/backgrounds/neutrinos.py:137(kernel)
+     6116    0.084    0.000    1.519    0.000 /workspace/scratch/ebd48d783ed1/venv/lib/python3.12/site-packages/scipy/special/_spherical_bessel.py:23(wrapper)
+     5526    0.008    0.000    1.502    0.000 /workspace/scratch/ebd48d783ed1/venv/lib/python3.12/site-packages/scipy/optimize/_zeros_py.py:724(brentq)
+     5526    0.013    0.000    1.488    0.000 {built-in method scipy.optimize._zeros._brentq}
+
+

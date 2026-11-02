@@ -1,0 +1,46 @@
+{
+  "id": "run-0003",
+  "status": "passed",
+  "reserved_seconds": 900.0,
+  "charged_seconds": 195.3280107630003,
+  "record": "/workspace/scratch/ebd48d783ed1/fold-evidence/run-0003/run.json",
+  "command": [
+    "../venv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-W",
+    "error",
+    "tests/test_folding_fast.py"
+  ],
+  "cwd": "/workspace/scratch/ebd48d783ed1/WIMP-LEGEND",
+  "source_before": {
+    "commit": "b5339b03e4290835c3a1e409ed8add1023ca182e",
+    "tree": "dd88cee4758aff612acb541b82e8de6815f79d68",
+    "dirty": false,
+    "inputs": {}
+  },
+  "started_utc": "2026-11-02T08:21:39.048016+00:00",
+  "environment": {
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "platform": "Linux-6.18.57-x86_64-with-glibc2.39",
+    "threads": {}
+  },
+  "resource_enforcement": {
+    "wall_timeout_seconds": 900.0,
+    "ram": "not enforced by this helper",
+    "concurrency": "one command; children share resources"
+  },
+  "elapsed_seconds": 195.3280107630003,
+  "source_after": {
+    "commit": "b5339b03e4290835c3a1e409ed8add1023ca182e",
+    "tree": "dd88cee4758aff612acb541b82e8de6815f79d68",
+    "dirty": false,
+    "inputs": {}
+  },
+  "returncode": 0,
+  "timed_out": false,
+  "error": null,
+  "missing_artifacts": [],
+  "finished_utc": "2026-11-02T08:24:54.391597+00:00"
+}
