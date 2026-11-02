@@ -77,6 +77,8 @@ def validate_config(config):
         if not a['exposures_kg_day']:raise ValueError('exposure list is empty')
         _positive(a['days_per_year'],'days_per_year')
         n=c['numerical'];previous=None
+        if n.get('folding_backend','reference') not in ('reference','vectorized'):
+            raise ValueError('folding_backend must be reference or vectorized')
         _positive(n['gaussian_tail_probability_max'],'Gaussian tail probability bound')
         if math.erfc(n['gaussian_tail_sigma']/math.sqrt(2))>n['gaussian_tail_probability_max']:
             raise ValueError('Gaussian tail truncation exceeds requested probability bound')

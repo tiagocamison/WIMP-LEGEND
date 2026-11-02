@@ -26,7 +26,7 @@ from wimp_legend.statistics import PoissonCLsCounting, BinnedPoissonProfile
 from wimp_legend.sensitivity import AnalysisResult
 from wimp_legend.targets import load_germanium_afh2014, germanium_afh2014_momentum
 from .configuration import resolve_profile, validate_config
-from .folding import prune_gaussian_bins
+from .folding import prepare_folding
 from .models import target, isotope_weights, responses, build_background
 from .storage import ROOT, NumericalCache, source_identity, digest, file_hash, canonical
 
@@ -62,7 +62,13 @@ def fold_component(component,bins,numerical,*,signal=False,refined=False):
     prefix='signal_fold' if signal else 'background'
     step=numerical[prefix+'_step_keV']/(2 if refined else 1)
     order=min(32,numerical[prefix+'_order']+(2 if refined else 0))
-    return _fold(prune_gaussian_bins(component,numerical['gaussian_tail_sigma']),bins,1.,step_keV=step,order=order,
+    backend=numerical.get('folding_backend','reference')
+    if backend=='vectorized' and isinstance(component,CompositeBackground):
+        return sum((fold_component(c,bins,numerical,signal=signal,refined=refined) for c in component.components),np.zeros(len(bins)-1))
+    prepared=prepare_folding(component,numerical['gaussian_tail_sigma'],backend)
+    if backend=='vectorized' and isinstance(component,TruthBackground) and prepared is component:
+        return component.expected_counts(bins,1.)
+    return _fold(prepared,bins,1.,step_keV=step,order=order,
                  tail_sigma=numerical['gaussian_tail_sigma'],sigma_bound=_sigma_bound)
 
 
@@ -93,7 +99,7 @@ def background_counts(config,scenario,bins,cache):
     model=build_background(config,scenario);n=config['numerical']
     inputs=dict(background=config['background']['base'],scenario=record,target=config['target'],
         solar_target_mode=config['background']['solar_target_mode'],detector=config['detector'],
-        bins=bins.tolist(),numerical={k:v for k,v in n.items() if k.startswith('background') or k in ('gaussian_tail_sigma','significant_bin_fraction')})
+        bins=bins.tolist(),numerical={k:v for k,v in n.items() if k.startswith('background') or k in ('gaussian_tail_sigma','significant_bin_fraction','folding_backend')})
     diagnostics=[];result={}
     for name,component in model.components.items():
         option=record['components'].get(name,{})
