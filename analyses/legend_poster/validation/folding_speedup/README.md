@@ -9,6 +9,6 @@ Numerical implementation: c2f1db68b4c9264a1e66cd9f690f243ccea736fb, tree 8784199
 
 `execution/` retains bounded-run source/time/environment records and logs. Run 0001 overlapped dependency pinning and is excluded from performance/physics acceptance; run 0002 repeated the baseline in the pinned environment with empty stderr. Run 0003 is the initial overlapping 35-test pass; 0004 the complete intermediate profile; 0005 the final numerical-tree 37-test pass (local 1c11341, tree identical to public c2f1db6); 0006 the authoritative unprofiled complete benchmark on public c2f1db6.
 
-Full regression is still running. No complete-suite pass is asserted in this checkpoint.
+The corrected numerical source `12398ec` passed the full suite in run 0010: **1140 passed in 2829.80 s**, warnings treated as errors. The 39 focused cases overlap that total. Run 0007 was cancelled for the zero-width repair; 0009 lost its executor. Both partial records are retained but are not completed passes. The final-source matched benchmark repeat is still in progress.
 
 Reproduce with the commands in FOLDING_SPEEDUP_TESTER_HANDOFF.md. Sources, physical data, configurations and environment hashes are recorded in manifests; no cache files/pickle objects are needed for reading stored results.

@@ -1,0 +1,38 @@
+........................................................................ [  6%]
+........................................................................ [ 12%]
+........................................................................ [ 18%]
+........................................................................ [ 25%]
+........................................................................ [ 31%]
+........................................................................ [ 37%]
+........................................................................ [ 44%]
+........................................................................ [ 50%]
+........................................................................ [ 56%]
+........................................................................ [ 63%]
+........................................................................ [ 69%]
+........................................................................ [ 75%]
+........................................................................ [ 82%]
+........................................................................ [ 88%]
+........................................................................ [ 94%]
+............................................................             [100%]
+============================= slowest 20 durations =============================
+1464.79s call     tests/test_bg_benchmark.py::test_composite_counts_exposure_and_replacement
+558.87s setup    tests/test_poster_workbench.py::test_real_run_mixtures_limits_and_manifests
+149.82s call     tests/test_bg_public_counts.py::test_default_benchmark_count_api_against_independent_audit
+71.46s call     tests/test_bg_public_counts.py::test_default_solar_es_gaussian_against_independent_audit
+69.52s call     tests/test_bg_public_counts.py::test_default_solar_es_no_smearing_against_analytic_integrals
+55.21s call     tests/test_bg_public_counts.py::test_default_solar_cevens_gaussian_against_independent_audit
+35.76s call     tests/test_bg_public_counts.py::test_default_ar39_gaussian_bins_against_table_cdf_reference
+26.07s call     tests/test_detector_audit_regressions.py::test_discontinuous_efficiency_pipeline_limits_and_tolerance_convergence[BinnedPoissonProfile]
+25.29s call     tests/test_detector_audit_regressions.py::test_discontinuous_efficiency_pipeline_limits_and_tolerance_convergence[PoissonCLsCounting]
+22.26s call     tests/test_poster_workbench.py::test_notebooks_execute_clean_process
+22.04s call     tests/test_folding_fast.py::test_physical_isotope_folds_and_limits[76-100.0]
+20.89s call     tests/test_folding_fast.py::test_physical_isotope_folds_and_limits[73-100.0]
+20.77s call     tests/test_folding_fast.py::test_physical_isotope_folds_and_limits[72-100.0]
+20.69s call     tests/test_folding_fast.py::test_physical_isotope_folds_and_limits[74-100.0]
+20.48s call     tests/test_folding_fast.py::test_physical_isotope_folds_and_limits[70-100.0]
+14.85s call     tests/test_bg_public_counts.py::test_default_ar39_full_support_no_smearing
+12.20s call     tests/test_folding_fast.py::test_physical_isotope_folds_and_limits[74-10.0]
+11.96s call     tests/test_folding_fast.py::test_physical_isotope_folds_and_limits[73-10.0]
+11.92s call     tests/test_folding_fast.py::test_physical_isotope_folds_and_limits[72-10.0]
+11.79s call     tests/test_si_fast.py::test_isospin_violating_and_pure_neutron_folded_limits
+1140 passed in 2829.80s (0:47:09)

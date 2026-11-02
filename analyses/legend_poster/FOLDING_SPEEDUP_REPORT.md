@@ -85,7 +85,7 @@ in either direction because it reads caches rather than running CDF kernels.
 ## Validation
 
 **39 focused tests passed in 177.02 s** on the final numerical tree.
-The complete existing regression suite is **in progress**; no full-suite pass is claimed yet.
+**Complete regression suite: 1140 passed in 2829.80 s**, warnings treated as errors. The 39 focused cases are included in this single invocation; counts are not additive across runs.
 The earlier 35-test run is superseded/overlapping, not an additional test total.
 
 No existing tests were modified, disabled or relaxed. New focused cases cover
@@ -117,6 +117,10 @@ whose resolution is strictly positive; its measured source was C2 (`c2f1db6`).
 The full suite was deliberately stopped on that earlier revision after this
 review finding. The cancelled run (exit 130) is preserved under
 `validation/folding_speedup/execution/run-0007/`; it is not counted as a pass.
-The full suite has restarted on `12398ec`; a matched complete benchmark will
-then be repeated on the same final numerical revision. Independent acceptance
-is pending.
+The full suite passed on `12398ec`: **1140 passed in 2829.80 s**.
+A matched complete benchmark is being repeated on the same final numerical
+revision. Independent acceptance is pending.
+
+The completed full-suite record is preserved under
+`validation/folding_speedup/execution/run-0010/`. Run 0009 lost its executor;
+its partial log is preserved separately and is not counted as a pass.
