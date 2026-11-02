@@ -78,6 +78,9 @@ class VectorizedGaussianBins(LocalGaussianBins):
         sigma_function=self.resolution.sigma_keV
         sigmas=(array(sigma_function(mean),'sigma_keV') if type(sigma_function) is NoiseFanoSigma
                 else np.asarray(self.resolution.sigma_at(mean)))
+        # Preserve the reference wrapper's deterministic endpoint rules in
+        # degenerate batches; do not reimplement zero-width migration here.
+        if np.any(sigmas==0):return super().bin_probabilities(e,bins)
         result=np.zeros((mean.size,len(bins)-1))
         if not mean.size:return output(result.reshape(mean.shape+(len(bins)-1,)))
         means=mean.ravel();sigmas=sigmas.ravel()
@@ -99,12 +102,6 @@ class VectorizedGaussianBins(LocalGaussianBins):
                 side=a>=0
                 hi=ndtr(np.where(side,-a,b));lo=ndtr(np.where(side,-b,a))
                 result[start+np.flatnonzero(positive),first:last]=(hi-lo)*epsilon
-            deterministic=~positive
-            active=deterministic&(m>=bins[0])&(m<=bins[-1])
-            if np.any(active):
-                j=np.minimum(np.searchsorted(bins,m[active],side='right')-1,len(bins)-2)
-                keep=(j>=first)&(j<last)
-                result[start+np.flatnonzero(active)[keep],j[keep]]=epsilon
         return output(result.reshape(mean.shape+(len(bins)-1,)))
 
 

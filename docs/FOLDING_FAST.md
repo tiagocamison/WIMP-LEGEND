@@ -43,7 +43,8 @@ Only concrete built-in ER/NR responses with the built-in Gaussian resolution
 and absent/constant observed efficiency use the array calculation. Custom
 resolution/response ports retain their own `expected_counts` implementation;
 nonconstant observed efficiencies use the original probability integration.
-Point lines always delegate the original, unpruned `expected_line_counts` API.
+Zero-width Gaussian batches delegate the reference wrapper, preserving its
+deterministic boundary semantics. Point lines always delegate the original, unpruned `expected_line_counts` API.
 Already-observed spectra/counts continue to bypass detector processing.
 
 The existing continuum pruning removes bins outside the same batch-union

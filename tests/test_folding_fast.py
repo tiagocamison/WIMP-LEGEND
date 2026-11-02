@@ -130,3 +130,15 @@ def test_noise_fano_array_contract_preserves_scalar_formula_and_owned_config():
     c['detector']['presets']['benchmark']['noise_sigma_keV']=999.
     np.testing.assert_array_equal(sigma(e),original)
     with pytest.raises(FrozenInstanceError):sigma.noise_sigma_keV=1.
+
+
+@pytest.mark.parametrize('domain',[EnergyDomain.ER,EnergyDomain.NR])
+def test_zero_width_batch_at_local_final_bin_edge_delegates(domain):
+    resolution=GaussianResolution(0.)
+    response=(ElectronRecoilResponse(resolution,observed_efficiency=ConstantEfficiency(.7)) if domain is EnergyDomain.ER
+        else DetectorResponse(ConstantQuenching(.2),resolution,observed_efficiency=ConstantEfficiency(.7)))
+    e=np.array([.1,.2])
+    means=e if domain is EnergyDomain.ER else response.quenching.mean_energy_keV(e)
+    bins=np.r_[0.,means,means[-1]+.1]
+    np.testing.assert_array_equal(VectorizedGaussianBins(response,12).bin_probabilities(e,bins),
+        LocalGaussianBins(response,12).bin_probabilities(e,bins))
