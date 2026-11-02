@@ -4,10 +4,10 @@
 
 Branch: `poster-speedup`, based on SI-speedup delivery
 `0a4274686640a3e9e3d819091490a59f8916c9b8`.
-Numerical implementation commit: `c2f1db68b4c9264a1e66cd9f690f243ccea736fb`;
-tree: `8784199161ecce3a0591478e32d36684dca95403`.
+Numerical implementation commit: `12398ec1414fd76a40fd57b97f426eb84758ded2`;
+tree: `126d4d04bf820669242c8f5de006332bc9dfa4a3`.
 The tree is identical to local verification checkpoint
-`1c113414403bdd61944deab03f977e82dc1f5d9a`.
+`a8d90595fc4a38fc50e30f6e683f7b23aad00483`.
 Subsequent report/evidence commits do not change numerical code.
 
 ## Implementation and unchanged science
@@ -56,7 +56,7 @@ A preliminary setup-overlapping profile is retained in evidence but excluded
 from performance/physics acceptance; it loaded libraries while the environment
 was being pinned. The repeated pinned baseline profile completed without stderr.
 
-## Final unprofiled complete benchmark
+## Recorded unprofiled complete benchmark
 
 | Complete 24-mass SI analysis | Reference | Vectorized |
 |---|---:|---:|
@@ -84,7 +84,7 @@ in either direction because it reads caches rather than running CDF kernels.
 
 ## Validation
 
-**37 focused tests passed in 176.58 s** on the final numerical tree.
+**39 focused tests passed in 177.02 s** on the final numerical tree.
 The complete existing regression suite is **in progress**; no full-suite pass is claimed yet.
 The earlier 35-test run is superseded/overlapping, not an additional test total.
 
@@ -107,3 +107,16 @@ integration, bin-crossing roots and output/cache I/O. No change to these physica
 kernels or new interpolation of backgrounds was introduced to chase timings.
 Existing provisional calibration/enrichment/background assumptions, source
 closure deficits and physical nuclear-response validity uncertainties remain.
+
+## Zero-width hardening / validation in progress
+
+The corrected implementation delegates any zero-width Gaussian batch to the
+reference wrapper, preserving its local final-bin endpoint semantics. Two new
+ER/NR edge regressions pass. This does not affect the recorded poster benchmark,
+whose resolution is strictly positive; its measured source was C2 (`c2f1db6`).
+The full suite was deliberately stopped on that earlier revision after this
+review finding. The cancelled run (exit 130) is preserved under
+`validation/folding_speedup/execution/run-0007/`; it is not counted as a pass.
+The full suite has restarted on `12398ec`; a matched complete benchmark will
+then be repeated on the same final numerical revision. Independent acceptance
+is pending.

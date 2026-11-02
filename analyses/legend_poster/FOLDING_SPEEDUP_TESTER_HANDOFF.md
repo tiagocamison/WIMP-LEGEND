@@ -6,10 +6,10 @@ Task: accelerate the complete poster analysis on `poster-speedup`, retaining
 accepted physics and the reference numerical backend. Independent acceptance
 is pending; internal verification is not the Tester's acceptance decision.
 
-Implementation commit: `c2f1db68b4c9264a1e66cd9f690f243ccea736fb`.
-Implementation tree: `8784199161ecce3a0591478e32d36684dca95403`.
+Implementation commit: `12398ec1414fd76a40fd57b97f426eb84758ded2`.
+Implementation tree: `126d4d04bf820669242c8f5de006332bc9dfa4a3`.
 This tree exactly matches local checkpoint
-`1c113414403bdd61944deab03f977e82dc1f5d9a`. Reports/evidence added subsequently
+`a8d90595fc4a38fc50e30f6e683f7b23aad00483`. Reports/evidence added subsequently
 do not change the implementation. Base:
 `0a4274686640a3e9e3d819091490a59f8916c9b8` (previous SI speedup delivery).
 
@@ -19,7 +19,7 @@ Only this branch is authorized for publication; no change to `poster`, `main`,
 ## Internal verification status
 
 The complete 24-mass cold/warm benchmark passed, with exact saved-array/limit
-agreement and a 9.9135x cold speedup. The 37 focused tests pass. The complete
+agreement and a 9.9135x cold speedup. The 39 focused tests pass. The complete
 regression suite is still running; independent acceptance remains pending.
 
 ## Public workflow and interfaces
@@ -113,3 +113,16 @@ known-source statistical assumptions. This optimization does not resolve them.
 For a separate independent pass, concentrate on fallback selection, tail
 cancellation, deterministic bin boundaries, cache invalidation and complete
 limits rather than accepting only a fast raw probability microbenchmark.
+
+## Zero-width hardening / validation in progress
+
+The corrected implementation delegates any zero-width Gaussian batch to the
+reference wrapper, preserving its local final-bin endpoint semantics. Two new
+ER/NR edge regressions pass. This does not affect the recorded poster benchmark,
+whose resolution is strictly positive; its measured source was C2 (`c2f1db6`).
+The full suite was deliberately stopped on that earlier revision after this
+review finding. The cancelled run (exit 130) is preserved under
+`validation/folding_speedup/execution/run-0007/`; it is not counted as a pass.
+The full suite has restarted on `12398ec`; a matched complete benchmark will
+then be repeated on the same final numerical revision. Independent acceptance
+is pending.
