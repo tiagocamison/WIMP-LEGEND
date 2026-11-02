@@ -30,6 +30,10 @@ z_j=(E_j-\bar E(E))/\sigma(\bar E(E)).
 
 For positive lower endpoints it instead uses
 `Phi(-z_j) - Phi(-z_{j+1})`, exactly as the reference, to avoid cancellation.
+The workbench's unchanged noise-plus-Fano formula has an explicit immutable
+`NoiseFanoSigma` array callback; only this known callback is evaluated in bulk.
+Arbitrary resolution callbacks retain the original scalar sampling contract.
+
 NR uses the existing quenching model; ER mean energy is the ER truth energy.
 The existing truth efficiency multiplies the spectrum in quadrature, outside
 this kernel. There is no finite-window renormalization, extra efficiency,

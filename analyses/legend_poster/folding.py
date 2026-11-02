@@ -74,7 +74,10 @@ class VectorizedGaussianBins(LocalGaussianBins):
         mean=e if self.input_energy_domain is EnergyDomain.ER else array(
             self.quenching.mean_energy_keV(e),'E_ee_keV')
         if mean.shape!=e.shape:raise ValueError('quenching must preserve energy shape')
-        sigmas=np.asarray(self.resolution.sigma_at(mean))
+        from .models import NoiseFanoSigma
+        sigma_function=self.resolution.sigma_keV
+        sigmas=(array(sigma_function(mean),'sigma_keV') if type(sigma_function) is NoiseFanoSigma
+                else np.asarray(self.resolution.sigma_at(mean)))
         result=np.zeros((mean.size,len(bins)-1))
         if not mean.size:return output(result.reshape(mean.shape+(len(bins)-1,)))
         means=mean.ravel();sigmas=sigmas.ravel()

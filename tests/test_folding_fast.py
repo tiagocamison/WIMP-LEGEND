@@ -117,3 +117,16 @@ def test_custom_kernel_and_observed_data_keep_their_own_routes():
     np.testing.assert_array_equal(fold_component(cpt,bins,n),cpt.expected_counts(bins,1.))
     observed=FlatBackground(.7)
     np.testing.assert_array_equal(fold_component(observed,bins,n),observed.expected_counts(bins,1.))
+
+
+def test_noise_fano_array_contract_preserves_scalar_formula_and_owned_config():
+    from analyses.legend_poster.models import NoiseFanoSigma
+    from dataclasses import FrozenInstanceError
+    c=load_config();er,_=responses(c)
+    sigma=er.resolution.sigma_keV;assert type(sigma) is NoiseFanoSigma
+    e=np.array([0.,.01,.5,3.,1000.])
+    np.testing.assert_array_equal(sigma(e),er.resolution.sigma_at(e))
+    original=sigma(e)
+    c['detector']['presets']['benchmark']['noise_sigma_keV']=999.
+    np.testing.assert_array_equal(sigma(e),original)
+    with pytest.raises(FrozenInstanceError):sigma.noise_sigma_keV=1.

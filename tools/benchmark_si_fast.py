@@ -24,6 +24,8 @@ def benchmark(out):
     old=load_run(ROOT/'analyses/legend_poster/validation/standard')
     prior=deepcopy(old['manifest']['resolved_configuration'])
     prior['signal']['si_rate_engine']='generic'
+    # The archived configuration predates the explicit reference folding field.
+    prior['numerical'].setdefault('folding_backend','reference')
     assert prior==c,'Reference physics changed: do not compare unlike configurations'
     identity=source_identity();cache=NumericalCache(out/'cache',identity['physics_fingerprint'])
     bins=observed_edges(c);pure={};comparison=[]
