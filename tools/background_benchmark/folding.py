@@ -43,6 +43,13 @@ def quadrature_counts(background,bins,exposure,*,step_keV=.05,order=6,tail_sigma
     if lo>=hi:return output(result)
     # Bin crossings make the no-smearing limit and thresholds well resolved.
     crossings=[]
+    # Resolve discontinuities and narrow pre-smearing acceptance turn-ons in
+    # truth-energy units; a fixed 25 eV integration step is insufficient.
+    truth_efficiency=getattr(response,'truth_efficiency',None)
+    if truth_efficiency is not None:
+        breakpoints=getattr(truth_efficiency,'integration_breakpoints_keV',None)
+        if callable(breakpoints):
+            crossings.extend(breakpoints(lo,hi))
     for edge in bins:
         if mean(lo)<edge<mean(hi):crossings.append(brentq(lambda e:mean(e)-edge,lo,hi))
     count=int(np.ceil((hi-lo)/step))
@@ -56,10 +63,14 @@ def quadrature_counts(background,bins,exposure,*,step_keV=.05,order=6,tail_sigma
         e=nodes[start:start+128];weight=weights[start:start+128]
         rate=np.asarray(background.spectrum(e))
         if rate.shape!=e.shape or np.any(~np.isfinite(rate)) or np.any(rate<0):raise ValueError('invalid vector truth spectrum')
-        probabilities=np.asarray(response.bin_probabilities(e,bins))
         truth_efficiency=getattr(response,'truth_efficiency',None)
         efficiency=np.ones_like(e) if truth_efficiency is None else np.asarray(truth_efficiency(e))
         if efficiency.shape!=e.shape or np.any(~np.isfinite(efficiency)) or np.any((efficiency<0)|(efficiency>1)):
             raise ValueError('invalid truth efficiency')
-        result+=exposure*((weight*rate*efficiency)@probabilities)
+        # Only retained truth events are submitted to the smearing kernel.
+        active=(rate>0)&(efficiency>0)
+        if not np.any(active):
+            continue
+        probabilities=np.asarray(response.bin_probabilities(e[active],bins))
+        result+=exposure*((weight[active]*rate[active]*efficiency[active])@probabilities)
     return output(result)

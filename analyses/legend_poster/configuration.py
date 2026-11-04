@@ -44,6 +44,21 @@ def validate_config(config):
             for k in ('NR_energy_range_keV','ER_energy_range_keV'):
                 lo,hi=d[k];_positive(lo,k,zero=True);_positive(hi,k)
                 if lo!=0 or hi<=lo:raise ValueError('truth ranges must start at zero')
+            # Optional pre-smearing ionization acceptance (energy in keVee).
+            ion=d.get('ionization_acceptance', {'model': 'none'})
+            if not isinstance(ion,dict) or set(ion)-{
+                    'model','floor_keVee','e50_keVee','width_keVee'}:
+                raise ValueError('invalid ionization_acceptance configuration')
+            if ion.get('model') not in ('none','hard','erf') or type(ion.get('model')) is not str:
+                raise ValueError('ionization_acceptance.model must be none, hard or erf')
+            if ion['model'] != 'none':
+                if 'e50_keVee' not in ion or 'width_keVee' not in ion:
+                    raise ValueError('ionization_acceptance requires e50_keVee and width_keVee')
+                _positive(ion['e50_keVee'],'ionization e50_keVee')
+                _positive(ion['width_keVee'],'ionization width_keVee')
+                _positive(ion.get('floor_keVee',0.),'ionization floor_keVee',zero=True)
+                if ion.get('floor_keVee',0.) > ion['e50_keVee']:
+                    raise ValueError('ionization floor must not exceed e50')
             responses(c,name)
         s=c['signal']
         if s.get('si_rate_engine','generic') not in ('generic','factorized_shm'):

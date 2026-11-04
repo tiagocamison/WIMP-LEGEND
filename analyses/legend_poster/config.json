@@ -124,6 +124,12 @@
         "pair_energy_keV": 0.00296,
         "efficiency": 0.9,
         "lindhard_k": 0.157,
+        "ionization_acceptance": {
+          "model": "none",
+          "floor_keVee": 0.0,
+          "e50_keVee": 0.02,
+          "width_keVee": 0.005
+        },
         "Z": 32,
         "NR_energy_range_keV": [
           0.0,
@@ -319,7 +325,8 @@
     "background_total_rtol": 0.001,
     "background_bin_rtol": 0.01,
     "blas_threads": 1,
-    "gaussian_tail_probability_max": 1e-15
+    "gaussian_tail_probability_max": 1e-15,
+    "folding_backend": "reference"
   },
   "execution": {
     "default_profile": "standard",

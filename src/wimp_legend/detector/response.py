@@ -51,6 +51,8 @@ def _fold(truth_spectrum, bins, exposure, interval, points, kernel, truth_effici
             rate = sample(truth_spectrum, energy, 'truth spectrum')
             efficiency = 1 if truth_efficiency is None else sample(
                 truth_efficiency, energy, 'truth efficiency', probability=True)
+            if efficiency == 0 or rate == 0:
+                return 0.  # Rejected truth events never enter smearing.
             probability = _probabilities(kernel(energy), len(result))[j]
             return rate * efficiency * probability
         result[j] = exposure * policy.integrate(integrand, *interval, breakpoints=points)
@@ -68,6 +70,8 @@ def _line_counts(energy, rate_per_kg_day, observed_bin_edges_keV, exposure_kg_da
         return np.zeros(len(bins)-1)
     efficiency = 1 if truth_efficiency is None else sample(
         truth_efficiency, energy, 'truth efficiency', probability=True)
+    if efficiency == 0:
+        return np.zeros(len(bins)-1)
     probabilities = _probabilities(kernel(energy, bins), len(bins)-1)
     with np.errstate(over='raise', invalid='raise'):
         return output(exposure * (rate * efficiency) * probabilities)
@@ -114,6 +118,11 @@ class DetectorResponse:
                         truth_energy_range_keV, *, truth_breakpoints=()):
         bins, exposure, interval, points = _inputs(truth_spectrum, observed_bin_edges_keV,
             exposure_kg_day, truth_energy_range_keV, truth_breakpoints)
+        # Include truth-domain ionization acceptance breakpoints if declared.
+        if self.truth_efficiency is not None:
+            finder=getattr(self.truth_efficiency,'integration_breakpoints_keV',None)
+            if callable(finder):
+                points=np.unique(np.r_[points,finder(float(interval[0]),float(interval[1]))])
         # Split known bin/efficiency boundaries; add width-scale points for a
         # constant Gaussian so quadrature can discover narrow acceptance windows.
         # These are breakpoints only: the Gaussian is never truncated.

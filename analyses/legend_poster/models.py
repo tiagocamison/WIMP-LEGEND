@@ -7,6 +7,7 @@ from wimp_legend.targets import Isotope, SourceReference, TargetComposition
 from wimp_legend.detector import (DetectorResponse, ElectronRecoilResponse,
     LindhardQuenching, GaussianResolution, ConstantEfficiency)
 from wimp_legend.backgrounds import BenchmarkConfig, build_benchmark, CompositeBackground
+from .ionization import IonizationAcceptance
 
 COMPONENTS = ('H3','Ge68','Ga68','Zn65','Fe55','Ar39','solar_CEvNS','solar_ES','flat_observed')
 
@@ -70,8 +71,20 @@ def responses(config, preset=None):
     sigma=NoiseFanoSigma(d['noise_sigma_keV'],d['fano_factor'],d['pair_energy_keV'])
     kwargs = dict(resolution=GaussianResolution(sigma),
                   observed_efficiency=ConstantEfficiency(d['efficiency']))
-    return (ElectronRecoilResponse(**kwargs),
-            DetectorResponse(LindhardQuenching(d['Z'],d['lindhard_k']),**kwargs))
+    quenching=LindhardQuenching(d['Z'],d['lindhard_k'])
+    ion=d.get('ionization_acceptance', {'model': 'none'})
+
+    def ionization(quenching_or_none):
+        if ion['model']=='none':
+            return None  # Exact legacy behavior, with no extra probability factor.
+        return IonizationAcceptance(
+            mode=ion['model'], e50_keVee=ion['e50_keVee'],
+            width_keVee=ion['width_keVee'],
+            floor_keVee=ion.get('floor_keVee', 0.),
+            quenching=quenching_or_none)
+
+    return (ElectronRecoilResponse(truth_efficiency=ionization(None), **kwargs),
+            DetectorResponse(quenching, truth_efficiency=ionization(quenching), **kwargs))
 
 
 def build_background(config, scenario):
