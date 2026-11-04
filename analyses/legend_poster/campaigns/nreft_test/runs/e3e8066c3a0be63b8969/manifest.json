@@ -1,0 +1,730 @@
+{
+  "schema_version": 1,
+  "run_id": "e3e8066c3a0be63b8969ddb8a175167e15dcbf2f5c7e9cfa288626c5f6746ed2",
+  "numerical_id": "487b3f7d844d793cd68d282a3c65d124718aee99f9f34f051336a719b08e1473",
+  "resolved_configuration": {
+    "schema_version": 1,
+    "status": "PROVISIONAL LEGEND BENCHMARK; not a validated prediction",
+    "target": {
+      "isotopes": {
+        "70": {
+          "atomic_mass_u": 69.92424875,
+          "mass_GeV": 65.11773075070431,
+          "spin": 0.0,
+          "source": {
+            "reference": "NIST Atomic Weights and Isotopic Compositions for Germanium (SRD 144 snapshot)",
+            "url": "https://physics.nist.gov/cgi-bin/Compositions/stand_alone.pl?ascii=ascii&ele=Ge",
+            "accessed": "2026-10-26",
+            "kind": "literature_snapshot",
+            "notes": "NIST snapshot; not claimed to supersede newer CIAAW evaluations."
+          },
+          "atomic_mass_uncertainty_u": 9e-07
+        },
+        "72": {
+          "atomic_mass_u": 71.922075826,
+          "mass_GeV": 66.97869489225047,
+          "spin": 0.0,
+          "source": {
+            "reference": "NIST Atomic Weights and Isotopic Compositions for Germanium (SRD 144 snapshot)",
+            "url": "https://physics.nist.gov/cgi-bin/Compositions/stand_alone.pl?ascii=ascii&ele=Ge",
+            "accessed": "2026-10-26",
+            "kind": "literature_snapshot",
+            "notes": "NIST snapshot; not claimed to supersede newer CIAAW evaluations."
+          },
+          "atomic_mass_uncertainty_u": 8.1e-08
+        },
+        "73": {
+          "atomic_mass_u": 72.923458956,
+          "mass_GeV": 67.91147737341015,
+          "spin": 4.5,
+          "source": {
+            "reference": "NIST Atomic Weights and Isotopic Compositions for Germanium (SRD 144 snapshot)",
+            "url": "https://physics.nist.gov/cgi-bin/Compositions/stand_alone.pl?ascii=ascii&ele=Ge",
+            "accessed": "2026-10-26",
+            "kind": "literature_snapshot",
+            "notes": "NIST snapshot; not claimed to supersede newer CIAAW evaluations."
+          },
+          "atomic_mass_uncertainty_u": 6.1e-08
+        },
+        "74": {
+          "atomic_mass_u": 73.921177761,
+          "mass_GeV": 68.84084655743821,
+          "spin": 0.0,
+          "source": {
+            "reference": "NIST Atomic Weights and Isotopic Compositions for Germanium (SRD 144 snapshot)",
+            "url": "https://physics.nist.gov/cgi-bin/Compositions/stand_alone.pl?ascii=ascii&ele=Ge",
+            "accessed": "2026-10-26",
+            "kind": "literature_snapshot",
+            "notes": "NIST snapshot; not claimed to supersede newer CIAAW evaluations."
+          },
+          "atomic_mass_uncertainty_u": 1.3e-08
+        },
+        "76": {
+          "atomic_mass_u": 75.921402726,
+          "mass_GeV": 70.70404431844925,
+          "spin": 0.0,
+          "source": {
+            "reference": "NIST Atomic Weights and Isotopic Compositions for Germanium (SRD 144 snapshot)",
+            "url": "https://physics.nist.gov/cgi-bin/Compositions/stand_alone.pl?ascii=ascii&ele=Ge",
+            "accessed": "2026-10-26",
+            "kind": "literature_snapshot",
+            "notes": "NIST snapshot; not claimed to supersede newer CIAAW evaluations."
+          },
+          "atomic_mass_uncertainty_u": 1.9e-08
+        }
+      },
+      "mass_conversion": {
+        "u_GeV": 0.93149410372,
+        "electron_mass_GeV": 0.00051099895069,
+        "electron_binding_eV": 57299.450802052306,
+        "formula": "m_nucleus = atomic_mass_u*u_GeV - Z*m_e_GeV + B_e*1e-9",
+        "source": "CODATA 2022 NIST muc2mev, mec2mev; AME2020 II Eq.(2), DOI:10.1088/1674-1137/abddaf",
+        "binding_note": "Approximate total atomic electron-binding fit B_e=14.4381 Z^2.39+1.55468e-6 Z^5.35 eV; not a precision nuclear-mass evaluation. Z=32."
+      },
+      "presets": {
+        "natural": {
+          "fraction_kind": "number",
+          "fractions": {
+            "70": 0.2057,
+            "72": 0.2745,
+            "73": 0.0775,
+            "74": 0.365,
+            "76": 0.0773
+          },
+          "provenance": "NIST SRD144 snapshot above; central abundances, no uncertainty propagation",
+          "status": "literature_snapshot",
+          "fraction_uncertainties": {
+            "70": 0.0027,
+            "72": 0.0032,
+            "73": 0.0012,
+            "74": 0.002,
+            "76": 0.0012
+          }
+        },
+        "enriched_provisional": {
+          "fraction_kind": "number",
+          "fractions": {
+            "70": 0.0,
+            "72": 0.0,
+            "73": 0.0,
+            "74": 0.08,
+            "76": 0.92
+          },
+          "provenance": "HYPOTHETICAL 92% Ge76 / 8% Ge74 by number; NOT measured LEGEND enrichment. Replace all fractions with collaboration data.",
+          "status": "hypothetical"
+        }
+      },
+      "kg_normalization": "neutral_atomic_detector_mass",
+      "mass_fraction_definition": "bare_nuclear_ensemble (TargetComposition convention)"
+    },
+    "detector": {
+      "default": "benchmark",
+      "presets": {
+        "benchmark": {
+          "provenance": "Hypothetical low-energy noise/Fano, constant efficiency and Lindhard assumptions; uncalibrated",
+          "threshold_keV_obs": 0.1,
+          "noise_sigma_keV": 0.05,
+          "fano_factor": 0.11,
+          "pair_energy_keV": 0.00296,
+          "efficiency": 0.9,
+          "lindhard_k": 0.157,
+          "Z": 32,
+          "NR_energy_range_keV": [
+            0.0,
+            1500.0
+          ],
+          "ER_energy_range_keV": [
+            0.0,
+            20000.0
+          ]
+        }
+      }
+    },
+    "background": {
+      "base": {
+        "lar_transfer_probability": 0.00014230663956447948,
+        "argon_mass_per_kg_Ge": 20.0,
+        "cooldown_day": 365.25,
+        "run_duration_day": 365.25,
+        "ga68_initialization": "secular_equilibrium",
+        "ga68_initial_activity_per_kg_day": null,
+        "zn65_gamma_escape_probability": 0.0,
+        "ga68_gamma_escape_probability": 0.0,
+        "annihilation_escape_probability": 0.0,
+        "solar_flux_components": [
+          "pp",
+          "B8"
+        ],
+        "solar_sin2_theta12": 0.307,
+        "solar_sin2_theta13": 0.022,
+        "solar_delta_m21_eV2": 7.53e-05,
+        "solar_rho_Ye_g_cm3": 65.0,
+        "activities_per_kg_day": [
+          [
+            "H3",
+            0.2108145106091718
+          ],
+          [
+            "Ge68",
+            0.11733646230566147
+          ],
+          [
+            "Zn65",
+            0.06570841889117043
+          ],
+          [
+            "Fe55",
+            0.024702413116981365
+          ]
+        ],
+        "flat_rate_per_kg_day_keV_obs": 0.0003148528405201916,
+        "ar39_activity_Bq_per_kg_Ar": 0.00073,
+        "lar_veto_survival_probability": 0.01,
+        "provenance": "EXPLICIT NOTEBOOK-DERIVED BENCHMARK. Intrinsic activities77/600/60/12 decays per kg Ge year, enrichment divisors14/2.5/1.33 and observed flat0.1(+15%) are illustrative, not measured LEGEND. Physical AAr0.964 Bq/kg (DEAP EPJC83,642(2023)); UAr0.00073 Bq/kg (DarkSide PRD93,081101(2016)); not certified LEGEND argon. Argon mass ratio20 kgAr/kgGe is arbitrary; transfer fitted to notebook integrated AAr normalization, not geometry prediction. Effective A surrogate72.63/76 and mass=A*0.93149410242 GeV approximate target; neutrino mixing rounded PDG-like values and rhoYe65 are fixed-density benchmark assumptions."
+      },
+      "scenarios": {
+        "natural_AAr": {
+          "target": "natural",
+          "overrides": {
+            "cooldown_day": 0.0,
+            "activities_per_kg_day": [
+              [
+                "H3",
+                0.2108145106091718
+              ],
+              [
+                "Ge68",
+                1.6427104722792607
+              ],
+              [
+                "Zn65",
+                0.16427104722792607
+              ],
+              [
+                "Fe55",
+                0.03285420944558522
+              ]
+            ],
+            "flat_rate_per_kg_day_keV_obs": 0.0002737850787132101,
+            "ar39_activity_Bq_per_kg_Ar": 0.964,
+            "lar_veto_survival_probability": 1.0
+          },
+          "components": {}
+        },
+        "enriched_UAr": {
+          "target": "enriched_provisional",
+          "overrides": {
+            "cooldown_day": 0.0,
+            "lar_veto_survival_probability": 1.0
+          },
+          "components": {}
+        },
+        "legend_poster": {
+          "target": "enriched_provisional",
+          "overrides": {},
+          "components": {}
+        }
+      },
+      "solar_target_mode": "isotope_mixture",
+      "historical": {
+        "enabled": false,
+        "notebook": "WIMP_O1_spectrum.ipynb",
+        "sha256": "ca3e8376f6fad9dfafb836ffe1b74b60377b7ed9e2dcb313f90b8807216ad39f",
+        "pair_with": "enriched_UAr",
+        "target": "enrGe",
+        "argon": "UAr",
+        "provenance": "Frozen historical already-observed model. Same signal, exposure, ROI/statistics; its historical background response/selection remains frozen, not recalibrated or refolded."
+      }
+    },
+    "signal": {
+      "halo": {
+        "v0_km_s": 220.0,
+        "vesc_km_s": 544.0,
+        "v_lab_km_s": 266.0,
+        "rho_chi_GeV_cm3": 0.3,
+        "provenance": "Fixed Standard Halo Model benchmark; no annual average/modulation"
+      },
+      "masses_GeV": [
+        3.0,
+        5.0,
+        15.0,
+        30,
+        50,
+        100
+      ],
+      "operators": [
+        8,
+        11
+      ],
+      "j_chi": 0.5,
+      "sigma_p_ref_cm2": 1e-42,
+      "m_proton_GeV": 0.93827208943,
+      "m_N_reference_GeV": 0.93827208943,
+      "mass_reference_source": "CODATA2022 proton energy; explicit choice of nucleon reference mass, not a hidden core default",
+      "fn_over_fp": 1.0,
+      "proton_sign": 1,
+      "coefficient_basis": "proton_neutron",
+      "coefficient_unit": "GeV^-2",
+      "coefficient_ref_GeV_minus2": 1e-05,
+      "convention_id": "anand2014_prc89_065501_half_isospin_v1",
+      "provenance": "O1 from physical SI adapter; single O8/O11 with cp=reference, cn=fn_over_fp*cp; dimensionful coefficients; limits |cp|=sqrt(mu)*|cp_ref|, no SI relabeling",
+      "si_rate_engine": "generic"
+    },
+    "analysis": {
+      "scenarios": [
+        "legend_poster"
+      ],
+      "exposures_kg_day": [
+        36525.0
+      ],
+      "confidence_level": 0.9,
+      "roi": {
+        "method": "threshold_anchored",
+        "signal_fraction": 0.95,
+        "normalization": "signal inside configured observed analysis window"
+      },
+      "methods": [
+        "poisson_cls_counting"
+      ],
+      "days_per_year": 365.25,
+      "provenance": "Known background median exact Poisson CLs; optional binned_asimov explicitly asymptotic, not an exact alternative",
+      "binned_roi": "full_analysis_window"
+    },
+    "numerical": {
+      "bin_segments": [
+        [
+          0.03,
+          2.0,
+          0.01
+        ],
+        [
+          2.0,
+          15.0,
+          0.05
+        ]
+      ],
+      "background_order": 8,
+      "background_step_keV": 0.025,
+      "signal_fold_order": 8,
+      "signal_fold_step_keV": 0.025,
+      "gaussian_tail_sigma": 12.0,
+      "signal_grid_points": 56,
+      "signal_grid_min_keV": 1e-05,
+      "rate_epsrel": 1e-05,
+      "signal_refinements": 3,
+      "signal_total_rtol": 0.005,
+      "signal_bin_rtol": 0.03,
+      "significant_bin_fraction": 0.0001,
+      "background_total_rtol": 0.001,
+      "background_bin_rtol": 0.01,
+      "blas_threads": 1,
+      "gaussian_tail_probability_max": 1e-15,
+      "folding_backend": "vectorized"
+    },
+    "execution": {
+      "default_profile": "standard",
+      "profiles": {
+        "standard": {},
+        "smoke": {
+          "masses_GeV": [
+            6.0,
+            20.0
+          ],
+          "scenarios": [
+            "natural_AAr",
+            "enriched_UAr",
+            "legend_poster"
+          ],
+          "signal_grid_points": 12,
+          "signal_refinements": 3,
+          "signal_total_rtol": 0.08,
+          "signal_bin_rtol": 0.3,
+          "background_order": 6,
+          "background_step_keV": 0.05,
+          "signal_fold_order": 6,
+          "signal_fold_step_keV": 0.05,
+          "label": "SMOKE: coarse numerical settings; not poster-quality results"
+        }
+      },
+      "resolved_profile": "standard",
+      "resolved_label": "standard"
+    },
+    "plotting": {
+      "energy_range_keV": [
+        0.03,
+        15.0
+      ],
+      "threshold_zoom_keV": [
+        0.03,
+        2.0
+      ],
+      "mass_range_GeV": [
+        0.3,
+        1000.0
+      ],
+      "sigma_range_cm2": [
+        1e-49,
+        1e-35
+      ],
+      "comparisons": [
+        "CRESST",
+        "CDMSLite",
+        "DarkSide-50_2022",
+        "LZ_2024",
+        "XENONnT_2025",
+        "SuperCDMS_SNOLAB",
+        "DarkSide-20k"
+      ],
+      "dpi": 160,
+      "title": "LEGEND provisional benchmark",
+      "limit_exposure_indices": [
+        -1
+      ],
+      "exposure_comparison_scenario": "legend_poster"
+    },
+    "provenance": {
+      "pilot_notebook": "notebooks/historical/poster_workbench_pilot.ipynb",
+      "pilot_sha256": "23f6178e6b94c2c277243a6348deb3c1f13600488fa8f7d6bfab08ba20e99d02",
+      "notes": [
+        "No physical source uncertainty propagation or LEGEND calibration.",
+        "Natural isotope central abundances and atomic masses from frozen NIST snapshot; enriched composition explicitly hypothetical.",
+        "Nuclear Ge response source closure deficits and unknown physical validity range retained.",
+        "Background physical source data and hashes inherited unchanged from BG-BENCHMARK-001."
+      ]
+    }
+  },
+  "source": {
+    "git_commit": "5b8bc0d737f0034c00ac67190826b755676be8f3",
+    "git_status": "M notebooks/DirectDetectionPlots\n M notebooks/poster_plots_campaign.ipynb\n M notebooks/poster_setup_campaign.ipynb\n M notebooks/poster_workbench_campaign.ipynb\n?? analyses/legend_poster/campaign_scripts/\n?? analyses/legend_poster/campaigns/\n?? analyses/legend_poster/poster_campaign_spec.json\n?? notebooks/nreft_outlook_all_in_one.ipynb\n?? notebooks/poster_plots_campaign_standalone.ipynb\n?? scripts/run_poster_campaign.py",
+    "physics_files": {
+      "analyses\\legend_poster\\__init__.py": "06c404bfbd934090db51a10a6f5064010f478ff6aea30dd99b57c235e7173bce",
+      "analyses\\legend_poster\\__main__.py": "1ec4de962141b0f7c5f105f7003f5f14126da999ab9bce6982d83758a09c02e7",
+      "analyses\\legend_poster\\analysis.py": "ec3824d3775db3211c7094e5edd87bc28a7dceeaa79863241073430047337372",
+      "analyses\\legend_poster\\configuration.py": "1ce99efbb91772c98107f326ae23f14d4fff484b656b9457b7e3b9f7d7625948",
+      "analyses\\legend_poster\\folding.py": "20f17bad99c4d5bf293ab0892977b69e25cfac599165ef401c040262399a888a",
+      "analyses\\legend_poster\\models.py": "171595f696b66d877cd64373f2f6925eb701605443a2f50eaaec7bdc9c4837ad",
+      "analyses\\legend_poster\\storage.py": "c90b97c9a0a39e6f3df0b397268cf0c49d09e0a879f438682b9e9bbd911a88a6",
+      "src\\wimp_legend\\__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src\\wimp_legend\\_analysis.py": "c15c9709056a3750a9d54a87e1633e74a1cbd2d5ffce8a1b6c4b4f39bfc9d93e",
+      "src\\wimp_legend\\backgrounds\\__init__.py": "74cd64f9747b4557d74c73a8d7cba07b5ff97d908a2fd55ad3dec4759c729dd3",
+      "src\\wimp_legend\\backgrounds\\benchmark.py": "3293681273456d5ec9f4ecb858e161e5970ed684b080f846ce3a1aa285dff991",
+      "src\\wimp_legend\\backgrounds\\beta.py": "7351a4b22260ae21671421a33a14046c7584b4f9455a6efa27e1faa31f95d1c8",
+      "src\\wimp_legend\\backgrounds\\data\\benchmark_v1\\ar39.csv": "407074ad75116f9f442e9c5679a5fc337ee045389f22c67b08dfb27d2c872df7",
+      "src\\wimp_legend\\backgrounds\\data\\benchmark_v1\\Ar39_minimal_ENSDF.txt": "c4dd9d5793b4d53c262e4fbf7e4be0e50b23d4bc38d2aebb2ecdecf63634251d",
+      "src\\wimp_legend\\backgrounds\\data\\benchmark_v1\\ar39_provenance.json": "6af997f564c03d48c0b669d9aa55d8f5ab7252a583f4777fe3c49f115b1c64e9",
+      "src\\wimp_legend\\backgrounds\\data\\benchmark_v1\\manifest.json": "a2b295083c73caf7d3d542ff24911967d0bf712609a5bd3f54ba53bf0683af20",
+      "src\\wimp_legend\\backgrounds\\data\\benchmark_v1\\nuclear.json": "58dc1dde5fb31fbd85f23843eea13041f6ac28fd65ca7633cd49b0d600e15494",
+      "src\\wimp_legend\\backgrounds\\data\\benchmark_v1\\solar.json": "2855e3853d1478fa36011f6d00037d2e9d565e38420f1c21b963580a43e66c6a",
+      "src\\wimp_legend\\backgrounds\\data\\benchmark_v1\\source_ar39.bs": "7388a003d2bb013c938ad1fb69c71cdf2fc2dfbd776c47ea1356bd63b30797d6",
+      "src\\wimp_legend\\backgrounds\\data\\benchmark_v1\\source_ar39.rpt": "e30c32c2d024ec5aef9ab70c7df5fb1cf7bd2de63ad7dd8c35e0e644b3ab9044",
+      "src\\wimp_legend\\backgrounds\\data\\benchmark_v1\\source_ar39_default.bs": "16e2b319857ef4cb4f21c267111f89f204b50b9de67380d4cb04123a3910410f",
+      "src\\wimp_legend\\backgrounds\\data\\benchmark_v1\\source_b8.txt": "75ce26216a638b811d131b692e2d22b8624fcbb711839fd167c25cefaafb9789",
+      "src\\wimp_legend\\backgrounds\\data\\benchmark_v1\\source_pp.txt": "f350a6ad075a3e06fdc6990aa4de687b79c2af954ec8074244ca9127b7d4778f",
+      "src\\wimp_legend\\backgrounds\\model.py": "b8fe12789599481aff134d386bf8bba9ee35ec25ee732fe0ac615882a135f353",
+      "src\\wimp_legend\\backgrounds\\neutrinos.py": "8000204263254b7bea11d64564c1eb3afa6c308be7dd5d4a77d50800bbd7e48c",
+      "src\\wimp_legend\\backgrounds\\radioactive.py": "58dede1d38ab4049ee1ce26162c653d64f1efaff4e2c3d37aaee60ef72314394",
+      "src\\wimp_legend\\backgrounds\\routing.py": "dbf4ffcb57c66de5ba825b6c765f5a7479e8bb8dff4a8cc7848aaab8160a4ca2",
+      "src\\wimp_legend\\config.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src\\wimp_legend\\constants.py": "3a3d5a24353a2dec198c0cb9389124e62e4a0adb7c70706254d91eef51a9cc59",
+      "src\\wimp_legend\\detector\\__init__.py": "72a8fb8324a574e7203a50a406e3b23cce6fbeeb0f8fb15910ccbd618568e369",
+      "src\\wimp_legend\\detector\\efficiency.py": "52d4d520da17e41eb5a5d28f8f65a0635ad82619143e4a25fdc8eebb9f6be71a",
+      "src\\wimp_legend\\detector\\electron.py": "20eec2dbe78f668132fad4d72903fae706041cab85182044e0ee2278c5f8287b",
+      "src\\wimp_legend\\detector\\quenching.py": "66913de32f1f6de0b6dac6b128b401a95ac5bead81353ed666866e8a45a19268",
+      "src\\wimp_legend\\detector\\resolution.py": "2ab9c6d2135da64fa771395fe1c5fa70a15fa80f50d4b23eb02b8bce3a41e009",
+      "src\\wimp_legend\\detector\\response.py": "aab8b86ffee75e658ae13b7bb4fbe5f8d4bff14db1cd8819b6f9a5f0df91fa3b",
+      "src\\wimp_legend\\energy.py": "197534fb4ad4543b1344c11018467c1c76d2050026987eff3f1a4f9e061ac45b",
+      "src\\wimp_legend\\halo\\__init__.py": "04e708380144d0c48fda4d6777448723e4a20763e301c2cae965a110f158e0d3",
+      "src\\wimp_legend\\halo\\base.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src\\wimp_legend\\halo\\integrals.py": "3071ca2179a90c5ffd87ae178b30eb4f9b17af629f3a3e6ce952fdcba5148807",
+      "src\\wimp_legend\\halo\\shm.py": "36cd74cef6d99defc3a45cfa51cc47aa5fd1c881d155e80fbc967d8b16ab3245",
+      "src\\wimp_legend\\halo\\shm_eta.py": "b7cfaf5fe07ee3529a6c87685353392fa7cbc7643646abacab0e82f04fd6c09b",
+      "src\\wimp_legend\\interactions\\__init__.py": "ddcb25d17d71dc89078a47984d86276ddc510728d9c9b337020c0bf5bcccdaf7",
+      "src\\wimp_legend\\interactions\\base.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src\\wimp_legend\\interactions\\nreft.py": "dc6e084ed00287530f195c5efd29c7c37db3426b4b1d77e2e3b004355e8cfe1d",
+      "src\\wimp_legend\\interactions\\o1.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src\\wimp_legend\\interactions\\wilson.py": "c7076102df6066c6cc1a6ad7ab9d20a71e3591035efe6d0ca92ecd80cd1849b4",
+      "src\\wimp_legend\\kinematics.py": "3c475646a4b73b9343ab0330ccae6bf3393374cd88aae6982c2d42750cb0bd90",
+      "src\\wimp_legend\\rates\\__init__.py": "056b61d9f2b6ec947378f27a19a78d008d65eea6d988827897530bacb01a64bd",
+      "src\\wimp_legend\\rates\\kinematics.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src\\wimp_legend\\rates\\recoil.py": "67b056375227d5edf6ea4e059bf1d5135dcd69337d2bc654b45723e31cdaf259",
+      "src\\wimp_legend\\sensitivity.py": "d850646d7eee3b16c0b3cdcbfe1a7b31912ac68a7aa085397a5cc5279a7f062e",
+      "src\\wimp_legend\\si.py": "5de96c5d6babfdf0e440508bbb95f31a6376bb06b073efac5dbf7c0a2d9c9a03",
+      "src\\wimp_legend\\si_fast.py": "0cf69cf88f77bdc7a2d602c5ad22c8fb0cae122f82863cb91873325c92ec2c58",
+      "src\\wimp_legend\\statistics\\__init__.py": "9bf589ad4a95169e09df54017d77bab62d5becbcea0258fcc88742dde08e4ede",
+      "src\\wimp_legend\\statistics\\base.py": "46b8e8a5b5b4d0fc707831c710743bf3c3fae948fd374c84a1ef330bf866694d",
+      "src\\wimp_legend\\statistics\\binned.py": "de0be15bea3c66915f46d1374cfe4a0de8e99e558df5cc00352682944d5bf0ee",
+      "src\\wimp_legend\\statistics\\counting.py": "eb94c3dcbd4e8c88d8bfef34f8547178ca6e9960ad9ca3c646571084f3b0e925",
+      "src\\wimp_legend\\targets\\__init__.py": "9c0836ab6da05181158b64937898b511ccfcccc1d50d8da9dd1b9bcfdc9da148",
+      "src\\wimp_legend\\targets\\data\\ge_afh2014_v1\\ge70.json": "01c5a505d3dc6b2b0fe93e4a0195f2ff6dc95553af462f32d24211ac80ee12a5",
+      "src\\wimp_legend\\targets\\data\\ge_afh2014_v1\\ge72.json": "baba554841bd646a3034729214a3bee7c26f7a466262efc4b2a4f6362c8d6379",
+      "src\\wimp_legend\\targets\\data\\ge_afh2014_v1\\ge73.json": "7c97e13c266a751961bed8214512013e2d5941d1fbc8ada252de5248dc354256",
+      "src\\wimp_legend\\targets\\data\\ge_afh2014_v1\\ge74.json": "ddf30673b689a41ccce308c15d0e70a9fcf36820c68fed3e84ceb2eb232dee64",
+      "src\\wimp_legend\\targets\\data\\ge_afh2014_v1\\ge76.json": "d803be8ef578c06abb4519c36d1085fad9fabc4ab91bafe5bffbfe6a3169be20",
+      "src\\wimp_legend\\targets\\data\\ge_afh2014_v1\\manifest.json": "b17df65326c24a46a4effef6f2b5881304c9c0f03792417c2635e921a6a76f33",
+      "src\\wimp_legend\\targets\\germanium.py": "d70f5cdffb0d843f6584d700e70e5bab1e6c4e8fee46ada79a26e0face060553",
+      "src\\wimp_legend\\targets\\isotopes.py": "42755b6a8aea04e1d3187f9d2298ca48eaa69c2c9c6c4557846041b7ee908477",
+      "src\\wimp_legend\\targets\\nuclear_responses.py": "94881feee5cb4a955a9b0d12e9670a612ab9a4d851831e0bf6489952d87e5057",
+      "src\\wimp_legend\\targets\\provenance.py": "c747f8225a5ff7ecb04142693a71091f5d7931a8881216c91cf6d0ac48b454ca",
+      "tools\\background_benchmark\\folding.py": "92b8f5c7f3bd4f44954d917bb4dc8e8b91461bc1f6e9430d8906cbb3df03ca5b",
+      "tools\\background_benchmark\\legacy.py": "9e281f31a748d9c860cc2ffbfaa3a756caae4926923e7d9ece15a23e1ac77960"
+    },
+    "physics_fingerprint": "8c1edb700dfa7dacbae59937de2850c2e039e41d44c398421d49964493befddc",
+    "environment": {
+      "python": "3.11.9",
+      "numpy": "1.26.4",
+      "scipy": "1.17.1"
+    }
+  },
+  "isotope_weights": {
+    "legend_poster": {
+      "70": {
+        "number_fraction": 0.0,
+        "nuclear_mass_fraction": 0.0,
+        "bulk_mass_fraction": 0.0,
+        "targets_per_kg": 0.0,
+        "pure_targets_per_kg": 8.612378196852799e+24
+      },
+      "72": {
+        "number_fraction": 0.0,
+        "nuclear_mass_fraction": 0.0,
+        "bulk_mass_fraction": 0.0,
+        "targets_per_kg": 0.0,
+        "pure_targets_per_kg": 8.373146470671107e+24
+      },
+      "73": {
+        "number_fraction": 0.0,
+        "nuclear_mass_fraction": 0.0,
+        "bulk_mass_fraction": 0.0,
+        "targets_per_kg": 0.0,
+        "pure_targets_per_kg": 8.258166630976337e+24
+      },
+      "74": {
+        "number_fraction": 0.08,
+        "nuclear_mass_fraction": 0.07805639036827085,
+        "bulk_mass_fraction": 0.07805683914106132,
+        "targets_per_kg": 6.3590609123266e+23,
+        "pure_targets_per_kg": 8.146705634383618e+24
+      },
+      "76": {
+        "number_fraction": 0.92,
+        "nuclear_mass_fraction": 0.9219436096317292,
+        "bulk_mass_fraction": 0.9219431608589387,
+        "targets_per_kg": 7.31292004917559e+24,
+        "pure_targets_per_kg": 7.932072561135358e+24
+      }
+    }
+  },
+  "nuclear_masses_GeV": {
+    "70": 65.11773075070431,
+    "72": 66.97869489225047,
+    "73": 67.91147737341015,
+    "74": 68.84084655743821,
+    "76": 70.70404431844925
+  },
+  "background_provenance": {
+    "legend_poster": {
+      "ar39_intensity_after_transfer_and_veto": 0.0017881626248104306,
+      "mean_ar39_decays_per_kg_Ge_day_before_transfer": 1256.5560048940724,
+      "mean_intrinsic_activities_per_kg_day": {
+        "Fe55": 0.01698442725628442,
+        "Ga68": 0.029956817625800703,
+        "Ge68": 0.029951609687324042,
+        "H3": 0.19376826876698322,
+        "Zn65": 0.014488631219950832
+      },
+      "solar_coverage": "pp and B8 only; Be7/pep/CNO/hep omitted, not a full solar background",
+      "source_activities_at_reference_per_kg_day": {
+        "Fe55": 0.024702413116981365,
+        "Ge68": 0.11733646230566147,
+        "H3": 0.2108145106091718,
+        "Zn65": 0.06570841889117043
+      },
+      "source_manifest": {
+        "files": {
+          "Ar39_minimal_ENSDF.txt": "c4dd9d5793b4d53c262e4fbf7e4be0e50b23d4bc38d2aebb2ecdecf63634251d",
+          "ar39.csv": "407074ad75116f9f442e9c5679a5fc337ee045389f22c67b08dfb27d2c872df7",
+          "ar39_provenance.json": "6af997f564c03d48c0b669d9aa55d8f5ab7252a583f4777fe3c49f115b1c64e9",
+          "nuclear.json": "58dc1dde5fb31fbd85f23843eea13041f6ac28fd65ca7633cd49b0d600e15494",
+          "solar.json": "2855e3853d1478fa36011f6d00037d2e9d565e38420f1c21b963580a43e66c6a",
+          "source_ar39.bs": "7388a003d2bb013c938ad1fb69c71cdf2fc2dfbd776c47ea1356bd63b30797d6",
+          "source_ar39.rpt": "e30c32c2d024ec5aef9ab70c7df5fb1cf7bd2de63ad7dd8c35e0e644b3ab9044",
+          "source_ar39_default.bs": "16e2b319857ef4cb4f21c267111f89f204b50b9de67380d4cb04123a3910410f",
+          "source_b8.txt": "75ce26216a638b811d131b692e2d22b8624fcbb711839fd167c25cefaafb9789",
+          "source_pp.txt": "f350a6ad075a3e06fdc6990aa4de687b79c2af954ec8074244ca9127b7d4778f"
+        },
+        "version": "BG-BENCHMARK-001-v1"
+      },
+      "status": "BENCHMARK, not validated LEGEND-1000 prediction",
+      "workbench_solar_target": {
+        "isotope_weights": {
+          "70": {
+            "bulk_mass_fraction": 0.0,
+            "nuclear_mass_fraction": 0.0,
+            "number_fraction": 0.0,
+            "pure_targets_per_kg": 8.612378196852799e+24,
+            "targets_per_kg": 0.0
+          },
+          "72": {
+            "bulk_mass_fraction": 0.0,
+            "nuclear_mass_fraction": 0.0,
+            "number_fraction": 0.0,
+            "pure_targets_per_kg": 8.373146470671107e+24,
+            "targets_per_kg": 0.0
+          },
+          "73": {
+            "bulk_mass_fraction": 0.0,
+            "nuclear_mass_fraction": 0.0,
+            "number_fraction": 0.0,
+            "pure_targets_per_kg": 8.258166630976337e+24,
+            "targets_per_kg": 0.0
+          },
+          "74": {
+            "bulk_mass_fraction": 0.07805683914106132,
+            "nuclear_mass_fraction": 0.07805639036827085,
+            "number_fraction": 0.08,
+            "pure_targets_per_kg": 8.146705634383618e+24,
+            "targets_per_kg": 6.3590609123266e+23
+          },
+          "76": {
+            "bulk_mass_fraction": 0.9219431608589387,
+            "nuclear_mass_fraction": 0.9219436096317292,
+            "number_fraction": 0.92,
+            "pure_targets_per_kg": 7.932072561135358e+24,
+            "targets_per_kg": 7.31292004917559e+24
+          }
+        },
+        "mode": "isotope_mixture",
+        "note": "CEvNS explicit isotope kernels; ES uses exact total Ge atom count. Factory effective fields are bookkeeping only in mixture mode."
+      }
+    }
+  },
+  "cache": {
+    "hits": 61,
+    "misses": 48,
+    "keys": [
+      "01e9eab6891a24bb51cc6ab7dad88da51c4b4ccf484620f34904ed94237f5af1",
+      "025f2985c6d7ce5ad6d994addf790bfdb6d0ccc617fc84196029c91f349f1504",
+      "041123ce7f913af2025d639d71d5592930f1a1527e9e1aca32018fa07700593b",
+      "059d252d5e0a9369c97eda98de84f3509b58c0ada52bb9ae607703a005266a66",
+      "0b196e2cf96c07dd7ef2e1d60fd2b44abcb4fd9d6fee9655c2c881dab5c36b3e",
+      "0be000d63b01591f80ea6c0cf0de1909e267588e22b83452c361282f7000f550",
+      "0c4b30dd8ffba80112e469c695f415aa609fb2b7e0fec170f14f31a0023a21bf",
+      "0d029660f051661db63f89d65a7c8dca2875c405e202f8baedc6b2b95e81669a",
+      "0df02597f1a69b18f7efde47f196ab1c0d0289b4e49fd2c79c098834c2be4efa",
+      "108efeeabd7e19b43273d848b1ee951118615c9ebe867d6b3e45770b8980b2f1",
+      "1a4e2d0676df3b494982bcd856de55ec7157e7da96308bd5fbe5f5b8b952b82f",
+      "1a51b85e0602bf7c0e0dc84dee620fadafa6ec4a3473c9b00e90525373a938f2",
+      "1b5d4737d15c0667230926afa50e7721be9c76d2c6f9eea5de788744a4878759",
+      "1b8dcfd37e254cca752c0537bd142de21025ca75f44bb6e333529fb15d3b6481",
+      "1d6668a4165cefdd7b603b569e0b72a0c4964a2412da4ef2947d79bd0bc28c28",
+      "1f6efea493ca9eb00af18ac2f97eb9163a87791771b988601a4a393822e0b60f",
+      "22c3fea2ff36cf98beeb03182cf131f6a4749e4d0f24bfd9695d708f6b100389",
+      "24310e132456fe0382393c6d1c10de7ce59ecc964558dc1105959fa204659196",
+      "247228baa01573a6fa6d0dbc79666f9a7300f2ef208c5fa9ac3d4d819f68c64d",
+      "251cd6b26705d9b4fcba545bb098cfcd2181a3686153609a25aee038dbc236ea",
+      "286bc999e04eaad9b9dbe60fc5c2b4357fe8e58e761ef09f4d5d1428a84b49cf",
+      "2dde7dc6197f7d4a49cdc8876428af92bf81ecf7cd30f50a6d7f5add7c3264bc",
+      "33787f829d494bb5f493ecef2b8d1fe0fc63f4a3dfc1d3999230f2576b3f36d3",
+      "33d67a058d4529e5a7b2020613575686802e38816dcca5dc4de6bcd4328e686e",
+      "37318f009342112beac798689197598182d91880442df83c1698d7bde3f6a982",
+      "3a82e3a6577b02d75f5f2a8018a0bb290a5551c2c4404dd894913fc4c2db19ab",
+      "40074186216099c281b9631663fc3d8fcc5aa666ab61d8d08a904a4347dd4d87",
+      "4261f663fc260f73d0b1b1282a147dbb23ec82c7c010ad6aa1531e78401749a3",
+      "47017961fd7b9ce63971942c16c3507a45e273c705cb72d02b426124e41216a9",
+      "4701cf722b26dcfa51bb0368860d023b783e91f293086ef424fa385ea8dd7753",
+      "471eed76e5b62bdd4629bf469dd13bc666e6ccb56f979a0b8a7d770ef53e8780",
+      "4a1cf01f9ce2af84633d294b792884e00f5082e27bdc5ae390a80baa63881f47",
+      "4ab678b791743ec9af433f8d0fd2e5843b24d6f4589c5211181f02ccac18750c",
+      "4da00717c74d4b105921ec80590c281f49cae7c4c87b2db3eaf9851e45874371",
+      "513d48ac9865af03e676532befe96fafa7a7d429b05cdb6d20c56c1327d5b0db",
+      "516380420507850717d74c254cd1e8a10a4d2713aaf692fefb0c8a156547ed12",
+      "5581f6ac8816fac891b66054632c7adc731f8b57cbe7f28fe2d5fcbc3c2f73d9",
+      "55daadf09344ef6ffa3b23827d23d0b379a878c1d71151c1f471b2439e96e073",
+      "581e7a44ea2a823111b70f34a24458365dafb40e0606f21898fe1656970eb6e5",
+      "586a903f5c5d60c6b937d5c895b289e308dc4f0904e507e169cb1e69422a0943",
+      "5dd814e667c766871c7b7e50f2a7e20c460c4c5084db35e818987ac793d68878",
+      "5ee42ded88922606b938046569b341c296da0651b24a7cf1570b44bf3af92dc5",
+      "5fabfb21da3ec2e8728b026efe45672c70dab6eb65cf5d377200fcd8b1ee03d9",
+      "6160dd39f1ea799b8885fd59d7d785eac785e71d9a18c4d4fea32c52f50ad964",
+      "642669bc765130c4b8ab65f5a05657b07644ffea497c4329563ded5dea7bb10c",
+      "65d0567be9d969238d315c40d3f371455946a08cc09ff27f79c111a0b62284b7",
+      "65e44fdc8ed4fe1dc463adc6f3aef1c5df54c947e88df67e78bd594904bad183",
+      "66d5cb2b39402464771422748dc34b8579fb599c9f06f8a469b71ca5ac15fe8e",
+      "6928dc2d21d33a135cbb7b4e2c9dfba84c07b90fc908611f0a834e447757a5c3",
+      "6bde6de4cc0c11fce1d97015ebf03b42b59d30f708bbd8ce9ff0434fc9241a12",
+      "6c96e10b8289bbb42ab5487f4c40116a6f9cc82968111e8c927a80919bfa927d",
+      "6f81f036152d97dd91cc38c929a74110df67e4ef9e622747892a4ac630b7183c",
+      "722f0361255b1435131b09fe9a857a702214275a56ba922507a6dcda22b2d63d",
+      "7354d750d1dd0768c588758d713b020831a7d2644b176f2a8256aebc14ef6bf6",
+      "77316351bea940c103200784cd4d54bc14381d13e2a9815ebcf7d2c673164198",
+      "789efc49a040a59b504930871357ecc27b5952eb9bd5ff680d31574b865ff404",
+      "828e50231e3841b4af9b9188deeaa6ff480e37304d4631a5dfc17261ec874a89",
+      "84570d64f8c6237a0b08e4f965e660f77cf6360d08b00582ba85005af4bfce9c",
+      "849d28b6030a849d7dd6839870765d6df10952e849bfdfeaf68f3105dab8e7b7",
+      "851e5f0908e96742829c587f77710661d14ff07997f2ef7587304af1ed3a14bc",
+      "87747460d49da27d1b2c72b2a03e35764e4a2d72aa46e536e683eb2e82742b72",
+      "884f675b39176ec8ad28081387e683aca801249bbf453d5e675939bf76c266f5",
+      "8ad252a9e02b35abc55432ef4fafb7b0275370bb65ba5cdb4e029588c15edebd",
+      "8d1bc35ce4473bf36b90c3b66b63edaa3605702871625d0a8c4620223c31f10d",
+      "8eb5ce87f794e12a312de9ddefbedd86df581371d7d6efd8f61d9c3ff3b6ecd2",
+      "900c40beafd59dc3ea1ee0f3282a889961d9a290a72c54d865fee69ce15634e9",
+      "9370991bcdf431cc10c2f43a359bd4cc3d410a81fb89552121c4ef875ba21e09",
+      "95e3676d1be33a1fcf54de79512d29b9310c7c932b2d98a266d87ce673d71f8b",
+      "9a57a8ec1d6c2baaf4c05fde4b1330f80f351681594d25fd6c46eae99080b289",
+      "9b73e22fbd0fecdadab70b64d5e51c1fa79cff82b3a0f70f92e6047dc4681fdb",
+      "9bac81a1f5e41a57b7c258a09ab2d9e241c106d484a1568c552bbf0b654264f4",
+      "9c73c1b25c43bf9ca78f48c307111833611f1f5a1671511c0bed3d588ec243df",
+      "9ecf2b4bb327ebdb5a7193854c6c6e8a5932e81b900c4bb23f5dd1106f138e6f",
+      "a6763cea9dff21b3d96be28ac38c3f460c781576ca19ab953f520ef4ebd1a1a4",
+      "a979d44fd53cf8aca8170aff8d39345fca96854c711141e8fecb055bb8acc0c4",
+      "ab519d519092f8382e9a21ca38214b1a45f2e2a358a6657b9eb44d73b23a14a9",
+      "abf109d95e5659f8d99950772d4369b78f5e8f5f04667c9e12ae59746ae5e08e",
+      "b1188b8d76ef3dd4ac8d344a8c74f0a3b6c3bd78fd54f1b893662d3bf6da7be0",
+      "b2f78332d2c1cd12da5822f52b50020f651aaa0616bb011de4f68d3562aa77af",
+      "b409f8b806c7a8e6f3205e76d49383f1a936bfa4f3187970cba8af750211c4ed",
+      "b52c8036856f52737e079aecb469546e97251bc6e47efc7387906239a3174dea",
+      "c243c982635bb0383f442641a9f836aee5ac7588384f72869f924c6a3b81902b",
+      "c33bb3c1fde8961998854d20c06d245e6f8655b3a224fbb9476fea0d9420a3e7",
+      "c350f506c9b10cdbe2e73c69737d201e94eb194723e35e6c874557384fa60b4b",
+      "c5f767d16fc62d6531b755431819ae7319ee7578d95fa3c97040a1eef6403f3a",
+      "c85be84373c523408a80ad3df6e954afe41818bdad8ea19a411419695f4ef735",
+      "ce4ac7d14487c9b7d75f66936eaed4770dfd0e0d5eefb39e17bd8492791ae86b",
+      "ce54a4825f20e02325875d38394679bd15a2ff7c1dbe94f7388d3738409d934a",
+      "d0a5141422f1768e4a2e4b7a3838ea87bcd7f5f93ffa6d69c24d3bfd9e86c69e",
+      "d0ebba3d61d4ef2fe82315f548f08fe3f977f10d6bf0b1a25baf8998f8ee6363",
+      "d453e92d62af0c4f5b40309d41c8565a01c243ac4de228cdb18bba20891ec20c",
+      "d5702036c0cbcf043ca6a0591b2a19d867bbad2eb78cbe4ae4f4d62de58290d4",
+      "d5ad6d6cb400d76b10307cc4b90dbfa86b22b5ddcbe9231fa1ea37d3b56c6277",
+      "d5f31ff5524132e2fcd8e8814ee8ec61c447c90474f507dd20904c579a290357",
+      "de1b07fd19469df4957af841960f901ed6343a9b837a09304b4bd611d5a21471",
+      "e3d912a0e84f6d86765d5170073250d1e5e6d20b7058622c5bbca3845595a5c5",
+      "e6590c3ad4cafab47a5edc278b427187765a4acf7ebeac885e0d47895e91f9f3",
+      "e885bead36a1cfbb7d5388dad42c6b236b0f6ed3f41c02e58848cd3165454a82",
+      "e88994d46ac9556fd16b247f8afdd5efb1d3d98df6c9cbc34da863f41d2bc4d9",
+      "ec1dd988d05e8125f629a5e9f67b464a04e1f4c2f070719301db56d569476d58",
+      "ee09c9f8d5ec0fff8b8fd34197385dcbc78c6bcebc7d5b06224ec30f9adeec73",
+      "eeb7ac7898b6dbe5b3c3a457ed5a9c600fc503f1bfa1dc91c1c5b48b63d4ba5f",
+      "f0ccf7d9aae49e9fcbf1b904a5c12def4b4a4edc4844bf831abab12e8d82f8ed",
+      "f129ca5c7a123ad588a19bb335a10206d68f99de60c4eef3fd0097e841632177",
+      "f8a40377ab08bf76d8204cfc00aa0990aa6cab0fe4dd9e7c530979266add3564",
+      "f96027fae5f66cfec890b196aaef4e4457b96eacf1d5ae4c042d96ffeac154c9",
+      "f97f15dc608983630ad84c4f8ea89eea95ac4c491367935d71f0287c43386f9f",
+      "fa78a6e1e0b2c8e185ec4228b1b4e6fdda8653e2b2191a9b94736255fc213bb6",
+      "fb0ef3fba8abb3338ad16273e0b2216f6f9636b57ff3d7977b3b31d823d081a4"
+    ]
+  },
+  "numerical_notes": [
+    "All observed bins reintegrated; PCHIP used only for core truth rates.",
+    "Gaussian continuum/source and batch-bin pruning at configured sigma bound; combined omitted probability <=2 Phi(-tail_sigma) per event; exact unpruned line probabilities.",
+    "Per-kg normalization uses neutral atomic mass; kinematics uses derived bare nuclear masses.",
+    "Solar CEvNS/ES summed over configured isotope nuclei when isotope_mixture selected.",
+    "95% ROI conditional on signal inside threshold-to-upper analysis window; not full unobserved signal.",
+    "Historical backgrounds already observed; no additional folding/efficiency; frozen historical response."
+  ],
+  "output_sha256": {
+    "backgrounds.npz": "6a4bd319155f7d35f769bb40fa08b17c2e43b51e380e808342184cde9a505371",
+    "signals.npz": "f1112972cd48acde75e14aa90a2aa3ea5ffb3e51644c2ef9fb8da9a63a8c0ab9",
+    "limits.csv": "c66a7f11faddec39e3ac09583dde989dd24b02dbcb0e152e869e06bdc9336d44",
+    "convergence.json": "329d0f64d11447376e50b263166c45bca5448f7fa850bbcf274a04e3588918ae"
+  }
+}

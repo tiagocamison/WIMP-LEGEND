@@ -1,0 +1,218 @@
+[
+  {
+    "scenario": "legend_poster",
+    "component": "H3",
+    "kind": "background",
+    "total_relative": 1.9398793711519826e-15,
+    "significant_bin_relative": 6.697676257920308e-13,
+    "passed": true
+  },
+  {
+    "scenario": "legend_poster",
+    "component": "Ge68",
+    "kind": "background",
+    "total_relative": 0.0,
+    "significant_bin_relative": 0.0,
+    "passed": true
+  },
+  {
+    "scenario": "legend_poster",
+    "component": "Ga68",
+    "kind": "background",
+    "total_relative": 0.0,
+    "significant_bin_relative": 0.0,
+    "passed": true
+  },
+  {
+    "scenario": "legend_poster",
+    "component": "Zn65",
+    "kind": "background",
+    "total_relative": 0.0,
+    "significant_bin_relative": 0.0,
+    "passed": true
+  },
+  {
+    "scenario": "legend_poster",
+    "component": "Fe55",
+    "kind": "background",
+    "total_relative": 0.0,
+    "significant_bin_relative": 0.0,
+    "passed": true
+  },
+  {
+    "scenario": "legend_poster",
+    "component": "Ar39",
+    "kind": "background",
+    "total_relative": 0.0,
+    "significant_bin_relative": 2.7338191732450914e-15,
+    "passed": true
+  },
+  {
+    "scenario": "legend_poster",
+    "component": "solar_CEvNS",
+    "kind": "background",
+    "total_relative": 1.2291968606584744e-16,
+    "significant_bin_relative": 1.6379650691992444e-15,
+    "passed": true
+  },
+  {
+    "scenario": "legend_poster",
+    "component": "solar_ES",
+    "kind": "background",
+    "total_relative": 0.0,
+    "significant_bin_relative": 3.731804321401465e-15,
+    "passed": true
+  },
+  {
+    "scenario": "legend_poster",
+    "component": "flat_observed",
+    "kind": "background",
+    "total_relative": 0.0,
+    "significant_bin_relative": 0.0,
+    "passed": true
+  },
+  {
+    "kind": "signal",
+    "isotope": 74,
+    "operator": 8,
+    "mass_GeV": 3.0,
+    "grid_points": 111,
+    "fold_total_relative": 1.4338022069204964e-15,
+    "fold_bin_relative": 1.9743277168200783e-15,
+    "total_relative": 2.0637311086456704e-06,
+    "significant_bin_relative": 0.00042348420898102315,
+    "passed": true
+  },
+  {
+    "kind": "signal",
+    "isotope": 76,
+    "operator": 8,
+    "mass_GeV": 3.0,
+    "grid_points": 111,
+    "fold_total_relative": 1.407608699107353e-15,
+    "fold_bin_relative": 2.156072480036993e-15,
+    "total_relative": 2.0707982628541336e-06,
+    "significant_bin_relative": 0.0004769821639319964,
+    "passed": true
+  },
+  {
+    "kind": "signal",
+    "isotope": 74,
+    "operator": 11,
+    "mass_GeV": 3.0,
+    "grid_points": 111,
+    "fold_total_relative": 2.1736951514466877e-16,
+    "fold_bin_relative": 6.196161034172629e-16,
+    "total_relative": 1.7325382938306367e-06,
+    "significant_bin_relative": 0.0015192024855284674,
+    "passed": true
+  },
+  {
+    "kind": "signal",
+    "isotope": 76,
+    "operator": 11,
+    "mass_GeV": 3.0,
+    "grid_points": 111,
+    "fold_total_relative": 2.13027177531628e-16,
+    "fold_bin_relative": 4.750387663560219e-16,
+    "total_relative": 1.7528166627728643e-06,
+    "significant_bin_relative": 0.0013462161540090016,
+    "passed": true
+  },
+  {
+    "kind": "signal",
+    "isotope": 74,
+    "operator": 8,
+    "mass_GeV": 5.0,
+    "grid_points": 111,
+    "fold_total_relative": 3.174127150270871e-14,
+    "fold_bin_relative": 6.64121046796265e-14,
+    "total_relative": 1.6639274247962351e-06,
+    "significant_bin_relative": 0.0005712338823775258,
+    "passed": true
+  },
+  {
+    "kind": "signal",
+    "isotope": 76,
+    "operator": 8,
+    "mass_GeV": 5.0,
+    "grid_points": 111,
+    "fold_total_relative": 2.9616738754966365e-14,
+    "fold_bin_relative": 6.123280085786366e-14,
+    "total_relative": 1.674485740895663e-06,
+    "significant_bin_relative": 0.0005855128659239341,
+    "passed": true
+  },
+  {
+    "kind": "signal",
+    "isotope": 74,
+    "operator": 11,
+    "mass_GeV": 5.0,
+    "grid_points": 111,
+    "fold_total_relative": 1.6206214327867784e-16,
+    "fold_bin_relative": 8.327433015554868e-16,
+    "total_relative": 2.4022567536224524e-07,
+    "significant_bin_relative": 0.011078528068103208,
+    "passed": true
+  },
+  {
+    "kind": "signal",
+    "isotope": 76,
+    "operator": 11,
+    "mass_GeV": 5.0,
+    "grid_points": 111,
+    "fold_total_relative": 0.0,
+    "fold_bin_relative": 8.947284555272925e-16,
+    "total_relative": 2.7492440715362777e-07,
+    "significant_bin_relative": 0.011556012166084508,
+    "passed": true
+  },
+  {
+    "kind": "signal",
+    "isotope": 74,
+    "operator": 8,
+    "mass_GeV": 15.0,
+    "grid_points": 111,
+    "fold_total_relative": 1.433879462012539e-12,
+    "fold_bin_relative": 1.6979296748028785e-11,
+    "total_relative": 1.4096873314335406e-06,
+    "significant_bin_relative": 0.002661735034509793,
+    "passed": true
+  },
+  {
+    "kind": "signal",
+    "isotope": 76,
+    "operator": 8,
+    "mass_GeV": 15.0,
+    "grid_points": 111,
+    "fold_total_relative": 1.4018188004951353e-12,
+    "fold_bin_relative": 1.628710030711517e-11,
+    "total_relative": 1.416525576762665e-06,
+    "significant_bin_relative": 0.0026287809764269834,
+    "passed": true
+  },
+  {
+    "kind": "signal",
+    "isotope": 74,
+    "operator": 11,
+    "mass_GeV": 15.0,
+    "grid_points": 221,
+    "fold_total_relative": 0.0,
+    "fold_bin_relative": 2.0668054294701255e-15,
+    "total_relative": 1.6106337250869967e-08,
+    "significant_bin_relative": 0.0036004958785618925,
+    "passed": true
+  },
+  {
+    "kind": "signal",
+    "isotope": 76,
+    "operator": 11,
+    "mass_GeV": 15.0,
+    "grid_points": 221,
+    "fold_total_relative": 0.0,
+    "fold_bin_relative": 1.8882503113557784e-15,
+    "total_relative": 1.6653581610466608e-08,
+    "significant_bin_relative": 0.0043788928358362966,
+    "passed": true
+  }
+]

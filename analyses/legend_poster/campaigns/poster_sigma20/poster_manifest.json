@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "description": "Poster SI-only statistical grid from one folded source run",
+  "source_run_directory": "C:\\Users\\Tiago\\Desktop\\Tiago\\Studium\\HiWi\\MPIK\\LEGEND\\DM Spektra\\WIMP Code\\analyses\\legend_poster\\campaigns\\poster_sigma20\\runs\\ed8ac71f232a961dc2f3",
+  "source_run_id": "ed8ac71f232a961dc2f342429f59a2eddad5bbffa708f1eb31f81aa4bccaa970",
+  "source_numerical_id": "db1ccdac806ee3a9912748d3e6c78816ba37f39aad8c6b858da6ccbb54d75da5",
+  "source_git_commit": "5b8bc0d737f0034c00ac67190826b755676be8f3",
+  "source_fingerprint": "517ea00ae9a3273bc43110a92622a8fbdcb1350eca8f1e7ae56118a7e3035904",
+  "source_manifest_sha256": "93d38517077d90ae60efcb56a73e820d679bf1bf996e824b80dcdc9c706c6bd3",
+  "source_signal_sha256": "5bdb89ff2fe03e67917e7e566f3db1cbb9d59f7a4d7389792cd7a23cc7f6f00f",
+  "source_background_sha256": "deb68a4c238e931d3da9356088a184dcb28876e7afbcca066289f8cc80521c9b",
+  "campaign_spec_sha256": "ce98b053f3c7a5e08fb8df9ef2fbf8e6c77755acf2b2fbccf66483a6a36db371",
+  "assumptions": [
+    "Thresholds are post-folding observed-energy analysis cuts, not changes in detector efficiency.",
+    "Exposure scales fixed per-kg-day spectra; cosmogenic time dependence is not re-evaluated.",
+    "No/background-neutrinos-only/full share identical Ge target and detector response.",
+    "Neutrinos include solar_CEvNS and solar_ES from the configured benchmark.",
+    "Backgrounds treated as perfectly known; exact median Poisson CLs counting.",
+    "Provisional backgrounds, enriched composition, quenching and efficiency."
+  ],
+  "threshold_keVee": [
+    0.1,
+    0.15,
+    1.0
+  ],
+  "exposure_tonne_year": [
+    0.1,
+    1.0,
+    10.0
+  ],
+  "background_modes": [
+    "none",
+    "neutrinos",
+    "full"
+  ],
+  "n_masses": 79,
+  "n_limits": 2133,
+  "signal_reference_sigma_p_cm2": 1e-42,
+  "limit_csv_sha256": "2fdea30a97fed7db9142944efc202189fea6df87e387ed9af5d0056ee7364e03"
+}

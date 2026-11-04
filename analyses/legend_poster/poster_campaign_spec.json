@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "input_scenario": "legend_poster",
+  "background_modes": {
+    "none": [],
+    "neutrinos": ["solar_CEvNS", "solar_ES"],
+    "full": ["Total"]
+  },
+  "thresholds_keVee": [0.1, 0.15, 1.0],
+  "exposures_tonne_year": [0.1, 1.0, 10.0],
+  "statistics_method": "poisson_cls_counting",
+  "spectrum_masses_GeV": [2.0, 5.0, 10.0],
+  "spectrum_sigma_p_cm2": 1e-42
+}

@@ -50,8 +50,8 @@ def validate_config(config):
             raise ValueError('si_rate_engine must be generic or factorized_shm')
         if s['convention_id']!=NREFT_CONVENTION_ID or s['coefficient_basis']!='proton_neutron' or s['coefficient_unit']!='GeV^-2':
             raise ValueError('unsupported Wilson convention; no automatic conversion')
-        if not s['operators'] or any(type(op)!=int or op not in (1,8,11) for op in s['operators']):
-            raise ValueError('workbench supports single O1/O8/O11 only')
+        if not s['operators'] or any(type(op)!=int or op not in (1,3,8,11) for op in s['operators']):
+            raise ValueError('workbench supports single O1/O3/O8/O11 only')
         if len(set(s['operators']))!=len(s['operators']):raise ValueError('duplicate operator')
         for k in ('sigma_p_ref_cm2','coefficient_ref_GeV_minus2','m_proton_GeV','m_N_reference_GeV'):_positive(s[k],k)
         _positive(s['j_chi'],'j_chi',zero=True)
