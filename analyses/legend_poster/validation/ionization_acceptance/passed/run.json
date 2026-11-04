@@ -1,0 +1,51 @@
+{
+  "id": "run-0002",
+  "status": "passed",
+  "reserved_seconds": 300.0,
+  "charged_seconds": 63.845640396000135,
+  "record": "/workspace/scratch/ebd48d783ed1/acceptance-evidence/run-0002/run.json",
+  "command": [
+    "../acceptance-env/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-W",
+    "error",
+    "tests/test_ionization_acceptance.py",
+    "tests/test_detector.py",
+    "tests/test_background_routing.py",
+    "tests/test_folding_fast.py",
+    "-k",
+    "not physical_isotope_folds_and_limits"
+  ],
+  "cwd": "/workspace/scratch/ebd48d783ed1/WIMP-LEGEND",
+  "source_before": {
+    "commit": "5e744a2dd3bff513abbe82cbbadee935768ee0c3",
+    "tree": "f380defcbcb09edb158b893505250f44a89fb1af",
+    "dirty": false,
+    "inputs": {}
+  },
+  "started_utc": "2026-11-04T13:26:28.720399+00:00",
+  "environment": {
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "platform": "Linux-6.18.57-x86_64-with-glibc2.39",
+    "threads": {}
+  },
+  "resource_enforcement": {
+    "wall_timeout_seconds": 300.0,
+    "ram": "not enforced by this helper",
+    "concurrency": "one command; children share resources"
+  },
+  "elapsed_seconds": 63.845640396000135,
+  "source_after": {
+    "commit": "5e744a2dd3bff513abbe82cbbadee935768ee0c3",
+    "tree": "f380defcbcb09edb158b893505250f44a89fb1af",
+    "dirty": false,
+    "inputs": {}
+  },
+  "returncode": 0,
+  "timed_out": false,
+  "error": null,
+  "missing_artifacts": [],
+  "finished_utc": "2026-11-04T13:27:32.590359+00:00"
+}
