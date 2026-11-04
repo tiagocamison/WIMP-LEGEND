@@ -1,0 +1,14 @@
+........................................................................ [ 59%]
+...........................................F.....                        [100%]
+=================================== FAILURES ===================================
+__________ test_backend_default_validation_and_unsupported_resolution __________
+
+    def test_backend_default_validation_and_unsupported_resolution():
+>       c=load_config();assert c['numerical']['folding_backend']=='reference'
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'folding_backend'
+
+tests/test_folding_fast.py:71: KeyError
+=========================== short test summary info ============================
+FAILED tests/test_folding_fast.py::test_backend_default_validation_and_unsupported_resolution
+1 failed, 120 passed, 15 deselected in 53.68s
