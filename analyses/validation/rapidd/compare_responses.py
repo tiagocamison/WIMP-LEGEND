@@ -23,6 +23,8 @@ CHANNELS = {
     'Phi_double_prime_M': ('M', 'Ppp'),
     'Delta_Sigma_prime': ('Sp', 'D'),
 }
+PHI_TERMS = (('Pp', 'Pp'), ('Pt', 'Pt'))
+PHI_MAPPING = 'RAPIDD Pp/Pp + Pt/Pt -> AFH Phi_tilde_prime (diagnostic)'
 ROOT = Path(__file__).resolve().parents[3]
 DATA = ROOT / 'src/wimp_legend/targets/data/ge_afh2014_v1'
 
@@ -34,7 +36,7 @@ def polynomial(coefficients, y):
     return math.exp(-2*y)*value
 
 
-def run(checkout):
+def run(checkout, *, include_phi_candidate=False):
     checkout = Path(checkout).resolve()
     revision = subprocess.check_output(['git', '-C', str(checkout), 'rev-parse', 'HEAD'], text=True).strip()
     if revision != PIN:
@@ -55,34 +57,46 @@ def run(checkout):
             data = json.loads((DATA/f'ge{A}.json').read_text())
             for row in data['source_pn_polynomials']:
                 channel = row['channel']
-                if channel not in CHANNELS:
-                    continue  # Phi_tilde_prime has no RAPIDD pn_Fitz implementation.
+                if channel in CHANNELS:
+                    pairs = (CHANNELS[channel],)
+                elif channel == 'Phi_tilde_prime' and include_phi_candidate:
+                    pairs = PHI_TERMS
+                else:
+                    continue  # Preserve the scope of the first-stage artifact.
                 n1, n2 = row['nucleon'], row['nucleon_prime']
-                first, second = CHANNELS[channel]
                 for y in (0., .001, .01, .1):
                     # Compare at SAME y, not the same recoil energy with differing
                     # nuclear masses/oscillator prescriptions hidden inside C.
                     energy = 2*y/(b2[A-1]*(32*.938+(A-32)*.940))*1e6
-                    actual = response(A, first.encode(), second.encode(), b'p' if n1 == 0 else b'n', b'p' if n2 == 0 else b'n', energy)
+                    actual = sum(
+                        response(A, first.encode(), second.encode(),
+                                 b'p' if n1 == 0 else b'n', b'p' if n2 == 0 else b'n', energy)
+                        for first, second in pairs
+                    )
                     expected = polynomial(row['coefficients'], y)
                     records.append(dict(A=A, channel=channel, n1=n1, n2=n2,
                                         y=y, rapidd_ER_keV=energy, rapidd=actual,
                                         afh_source=expected, difference=actual-expected,
                                         relative_difference=None if expected == 0 else actual/expected-1))
-    return dict(schema_version=1, rapidd_commit=revision,
+    report = dict(schema_version=1, rapidd_commit=revision,
                 rapidd_source_sha256=hashlib.sha256(source.read_bytes()).hexdigest(),
                 afh_manifest_sha256=hashlib.sha256((DATA/'manifest.json').read_bytes()).hexdigest(),
                 comparison='source-order p/n F=e^(-2y)P(y), matched y; no canonical W rescaling',
                 unsupported=['Phi_tilde_prime'],
                 interpretation='Input comparison only; NOT a complete rate/detector/statistics validation',
                 records=records)
+    if include_phi_candidate:
+        report['unsupported'] = []
+        report['phi_mapping'] = PHI_MAPPING
+    return report
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('rapidd_checkout', type=Path)
     parser.add_argument('--output', required=True, type=Path)
+    parser.add_argument('--include-phi-candidate', action='store_true')
     args = parser.parse_args()
-    result = run(args.rapidd_checkout)
+    result = run(args.rapidd_checkout, include_phi_candidate=args.include_phi_candidate)
     args.output.write_text(json.dumps(result, indent=2, allow_nan=False)+'\n')
     print(f"Saved {len(result['records'])} comparisons to {args.output}")

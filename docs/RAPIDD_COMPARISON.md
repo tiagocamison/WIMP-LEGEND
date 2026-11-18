@@ -1,5 +1,31 @@
 # RAPIDD cross-check: first-stage results and tester handoff
 
+## All-operator extension
+
+Open [the verification notebook](../notebooks/rapidd_verification.ipynb) to
+plot the saved comparison or rerun it. The expanded scan covers all 14
+single-operator kernels in the frozen basis (O1 and O3–O15). O2 is outside
+the basis. The original three cases match the poster workbench scope.
+There are 840 kernel comparisons on the original grid and 640 matched-y
+nuclear comparisons including the candidate mapping below.
+
+With shared nuclear inputs, every nonzero shifted kernel on this grid
+agrees within 3.75e-13 relative. Both implementations return zero for 336
+other cases. The raw assembly reaches about 42.6% relative difference
+for O5 and O8. This checks diagonal fixed-speed kernels; mixed operators,
+absolute halo-integrated rates, folding and inference remain open.
+
+**Correction to the first-stage scope:** RAPIDD's Ge-73 `pn_Fitz` table
+contains `Pp/Pp` entries. Its O12 and O13 kernels use `Pp/Pp + Pt/Pt`,
+which the extension maps to the canonical Phi-tilde-prime channel for
+diagnosis. The pinned Ge table has no `Pt/Pt` entries. This mapping gives
+shared-input kernel agreement, while the matched-y nuclear-input comparison
+shows RAPIDD/AFH ratios of about 5 at y=0 for the Ge-73 p/n entries. The
+neutron–neutron ratio reaches about 6.59 at y=0.1. The tabulated RAPIDD
+Ge-73 `Pp/Pp` prefactor is `2*pi`; its normalization and polynomial
+coefficients warrant separate review. The extension uses the raw table
+values, with the candidate mapping explicitly recorded in the output.
+
 ## Status
 
 Two reproducible checks have been completed against unmodified, compiled RAPIDD
@@ -38,8 +64,8 @@ comparison outputs contain diagnostic evaluations, not replacement datasets.
 ## 1. Nuclear inputs
 
 All five stable Ge isotopes, four ordered p/n entries, seven channels, and
-`y = 0, 0.001, 0.01, 0.1` were compared. The absent RAPIDD `Phi_tilde_prime`
-implementation is **unsupported**, not certified zero. The other channels are
+`y = 0, 0.001, 0.01, 0.1` were compared. The first-stage artifact excluded
+`Phi_tilde_prime`; see the correction above. The seven channels are
 M, Sigma-prime, Sigma-double-prime, Phi-double-prime, Delta, and the two mixed
 channels. Source mixed-channel ordering is retained before canonical
 transposition. Missing-entry C zeros are not independently certified by this

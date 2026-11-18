@@ -2,6 +2,7 @@
 import json
 from pathlib import Path
 import pytest
+from wimp_legend.interactions import CANONICAL_OPERATORS
 
 ROOT = Path(__file__).resolve().parents[1]/'analyses/validation/rapidd'
 RESPONSES = json.loads((ROOT/'response_comparison.json').read_text())
@@ -45,3 +46,36 @@ def test_source_particle_number_deficit_not_rescaled():
         rows=[r for r in RESPONSES['records'] if r['A']==A and r['channel']=='M' and r['y']==0]
         assert sum(r['rapidd'] for r in rows) == pytest.approx(A*A,rel=1e-15)
         assert 0 < sum(r['afh_source'] for r in rows) < A*A
+
+
+def test_all_operator_snapshot_checks_zero_and_nonzero_kernels():
+    reports = json.loads((ROOT/'all_operator_comparison.json').read_text())
+    kernels = reports['kernels']
+    assert kernels['rapidd_commit'] == KERNELS['rapidd_commit']
+    rows = [dict(zip(kernels['columns'], row, strict=True)) for row in kernels['rows']]
+    assert len(rows) == 840
+    assert {row['operator'] for row in rows} == set(CANONICAL_OPERATORS)
+    grid = {
+        (A, energy, cp, cn) for A in (70, 72, 73, 74, 76)
+        for energy in (1., 10., 30.) for cp, cn in ((1., 1.), (1., 0.), (1., -.7), (0., 1.))
+    }
+    for op in CANONICAL_OPERATORS:
+        group = [row for row in rows if row['operator'] == op]
+        assert len(group) == len(grid)
+        assert {(r['A'], r['ER_keV'], r['cp'], r['cn']) for r in group} == grid
+    for row in rows:
+        if row['ours'] == 0:
+            assert row['raw_relative_difference'] is None
+            assert row['shifted_relative_difference'] is None
+            assert row['rapidd_raw_velocity_kernel'] == row['shifted_velocity_diagnostic'] == 0
+        else:
+            assert row['shifted_velocity_diagnostic'] == pytest.approx(row['ours'], rel=5e-12, abs=0)
+
+    responses = reports['responses']
+    assert responses['rapidd_commit'] == kernels['rapidd_commit']
+    assert responses['phi_mapping'] == kernels['phi_mapping']
+    assert len(responses['rows']) == 640
+    rows = (dict(zip(responses['columns'], row, strict=True)) for row in responses['rows'])
+    phi_nn = next(r for r in rows if r['channel'] == 'Phi_tilde_prime'
+                  and r['A'] == 73 and r['n1'] == r['n2'] == 1 and r['y'] == 0)
+    assert phi_nn['rapidd']/phi_nn['afh_source'] == pytest.approx(5., rel=1e-4)
