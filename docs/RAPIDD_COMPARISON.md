@@ -1,5 +1,63 @@
 # RAPIDD cross-check: first-stage results and tester handoff
 
+## Extended rate, detector and inference checks
+
+[The verification notebook](../notebooks/rapidd_verification.ipynb) loads
+[the extended results](../analyses/validation/rapidd/extended_comparison.json).
+Set `RUN_EXTENDED_VALIDATION = True` for a fresh build of the pinned C source.
+The [rate driver](../analyses/validation/rapidd/validate_extended.py) covers all
+14 single operators and seven allowed interference pairs plus two zero controls.
+It evaluates five Ge isotopes, two WIMP masses, five recoil energies per pair
+of isotope and mass, and four coupling choices per operator or interference
+pair. Cases include one energy above the endpoint. The rate grid uses elastic
+scattering, WIMP spin 1/2, and the same SHM and absolute normalization as the
+O1/O11 benchmark. The moment reduction was checked against the production
+speed quadrature for O8, O13, O8/O9 and O12/O15.
+
+- **Shared-input rates.** The diagnostic uses common unit constants and the
+  transverse halo moment `xi - vmin² eta`. All 2,800 single-operator cases
+  agree within a symmetric relative gap of 1.9e-6 with that alignment. Some
+  destructive proton/neutron combinations give negative signed rates with the
+  rounded RAPIDD table. The snapshot records the signed rates as well as the
+  absolute values returned by the stock wrapper. For example, at 80.19 keV
+  on Ge-76 with a 40 GeV WIMP and cn/cp = -0.7, RAPIDD's signed O1 rate is
+  -5.05e-6 events/(kg day keV), while the wrapper returns +5.05e-6. With the
+  AFH response the same-input WIMP-LEGEND calculation gives +1.28e-5.
+- **Interference.** Six pairs and both zero controls agree on the aligned
+  diagnostic. The stock C rate calls O8/O9 in order (8,9), while the implemented
+  nonzero form factor uses (9,8). The snapshot contains the stock zero and the
+  reversed-order diagnostic, which matches within 4.0e-8 across the grid.
+  A sign flip on one operator isolates the cross
+  term in the public C rate and the WIMP-LEGEND calculation.
+- **Ge composition.** RAPIDD’s Ge wrapper matches the weighted sum of its five
+  isotope rates at floating-point precision. The weights in its source sum to
+  **1.003**. The first strict composition import rejected that sum
+  (`ValueError: fractions must sum to one (absolute tolerance 1e-12)`).
+  We preserve the literal weights for wrapper reproduction and independently
+  normalize them before evaluating a number-fraction to mass-fraction
+  conversion. The normalized number versus mass weighting changes rates by
+  up to 0.464% on the mixture grid.
+- **Nuclear tables.** With common kinematics and normalized mass weights, the
+  native-table rate differences reach about 2.1% across the tested non-O13
+  cases. O13 reaches a factor of 8.46 for the benchmark equal couplings.
+  Swapping only the raw Ge-73 candidate Phi-tilde-prime response reproduces
+  nearly all of the O13 shift. The Ge-73 O12 candidate-only shift reaches 3.09%
+  in the tested equal-coupling spectra.
+- **Folding and inference.** The [folding driver](../analyses/validation/rapidd/validate_folding.py)
+  uses a common stock C O1 Ge spectrum. Native unsmeared bins agree with the
+  WIMP-LEGEND integration within 2.6e-9; the fixed Ge Gaussian benchmark
+  agrees with a separate bin-CDF integral within 2.1e-9. RAPIDD’s generic
+  `counts_bin_smeared` produces identical bins at 0.01 and 0.30 keV widths,
+  consistent with the unsmeared integrand selected in the pinned source.
+  Both codes give `mu_upper = 0.1177118` for the same background-only
+  Asimov data and threshold `q = 1.6423744`. RAPIDD’s default threshold
+  `q = 2.706` gives `mu_upper = 0.1538011` for the same inputs.
+
+The snapshots report diagnostics against the pinned C backend. The
+transverse term, the candidate Ge-73 form factor, the interference ordering,
+and the generic smearing behavior remain upstream review items. These
+benchmarks establish no collaboration-specific detector calibration.
+
 ## All-operator extension
 
 Open [the verification notebook](../notebooks/rapidd_verification.ipynb) to
@@ -177,6 +235,7 @@ independent C check.
 6. Validate the surrogate only within its trained mass/coupling/halo domain,
    against its own exact calculator first. Report interpolation errors separately.
 
-Publication gates still open: full rate/unit normalization, detector-folded
-counts, inference, surrogate errors, nuclear-input systematics and independent
-review. No publication-level acceptance is claimed by this first-stage report.
+The extended checks above add rate, folded-count and fixed-background inference
+comparisons. Publication still calls for independent review, the final detector
+and background assumptions, and a documented treatment of reference-code
+discrepancies. Surrogate accuracy is a separate check if the surrogate is used.

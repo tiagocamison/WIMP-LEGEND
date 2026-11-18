@@ -107,3 +107,32 @@ def test_absolute_rate_snapshot_preserves_native_rates_and_cutoffs():
                 assert raw == wimp == 0.
             if wimp > 1e-6*peak:
                 assert raw/wimp == pytest.approx(unit_ratio, rel=2e-6)
+
+
+def test_extended_snapshot_preserves_interference_and_detector_discrepancies():
+    data = json.loads((ROOT/'extended_comparison.json').read_text())
+    assert data['rapidd_commit'] == KERNELS['rapidd_commit']
+    assert {row['operator'] for row in data['singles']} == set(CANONICAL_OPERATORS)
+    assert sum(row['cases'] for row in data['singles']) == 2800
+    assert max(row['max_aligned_gap'] for row in data['singles']) < 2e-6
+    assert any(row['negative_signed_count'] for row in data['singles'])
+    assert sum(row['cases'] for row in data['mixed']) == 1800
+    pairs = {(row['first'], row['second']): row for row in data['mixed']}
+    assert set(pairs) == {(1, 3), (1, 4), (4, 5), (4, 6), (5, 8), (8, 9),
+                          (11, 12), (11, 15), (12, 15)}
+    pair = pairs.pop((8, 9))
+    assert pair['worst']['rapidd_raw'] == 0
+    assert pair['worst']['wimp'] != 0
+    assert pair['max_reverse_order_gap'] < 1e-6
+    assert max(row['max_aligned_gap'] for row in pairs.values()) < 1e-6
+    assert sum(data['raw_ge_weights']) == pytest.approx(1.003)
+    assert sum(data['mass_weights']) == pytest.approx(1.)
+    for row in data['mixtures']:
+        assert row['rapidd_ge'] == pytest.approx(row['rapidd_number_sum'], rel=1e-12, abs=0)
+    for row in data['moment_checks']:
+        assert row['factored'] == pytest.approx(row['quadrature'], rel=1e-8, abs=0)
+    fold = data['folding']
+    assert fold['stock_c_bins'] == pytest.approx(fold['wimp_unsmeared'], rel=1e-7)
+    assert fold['stock_smearing_counts'][0] == fold['stock_smearing_counts'][1]
+    assert fold['gaussian_wimp'] == pytest.approx(fold['gaussian_reference'], rel=1e-7)
+    assert fold['mu_rapidd_matched'] == pytest.approx(fold['mu_wimp'], rel=1e-8)
