@@ -79,3 +79,31 @@ def test_all_operator_snapshot_checks_zero_and_nonzero_kernels():
     phi_nn = next(r for r in rows if r['channel'] == 'Phi_tilde_prime'
                   and r['A'] == 73 and r['n1'] == r['n2'] == 1 and r['y'] == 0)
     assert phi_nn['rapidd']/phi_nn['afh_source'] == pytest.approx(5., rel=1e-4)
+
+
+def test_absolute_rate_snapshot_preserves_native_rates_and_cutoffs():
+    report = json.loads((ROOT/'absolute_rate_comparison.json').read_text())
+    assert report['rapidd_commit'] == KERNELS['rapidd_commit']
+    assert report['units'] == 'events/(kg day keV_nr)'
+    assert len(report['cases']) == 8
+    assert {(c['A'], c['operator'], c['mchi_GeV']) for c in report['cases']} == {
+        (A, operator, mass) for A in (73, 76) for operator in (1, 11) for mass in (5., 40.)
+    }
+    unit_ratio = report['unit_prefactor_ratio']
+    assert unit_ratio == pytest.approx(1.001458105, rel=1e-9)
+    for case in report['cases']:
+        q2_factor = (
+            case['form_factor_mass_GeV']/case['rate_mass_GeV'] if case['operator'] == 11 else 1.
+        )
+        assert case['q2_factor'] == q2_factor
+        peak = max(case['wimp_rate_matched'])
+        assert peak > 0
+        for energy, raw, wimp, wimp_same_mass in zip(
+            case['energy_keV'], case['rapidd_rate'], case['wimp_rate_matched'],
+            case['wimp_rate_same_mass'], strict=True,
+        ):
+            assert wimp == pytest.approx(wimp_same_mass*q2_factor, rel=1e-15, abs=0)
+            if energy > case['endpoint_keV']:
+                assert raw == wimp == 0.
+            if wimp > 1e-6*peak:
+                assert raw/wimp == pytest.approx(unit_ratio, rel=2e-6)
